@@ -1,104 +1,118 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+using System;
+using System.Collections.Generic;
 
 // Model
-class Model {
-    private String data;
+class Model
+{
+    private string data;
     private List<Observer> observers;
 
-    public Model() {
-        this.observers = new ArrayList<>();
+    public Model()
+    {
+        this.observers = new List<Observer>();
     }
 
-    public void setData(String data) {
-        System.out.println("Model : Set data.");
+    public void SetData(string data)
+    {
+        Console.WriteLine("Model : Set data.");
         this.data = data;
-        notifyObservers();
+        NotifyObservers();
     }
 
-    public String getData() {
-        System.out.println("Model : Get data.");
+    public string GetData()
+    {
+        Console.WriteLine("Model : Get data.");
         return this.data;
     }
 
-    public void addObserver(Observer observer) {
-        this.observers.add(observer);
+    public void AddObserver(Observer observer)
+    {
+        this.observers.Add(observer);
     }
 
-    public void removeObserver(Observer observer) {
-        this.observers.remove(observer);
+    public void RemoveObserver(Observer observer)
+    {
+        this.observers.Remove(observer);
     }
 
-    public void notifyObservers() {
-        System.out.println("Model : Notify observers.");
-        for (Observer observer : observers) {
-            observer.update();
+    public void NotifyObservers()
+    {
+        Console.WriteLine("Model : Notify observers.");
+        foreach (Observer observer in observers)
+        {
+            observer.Update();
         }
     }
 }
 
 // View
-class View implements Observer {
+class View : Observer
+{
     private Controller controller;
     private Model model;
 
-    public View(Model model, Controller controller) {
+    public View(Model model, Controller controller)
+    {
         this.model = model;
         this.controller = controller;
-        this.model.addObserver(this);
+        this.model.AddObserver(this);
     }
 
-    public void update() {
-        System.out.println("View : Update.");
-        String data = model.getData();
-        System.out.println("Data: " + data);
+    public void Update()
+    {
+        Console.WriteLine("View : Update.");
+        string data = model.GetData();
+        Console.WriteLine("Data: " + data);
     }
 
-    public void getUserInput() {
-        try (Scanner scanner = new Scanner(System.in)) {
-            System.out.print("View : Enter user input: ");
-            //String userInput = "hello, world!";
-            //System.out.println(userInput);
-            String userInput = scanner.nextLine();
-            controller.handleUserInput(userInput);
-        }
+    public void GetUserInput()
+    {
+        Console.Write("View : Enter user input: ");
+        string userInput = Console.ReadLine();
+        controller.HandleUserInput(userInput);
     }
 }
 
 // Controller
-class Controller {
+class Controller
+{
     private Model model;
     private View view;
 
-    public Controller(Model m) {
+    public Controller(Model m)
+    {
         this.model = m;
     }
 
-    public void handleUserInput(String userInput) {
-        System.out.println("Controller : Handle user input.");
-        model.setData(userInput);
+    public void HandleUserInput(string userInput)
+    {
+        Console.WriteLine("Controller : Handle user input.");
+        model.SetData(userInput);
         // Can inform view about action.
     }
 
-    public void setView(View v) {
+    public void SetView(View v)
+    {
         this.view = v;
     }
 }
 
 // Observer interface
-interface Observer {
-    void update();
+interface Observer
+{
+    void Update();
 }
 
 // Main class
-public class MVC {
-    public static void main(String[] args) {
+class MVC
+{
+    public static void Main(string[] args)
+    {
         Model model = new Model();
         Controller controller = new Controller(model);  // The Controller sets itself as the observer in this case
         View view = new View(model, controller);
-        controller.setView(view);
-        view.getUserInput();
+        controller.SetView(view);
+        view.GetUserInput();
     }
 }
 
@@ -110,4 +124,4 @@ Model : Notify observers.
 View : Update.
 Model : Get data.
 Data: hello, world!
- */
+*/

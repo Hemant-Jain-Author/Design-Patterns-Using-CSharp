@@ -1,32 +1,48 @@
-// Define the Product class with two parts
-class Product {
-    private String partA;
-    private String partB;
+using System;
 
-    public Product(String A, String B) {
+// Define the Product class with two parts
+class Product
+{
+    private string partA;
+    private string partB;
+
+    public Product(string A, string B)
+    {
         this.partA = A;
         this.partB = B;
     }
+    public void SetPartA(string A)
+    {
+        this.partA = A;
+    }
 
-    @Override
-    public String toString() {
-        return String.format("Product : (%s, %s)", partA, partB);
+    public void SetPartB(string B)
+    {
+        this.partB = B;
+    }
+
+    public override string ToString()
+    {
+        return $"Product: ({partA}, {partB})";
     }
 }
 
 // Define an abstract class called Builder
-abstract class Builder {
+abstract class Builder
+{
     protected Product product;
 
-    public Builder() {
+    public Builder()
+    {
         this.product = new Product("A default", "B default");
     }
 
-    public abstract Builder setPartA(String A);
+    public abstract Builder SetPartA(string A);
 
-    public abstract Builder setPartB(String B);
+    public abstract Builder SetPartB(string B);
 
-    public Product getProduct() {
+    public Product GetProduct()
+    {
         Product temp = this.product;
         this.product = new Product("A default", "B default"); // assign new product.
         return temp;
@@ -34,56 +50,70 @@ abstract class Builder {
 }
 
 // Define a ConcreteBuilder class that extends Builder
-class ConcreteBuilder extends Builder {
-    @Override
-    public Builder setPartA(String A) {
-        this.product = new Product(A, this.product.toString().split(",")[1].trim());
+class ConcreteBuilder : Builder
+{
+    public override Builder SetPartA(string A)
+    {
+        this.product.SetPartA(A);
         return this;
     }
 
-    @Override
-    public Builder setPartB(String B) {
-        this.product = new Product(this.product.toString().split(",")[0].split(":")[1].trim(), B);
+    public override Builder SetPartB(string B)
+    {
+        this.product.SetPartB(B);
         return this;
     }
 }
 
 // Define a Director class that takes a builder object as a parameter
-class Director {
+class Director
+{
     private Builder builder;
 
-    public Director(Builder builder) {
+    public Director(Builder builder)
+    {
         this.builder = builder;
     }
 
-    public Product construct() {
-        return this.builder.setPartA("A1").setPartB("B1").getProduct();
+    public Product Construct()
+    {
+        return this.builder.SetPartA("A1").SetPartB("B1").GetProduct();
     }
 
-    public Product construct2() {
-        this.builder.setPartA("A2");
-        this.builder.setPartB("B2");
-        return this.builder.getProduct();
+    public Product Construct2()
+    {
+        this.builder.SetPartA("A2");
+        this.builder.SetPartB("B2");
+        return this.builder.GetProduct();
     }
 
-    public Product construct3() {
-        return this.builder.setPartA("A3").getProduct();
+    public Product Construct3()
+    {
+        return this.builder.SetPartA("A3").GetProduct();
     }
 }
 
 // Client code
-public class BuilderPattern {
-    public static void main(String[] args) {
+public class BuilderPattern
+{
+    public static void Main(string[] args)
+    {
         Builder builder = new ConcreteBuilder();
         Director director = new Director(builder);
 
-        Product product = director.construct();
-        System.out.println(product);
+        Product product = director.Construct();
+        Console.WriteLine(product);
 
-        Product product2 = director.construct2();
-        System.out.println(product2);
+        Product product2 = director.Construct2();
+        Console.WriteLine(product2);
 
-        Product product3 = director.construct3();
-        System.out.println(product3);
+        Product product3 = director.Construct3();
+        Console.WriteLine(product3);
     }
 }
+
+/*
+Product: (A1, B1)
+Product: (A2, B2)
+Product: (A3, B default)
+*/

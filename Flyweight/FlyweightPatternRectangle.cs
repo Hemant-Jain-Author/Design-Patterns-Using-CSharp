@@ -1,53 +1,61 @@
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+using System;
+using System.Collections.Generic;
 
 // Shape interface
-interface Shape {
-    void draw(int x1, int y1, int x2, int y2);
+interface IShape
+{
+    void Draw(int x1, int y1, int x2, int y2);
 }
 
 // Rectangle class implementing Shape
-class Rectangle implements Shape {
-    private String colour;
+class Rectangle : IShape
+{
+    private string color;
 
-    public Rectangle(String colour) {
-        this.colour = colour;
+    public Rectangle(string color)
+    {
+        this.color = color;
     }
 
-    @Override
-    public void draw(int x1, int y1, int x2, int y2) {
-        System.out.printf("Draw rectangle colour: %s topleft: (%s,%s) rightBottom: (%s,%s)%n", 
-            this.colour, x1, y1, x2, y2);
+    public void Draw(int x1, int y1, int x2, int y2)
+    {
+        Console.WriteLine($"Draw rectangle color: {color} topleft: ({x1},{y1}) rightBottom: ({x2},{y2})");
     }
 }
 
 // RectangleFactory class
-class RectangleFactory {
-    private Map<String, Shape> shapes = new HashMap<>();
+class RectangleFactory
+{
+    private readonly Dictionary<string, IShape> shapes = new Dictionary<string, IShape>();
 
-    public Shape getRectangle(String colour) {
-        if (!shapes.containsKey(colour)) {
-            shapes.put(colour, new Rectangle(colour));
+    public IShape GetRectangle(string color)
+    {
+        if (!shapes.ContainsKey(color))
+        {
+            shapes[color] = new Rectangle(color);
         }
-        return shapes.get(colour);
+        return shapes[color];
     }
 
-    public int getCount() {
-        return shapes.size();
+    public int GetCount()
+    {
+        return shapes.Count;
     }
 }
 
 // Client code
-public class FlyweightPatternRectangle {
-    public static void main(String[] args) {
+class FlyweightPatternRectangle
+{
+    static void Main(string[] args)
+    {
         RectangleFactory factory = new RectangleFactory();
         Random random = new Random();
 
-        for (int i = 0; i < 100; i++) {
-            Shape rectangle = factory.getRectangle(Integer.toString(random.nextInt(1000)));
-            rectangle.draw(random.nextInt(100), random.nextInt(100), random.nextInt(100), random.nextInt(100));
+        for (int i = 0; i < 100; i++)
+        {
+            IShape rectangle = factory.GetRectangle(random.Next(1000).ToString());
+            rectangle.Draw(random.Next(100), random.Next(100), random.Next(100), random.Next(100));
         }
-        System.out.println(factory.getCount());
+        Console.WriteLine(factory.GetCount());
     }
 }

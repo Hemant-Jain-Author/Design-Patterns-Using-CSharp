@@ -1,47 +1,57 @@
-class Person {
-    protected String name;
-    protected int age;
-    protected String gender;
+using System;
 
-    public Person(String name, int age, String gender) {
+class Person
+{
+    protected string name;
+    protected int age;
+    protected string gender;
+
+    public Person(string name, int age, string gender)
+    {
         this.name = name;
         this.age = age;
         this.gender = gender;
     }
 
-    public String toString() {
-        return String.format("Person: %s is a %s and %s years old.", name, gender, age);
+    public override string ToString()
+    {
+        return string.Format("Person: {0} is a {1} and {2} years old.", name, gender, age);
     }
 
-    public String getGender() {
+    public string GetGender()
+    {
         return gender;
     }
 }
 
-class Citizen extends Person {
+class Citizen : Person
+{
     private int id;
 
-    public Citizen(String name, int age, int id, String gender) {
-        super(name, age, gender);
+    public Citizen(string name, int age, int id, string gender) : base(name, age, gender)
+    {
         this.id = id;
     }
 
-    public int getVoterId() {
+    public int GetVoterId()
+    {
         return id;
     }
 
-    @Override
-    public String toString() {
-        return String.format("Citizen: %s is a %s and %s years old with voter id %s.", name, gender, age, id);
+    public override string ToString()
+    {
+        return string.Format("Citizen: {0} is a {1} and {2} years old with voter id {3}.", name, gender, age, id);
     }
 }
 
-public class Inheritance {
-    public static void main(String[] args) {
+public class Inheritance
+{
+    public static void Main(string[] args)
+    {
         Person p = new Person("John", 32, "Male");
-        System.out.println(p);
+        Console.WriteLine(p);
 
         Citizen c = new Citizen("Smith", 31, 1234, "Male");
-        System.out.println(c);
+        Console.WriteLine(c);
     }
 }

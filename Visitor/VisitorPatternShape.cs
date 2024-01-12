@@ -1,130 +1,157 @@
-import java.util.ArrayList;
-import java.util.List;
+using System;
+using System.Collections.Generic;
 
-abstract class Shape {
-    abstract void accept(Visitor visitor);
+// Abstract Shape class
+abstract class Shape
+{
+    public abstract void Accept(Visitor visitor);
 }
 
-class Circle extends Shape {
+// Circle class
+class Circle : Shape
+{
     private int x, y, radius;
 
-    public Circle(int x, int y, int radius) {
+    public Circle(int x, int y, int radius)
+    {
         this.x = x;
         this.y = y;
         this.radius = radius;
     }
 
-    @Override
-    void accept(Visitor visitor) {
-        visitor.visitCircle(this);
+    public override void Accept(Visitor visitor)
+    {
+        visitor.VisitCircle(this);
     }
 
-    public int getX() {
+    public int GetX()
+    {
         return x;
     }
 
-    public int getY() {
+    public int GetY()
+    {
         return y;
     }
 
-    public int getRadius() {
+    public int GetRadius()
+    {
         return radius;
     }
 }
 
-class Rectangle extends Shape {
+// Rectangle class
+class Rectangle : Shape
+{
     private int x, y, width, height;
 
-    public Rectangle(int x, int y, int width, int height) {
+    public Rectangle(int x, int y, int width, int height)
+    {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
     }
 
-    @Override
-    void accept(Visitor visitor) {
-        visitor.visitRectangle(this);
+    public override void Accept(Visitor visitor)
+    {
+        visitor.VisitRectangle(this);
     }
 
-    public int getX() {
+    public int GetX()
+    {
         return x;
     }
 
-    public int getY() {
+    public int GetY()
+    {
         return y;
     }
 
-    public int getWidth() {
+    public int GetWidth()
+    {
         return width;
     }
 
-    public int getHeight() {
+    public int GetHeight()
+    {
         return height;
     }
 }
 
-abstract class Visitor {
-    abstract void visitCircle(Circle circle);
-    abstract void visitRectangle(Rectangle rectangle);
+// Abstract Visitor class
+abstract class Visitor
+{
+    public abstract void VisitCircle(Circle circle);
+    public abstract void VisitRectangle(Rectangle rectangle);
 }
 
-class XMLVisitor extends Visitor {
-    @Override
-    void visitCircle(Circle circle) {
-        System.out.printf("<circle>\n  <x>%d</x>\n  <y>%d</y>\n  <radius>%d</radius>\n</circle>%n",
-                          circle.getX(), circle.getY(), circle.getRadius());
+// XMLVisitor class
+class XMLVisitor : Visitor
+{
+    public override void VisitCircle(Circle circle)
+    {
+        Console.WriteLine($"<circle>\n  <x>{circle.GetX()}</x>\n  <y>{circle.GetY()}</y>\n  <radius>{circle.GetRadius()}</radius>\n</circle>");
     }
 
-    @Override
-    void visitRectangle(Rectangle rectangle) {
-        System.out.printf("<rectangle>\n  <x>%d</x>\n  <y>%d</y>\n  <width>%d</width>\n  <height>%d</height>\n</rectangle>%n",
-                          rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
-    }
-}
-
-class TextVisitor extends Visitor {
-    @Override
-    void visitCircle(Circle circle) {
-        System.out.printf("Circle ( (x : %d, y : %d), radius : %d) %n", circle.getX(), circle.getY(), circle.getRadius());
-    }
-
-    @Override
-    void visitRectangle(Rectangle rectangle) {
-        System.out.printf("Rectangle ( (x : %d, y : %d), width : %d, height : %d) %n",
-                          rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
+    public override void VisitRectangle(Rectangle rectangle)
+    {
+        Console.WriteLine($"<rectangle>\n  <x>{rectangle.GetX()}</x>\n  <y>{rectangle.GetY()}</y>\n  <width>{rectangle.GetWidth()}</width>\n  <height>{rectangle.GetHeight()}</height>\n</rectangle>");
     }
 }
 
-class ObjectsStructure {
-    private List<Shape> shapes = new ArrayList<>();
+// TextVisitor class
+class TextVisitor : Visitor
+{
+    public override void VisitCircle(Circle circle)
+    {
+        Console.WriteLine($"Circle ( (x : {circle.GetX()}, y : {circle.GetY()}), radius : {circle.GetRadius()})");
+    }
+
+    public override void VisitRectangle(Rectangle rectangle)
+    {
+        Console.WriteLine($"Rectangle ( (x : {rectangle.GetX()}, y : {rectangle.GetY()}), width : {rectangle.GetWidth()}, height : {rectangle.GetHeight()})");
+    }
+}
+
+// ObjectsStructure class
+class ObjectsStructure
+{
+    private List<Shape> shapes = new List<Shape>();
     private Visitor visitor;
 
-    public void addShape(Shape shape) {
-        shapes.add(shape);
+    public void AddShape(Shape shape)
+    {
+        shapes.Add(shape);
     }
 
-    public void setVisitor(Visitor visitor) {
+    public void SetVisitor(Visitor visitor)
+    {
         this.visitor = visitor;
     }
 
-    public void accept() {
-        for (Shape shape : shapes) {
-            shape.accept(visitor);
+    public void Accept()
+    {
+        foreach (var shape in shapes)
+        {
+            shape.Accept(visitor);
         }
     }
 }
 
-public class VisitorPatternShape {
-    public static void main(String[] args) {
+// Client code
+class VisitorPatternShape
+{
+    static void Main(string[] args)
+    {
         ObjectsStructure os = new ObjectsStructure();
-        os.addShape(new Rectangle(6, 7, 8, 9));
-        os.addShape(new Circle(6, 7, 8));
+        os.AddShape(new Rectangle(6, 7, 8, 9));
+        os.AddShape(new Circle(6, 7, 8));
 
-        os.setVisitor(new XMLVisitor());
-        os.accept();
+        os.SetVisitor(new XMLVisitor());
+        os.Accept();
 
-        os.setVisitor(new TextVisitor());
-        os.accept();
+        os.SetVisitor(new TextVisitor());
+        os.Accept();
     }
 }

@@ -1,27 +1,26 @@
-import java.util.HashMap;
-import java.util.Map;
+using System;
+using System.Collections.Generic;
 
 // Abstract Expression
 interface Expression {
-    int interpret();
+    int Interpret();
 }
 
 // Terminal Expression
-class NumberExpression implements Expression {
+class NumberExpression : Expression {
     private int number;
 
     public NumberExpression(int number) {
         this.number = number;
     }
 
-    @Override
-    public int interpret() {
+    public int Interpret() {
         return number;
     }
 }
 
 // Non-terminal Expression
-class AddExpression implements Expression {
+class AddExpression : Expression {
     private Expression leftExpression;
     private Expression rightExpression;
 
@@ -30,42 +29,45 @@ class AddExpression implements Expression {
         this.rightExpression = rightExpression;
     }
 
-    @Override
-    public int interpret() {
-        return leftExpression.interpret() + rightExpression.interpret();
+    public int Interpret() {
+        return leftExpression.Interpret() + rightExpression.Interpret();
     }
 }
 
 // Context
 class Context {
-    private Map<String, Integer> variables = new HashMap<>();
+    private Dictionary<string, int> variables = new Dictionary<string, int>();
 
-    public void setVariable(String variable, int value) {
-        variables.put(variable, value);
+    public void SetVariable(string variable, int value) {
+        variables[variable] = value;
     }
 
-    public int getVariable(String variable) {
-        return variables.getOrDefault(variable, 0);
+    public int GetVariable(string variable) {
+        return variables.TryGetValue(variable, out var value) ? value : 0;
     }
 }
 
 // Client code
-public class InterpreterPattern2 {
-    public static void main(String[] args) {
+class InterpreterPattern2 {
+    static void Main(string[] args) {
         Context context = new Context();
-        context.setVariable("x", 10);
-        context.setVariable("y", 5);
+        context.SetVariable("x", 10);
+        context.SetVariable("y", 5);
 
         // Create the expression tree: x + (y + 2)
         Expression expression = new AddExpression(
-                new NumberExpression(context.getVariable("x")),
-                new AddExpression(
-                        new NumberExpression(context.getVariable("y")),
-                        new NumberExpression(2)
-                )
+            new NumberExpression(context.GetVariable("x")),
+            new AddExpression(
+                new NumberExpression(context.GetVariable("y")),
+                new NumberExpression(2)
+            )
         );
 
-        int result = expression.interpret();
-        System.out.println("Result: " + result);  // Output: Result: 17
+        int result = expression.Interpret();
+        Console.WriteLine("Result: " + result);  // Output: Result: 17
     }
 }
+
+/*
+Result: 17
+*/

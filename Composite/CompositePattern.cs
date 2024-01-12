@@ -1,50 +1,65 @@
-import java.util.HashSet;
-import java.util.Set;
+using System;
+using System.Collections.Generic;
 
 // Component
-abstract class Component {
-    public abstract void operation();
+abstract class Component
+{
+    public abstract void Operation();
 }
 
 // Composite
-class Composite extends Component {
-    private Set<Component> children = new HashSet<>();
+class Composite : Component
+{
+    private List<Component> children = new List<Component>();
 
-    @Override
-    public void operation() {
-        System.out.println("Composite Operation");
-        for (Component child : children) {
-            child.operation();
+    public override void Operation()
+    {
+        Console.WriteLine("Composite Operation");
+        foreach (Component child in children)
+        {
+            child.Operation();
         }
     }
 
-    public void add(Component component) {
-        children.add(component);
+    public void Add(Component component)
+    {
+        children.Add(component);
     }
 
-    public void remove(Component component) {
-        children.remove(component);
+    public void Remove(Component component)
+    {
+        children.Remove(component);
     }
 }
 
 // Leaf
-class Leaf extends Component {
-    @Override
-    public void operation() {
-        System.out.println("Leaf Operation");
+class Leaf : Component
+{
+    public override void Operation()
+    {
+        Console.WriteLine("Leaf Operation");
     }
 }
 
 // Client code
-public class CompositePattern {
-    public static void main(String[] args) {
+class CompositePattern
+{
+    static void Main(string[] args)
+    {
         Composite composite = new Composite();
-        composite.add(new Leaf());
+        composite.Add(new Leaf());
 
         Composite composite2 = new Composite();
-        composite2.add(new Leaf());
+        composite2.Add(new Leaf());
 
-        composite.add(composite2);
-        composite.operation();
+        composite.Add(composite2);
+        composite.Operation();
     }
 }
+
+/*
+Composite Operation
+Leaf Operation
+Composite Operation
+Leaf Operation
+*/

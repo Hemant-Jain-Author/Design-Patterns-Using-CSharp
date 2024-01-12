@@ -1,73 +1,96 @@
-class Student {
-    private String name;
+using System;
+
+// Student class
+class Student
+{
+    private string name;
     private int id;
 
-    public Student(String name, int id) {
+    public Student(string name, int id)
+    {
         this.name = name;
         this.id = id;
     }
 
-    public String getName() {
+    public string GetName()
+    {
         return name;
     }
 
-    public int getId() {
+    public int GetId()
+    {
         return id;
     }
 }
 
-class Model {
+// Model class
+class Model
+{
     private Student student;
 
-    public Model() {
+    public Model()
+    {
         this.student = new Student("Harry", 1);
     }
 
-    public void setData(String name, int id) {
-        System.out.println("Model: Set data : " + name + " " + id);
+    public void SetData(string name, int id)
+    {
+        Console.WriteLine($"Model: Set data : {name} {id}");
         this.student = new Student(name, id);
     }
 
-    public Student getData() {
-        System.out.println("Model: Get data.");
+    public Student GetData()
+    {
+        Console.WriteLine("Model: Get data.");
         return student;
     }
 }
 
-class View {
-    public void update(String name, int id) {
-        System.out.println("View: Student Info : " + name + " " + id);
+// View class
+class View
+{
+    public void Update(string name, int id)
+    {
+        Console.WriteLine($"View: Student Info : {name} {id}");
     }
 }
 
-class Presenter {
+// Presenter class
+class Presenter
+{
     private Model model;
     private View view;
 
-    public Presenter() {
+    public Presenter()
+    {
         this.model = new Model();
         this.view = new View();
     }
 
-    public void setData(String name, int id) {
-        System.out.println("Presenter: Receive data from client.");
-        model.setData(name, id);
+    public void SetData(string name, int id)
+    {
+        Console.WriteLine("Presenter: Receive data from client.");
+        model.SetData(name, id);
     }
 
-    public void updateView() {
-        System.out.println("Presenter: Receive update from client.");
-        Student data = model.getData();
-        view.update(data.getName(), data.getId());
+    public void UpdateView()
+    {
+        Console.WriteLine("Presenter: Receive update from client.");
+        Student data = model.GetData();
+        view.Update(data.GetName(), data.GetId());
     }
 }
 
-public class MVPPatternStudent {
-    public static void main(String[] args) {
+// Main class (Client code)
+class MVPPatternStudent
+{
+    static void Main(string[] args)
+    {
         Presenter presenter = new Presenter();
-        presenter.updateView();
+        presenter.UpdateView();
 
-        presenter.setData("jack", 2);
-        presenter.updateView();
+        presenter.SetData("jack", 2);
+        presenter.UpdateView();
     }
 }
 

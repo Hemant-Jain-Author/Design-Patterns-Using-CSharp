@@ -1,66 +1,81 @@
-// Model class
-class Model {
-    private String data;
+using System;
 
-    public Model() {
+// Model class
+class Model
+{
+    private string data;
+
+    public Model()
+    {
         this.data = "Hello, World!";
     }
 
-    public void setData(String data) {
-        System.out.println("Model: Set data : " + data);
+    public void SetData(string data)
+    {
+        Console.WriteLine("Model: Set data : " + data);
         this.data = data;
     }
 
-    public String getData() {
-        System.out.println("Model: Get data: " + data);
+    public string GetData()
+    {
+        Console.WriteLine("Model: Get data: " + data);
         return data;
     }
 }
 
 // View class
-class View {
+class View
+{
     private Model model;
 
-    public View(Model model) {
+    public View(Model model)
+    {
         this.model = model;
     }
 
     // In classic MVC, the view interacts with the model to get data.
-    public void update() {
-        String data = model.getData();
-        System.out.println("View: Updating the view with data : " + data);
+    public void Update()
+    {
+        string data = model.GetData();
+        Console.WriteLine("View: Updating the view with data : " + data);
     }
 }
 
 // Controller class
-class Controller {
+class Controller
+{
     private Model model;
     private View view;
 
-    public Controller() {
+    public Controller()
+    {
         this.model = new Model();
         this.view = new View(model);
     }
 
-    public void setData(String data) {
-        System.out.println("Controller: Receive data from client.");
-        model.setData(data);
+    public void SetData(string data)
+    {
+        Console.WriteLine("Controller: Receive data from client.");
+        model.SetData(data);
     }
 
-    public void updateView() {
-        System.out.println("Controller: Receive update view from client.");
-        view.update();
+    public void UpdateView()
+    {
+        Console.WriteLine("Controller: Receive update view from client.");
+        view.Update();
     }
 }
 
 // Main class (Client code)
-public class MVCPattern {
-    public static void main(String[] args) {
+class MVCPattern
+{
+    static void Main(string[] args)
+    {
         Controller controller = new Controller();
-        controller.updateView();
+        controller.UpdateView();
 
-        controller.setData("Hello, Students!");
-        controller.updateView();
+        controller.SetData("Hello, Students!");
+        controller.UpdateView();
     }
 }
 

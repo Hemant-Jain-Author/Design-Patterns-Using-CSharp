@@ -1,19 +1,21 @@
-import java.util.Iterator;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 
-class LinkedList implements Iterable<Integer> {
+public class LinkedList : IEnumerable<int> {
     // Node class representing elements of linked list.
-    class Node {
-        int value;
-        Node next;
+    public class Node {
+        public int Value;
+        public Node Next;
 
         public Node(int v, Node n) {
-            value = v;
-            next = n;
+            Value = v;
+            Next = n;
         }
     }
 
-    Node head;
-    Node tail;
+    public Node head;
+    public Node tail;
     int size;
 
     // Constructor of linked list.
@@ -23,7 +25,7 @@ class LinkedList implements Iterable<Integer> {
         size = 0;
     }
 
-    public void addHead(int value) {
+    public void AddHead(int value) {
         Node newNode = new Node(value, head);
         if (head == null) {
             tail = newNode;
@@ -32,50 +34,67 @@ class LinkedList implements Iterable<Integer> {
         size++;
     }
 
-    @Override
-    public Iterator<Integer> iterator() {
+    public IEnumerator<int> GetEnumerator() {
         return new LinkedListIterator(this);
     }
 
-    public int getSize() {
+    IEnumerator IEnumerable.GetEnumerator() {
+        return GetEnumerator();
+    }
+
+    public int GetSize() {
         return size;
     }
 }
 
-class LinkedListIterator implements Iterator<Integer> {
-    LinkedList aggregate;
-    LinkedList.Node current;
+public class LinkedListIterator : IEnumerator<int> {
+    private LinkedList.Node current;
+    private LinkedList.Node initialHead; // Store the initial head
 
     public LinkedListIterator(LinkedList aggregate) {
-        this.aggregate = aggregate;
-        this.current = aggregate.head;
+        this.current = null;
+        this.initialHead = aggregate.head; // Save the initial head
     }
 
-    @Override
-    public boolean hasNext() {
+    public bool MoveNext() {
+        if (current == null) {
+            current = initialHead; // Start from the initial head
+        } else {
+            current = current.Next;
+        }
         return current != null;
     }
 
-    @Override
-    public Integer next() {
-        if (!hasNext()) {
-            throw new java.util.NoSuchElementException();
+    public void Reset() {
+        current = null;
+    }
+
+    public int Current {
+        get {
+            if (current == null) {
+                throw new InvalidOperationException();
+            }
+            return current.Value;
         }
-        int value = current.value;
-        current = current.next;
-        return value;
+    }
+
+    object IEnumerator.Current => Current;
+
+    public void Dispose() {
     }
 }
 
-class IteratorPatternLinkedList {
-    public static void main(String[] args) {
+
+public class IteratorPatternLinkedList {
+    public static void Main(string[] args) {
         LinkedList aggregate = new LinkedList();
         for (int i = 0; i < 5; i++) {
-            aggregate.addHead(i);
+            aggregate.AddHead(i);
         }
 
-        for (int val : aggregate) {
-            System.out.print(val + " ");
+        // Print individual elements
+        foreach (int val in aggregate) {
+            Console.Write(val + " ");
         }
     }
 }

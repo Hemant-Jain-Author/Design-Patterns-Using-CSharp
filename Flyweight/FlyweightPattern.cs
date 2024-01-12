@@ -1,55 +1,65 @@
-import java.util.HashMap;
-import java.util.Map;
+using System;
+using System.Collections.Generic;
 
 // Flyweight interface
-interface Flyweight {
-    void operation(Object extrinsicState);
+interface IFlyweight
+{
+    void Operation(object extrinsicState);
 }
 
 // Concrete Flyweight class
-class ConcreteFlyweight implements Flyweight {
-    private String intrinsicState;
+class ConcreteFlyweight : IFlyweight
+{
+    private readonly string intrinsicState;
 
-    public ConcreteFlyweight(String intrinsicState) {
+    public ConcreteFlyweight(string intrinsicState)
+    {
         this.intrinsicState = intrinsicState;
     }
 
-    @Override
-    public void operation(Object extrinsicState) {
-        System.out.println("Operation inside concrete flyweight");
+    public void Operation(object extrinsicState)
+    {
+        Console.WriteLine($"Flyweight: intrinsicState: {intrinsicState} and extrinsicState: {extrinsicState}");
+
     }
 }
 
 // FlyweightFactory class
-class FlyweightFactory {
-    private Map<String, Flyweight> flyweights = new HashMap<>();
+class FlyweightFactory
+{
+    private readonly Dictionary<string, IFlyweight> flyweights = new Dictionary<string, IFlyweight>();
 
-    public Flyweight getFlyweight(String key) {
-        if (!flyweights.containsKey(key)) {
-            flyweights.put(key, new ConcreteFlyweight(key));
+    public IFlyweight GetFlyweight(string key)
+    {
+        if (!flyweights.ContainsKey(key))
+        {
+            flyweights[key] = new ConcreteFlyweight(key);
         }
-        return flyweights.get(key);
+        return flyweights[key];
     }
 
-    public int getCount() {
-        return flyweights.size();
+    public int GetCount()
+    {
+        return flyweights.Count;
     }
 }
 
 // Client code
-public class FlyweightPattern {
-    public static void main(String[] args) {
+class FlyweightPattern
+{
+    static void Main(string[] args)
+    {
         FlyweightFactory factory = new FlyweightFactory();
-        Flyweight flyweight1 = factory.getFlyweight("key");
-        Flyweight flyweight2 = factory.getFlyweight("key");
-        flyweight1.operation(null);
-        System.out.println(flyweight1 + " " + flyweight2);
-        System.out.println("Object count: " + factory.getCount());
+        IFlyweight flyweight1 = factory.GetFlyweight("key");
+        IFlyweight flyweight2 = factory.GetFlyweight("key");
+        flyweight1.Operation("data");
+        Console.WriteLine($"{flyweight1} {flyweight2}");
+        Console.WriteLine($"Object count: {factory.GetCount()}");
     }
 }
 
 /* 
-Operation inside concrete flyweight
-ConcreteFlyweight@73d16e93 ConcreteFlyweight@73d16e93
+Flyweight: intrinsicState: key and extrinsicState: data
+ConcreteFlyweight ConcreteFlyweight
 Object count: 1
 */

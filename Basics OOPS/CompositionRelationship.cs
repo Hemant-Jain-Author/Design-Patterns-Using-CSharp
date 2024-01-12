@@ -1,38 +1,47 @@
-import java.util.ArrayList;
-import java.util.List;
+using System;
+using System.Collections.Generic;
 
-class Tyre {
-    private String type;
+class Tyre
+{
+    private string type;
 
-    public Tyre(String type) {
+    public Tyre(string type)
+    {
         this.type = type;
     }
 
-    public String getType() {
+    public string GetType()
+    {
         return type;
     }
 }
 
-class Car {
-    private String model;
+class Car
+{
+    private string model;
     private List<Tyre> tyres;
 
-    public Car(String model) {
+    public Car(string model)
+    {
         this.model = model;
-        this.tyres = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            this.tyres.add(new Tyre("MRF"));
+        this.tyres = new List<Tyre>();
+        for (int i = 0; i < 4; i++)
+        {
+            this.tyres.Add(new Tyre("MRF"));
         }
     }
 
-    public void display() {
-        System.out.println("Car: " + model + ", Tyre: " + tyres.get(0).getType());
+    public void Display()
+    {
+        Console.WriteLine("Car: " + model + ", Tyre: " + tyres[0].GetType());
     }
 }
 
-public class CompositionRelationship {
-    public static void main(String[] args) {
+public class CompositionRelationship
+{
+    public static void Main(string[] args)
+    {
         Car car = new Car("BMW");
-        car.display();
+        car.Display();
     }
 }

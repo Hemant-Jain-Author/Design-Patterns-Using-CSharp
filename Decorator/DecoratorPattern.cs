@@ -1,65 +1,75 @@
+using System;
+
 // Component
-interface Component {
-    void operation();
+interface IComponent
+{
+    void Operation();
 }
 
 // ConcreteComponent
-class ConcreteComponent implements Component {
-    @Override
-    public void operation() {
-        System.out.println("ConcreteComponent operation.");
+class ConcreteComponent : IComponent
+{
+    public void Operation()
+    {
+        Console.WriteLine("ConcreteComponent operation.");
     }
 }
 
 // Decorator
-abstract class Decorator implements Component {
-    private Component component;
+abstract class Decorator : IComponent
+{
+    private readonly IComponent component;
 
-    public Decorator(Component component) {
-        this.component = component;
+    public Decorator(IComponent component)
+    {
+        this.component = component ?? throw new ArgumentNullException(nameof(component));
     }
 
-    @Override
-    public void operation() {
-        component.operation();
+    public virtual void Operation()
+    {
+        component.Operation();
     }
 }
 
 // ConcreteDecorator1
-class ConcreteDecorator1 extends Decorator {
-    public ConcreteDecorator1(Component component) {
-        super(component);
+class ConcreteDecorator1 : Decorator
+{
+    public ConcreteDecorator1(IComponent component) : base(component)
+    {
     }
 
-    @Override
-    public void operation() {
-        System.out.println("ConcreteDecorator1 operation start.");
-        super.operation();
-        System.out.println("ConcreteDecorator1 operation end.");
+    public override void Operation()
+    {
+        Console.WriteLine("ConcreteDecorator1 operation start.");
+        base.Operation();
+        Console.WriteLine("ConcreteDecorator1 operation end.");
     }
 }
 
 // ConcreteDecorator2
-class ConcreteDecorator2 extends Decorator {
-    public ConcreteDecorator2(Component component) {
-        super(component);
+class ConcreteDecorator2 : Decorator
+{
+    public ConcreteDecorator2(IComponent component) : base(component)
+    {
     }
 
-    @Override
-    public void operation() {
-        System.out.println("ConcreteDecorator2 operation start.");
-        super.operation();
-        System.out.println("ConcreteDecorator2 operation end.");
+    public override void Operation()
+    {
+        Console.WriteLine("ConcreteDecorator2 operation start.");
+        base.Operation();
+        Console.WriteLine("ConcreteDecorator2 operation end.");
     }
 }
 
 // Client code
-public class DecoratorPattern {
-    public static void main(String[] args) {
-        Component component = new ConcreteComponent();
+class DecoratorPattern
+{
+    static void Main(string[] args)
+    {
+        IComponent component = new ConcreteComponent();
         Decorator decorator1 = new ConcreteDecorator1(component);
         Decorator decorator2 = new ConcreteDecorator2(decorator1);
-        decorator2.operation();
+        decorator2.Operation();
     }
 }
 
@@ -69,4 +79,4 @@ ConcreteDecorator1 operation start.
 ConcreteComponent operation.
 ConcreteDecorator1 operation end.
 ConcreteDecorator2 operation end.
- */
+*/

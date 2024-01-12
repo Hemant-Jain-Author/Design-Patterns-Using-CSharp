@@ -1,91 +1,110 @@
-import java.util.HashMap;
-import java.util.Map;
+using System;
+using System.Collections.Generic;
 
-abstract class Shape implements Cloneable {
-    private String color;
+abstract class Shape : ICloneable
+{
+    protected string color;
 
-    public Shape() {
-        this.color = "";
+    public Shape()
+    {
+        this.color = "Black";
     }
 
-    @Override
-    public abstract String toString();
+    public abstract override string ToString();
 
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
+    public object Clone()
+    {
+        return MemberwiseClone();
     }
 
-    public abstract Shape cloneShape();
+    public abstract Shape CloneShape();
 }
 
-class Rectangle extends Shape {
-    @Override
-    public String toString() {
-        return "Rectangle.";
+class Rectangle : Shape
+{
+    public override string ToString()
+    {
+        return "Rectangle of colour " + color;
     }
 
-    @Override
-    public Shape cloneShape() {
-        try {
-            return (Shape) this.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
+    public override Shape CloneShape()
+    {
+        try
+        {
+            return (Shape)Clone();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.StackTrace);
             return null;
         }
     }
 }
 
-class Circle extends Shape {
-    @Override
-    public String toString() {
-        return "Circle.";
+class Circle : Shape
+{
+    public override string ToString()
+    {
+        return "Circle of colour " + color;
     }
 
-    @Override
-    public Shape cloneShape() {
-        try {
-            return (Shape) this.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
+    public override Shape CloneShape()
+    {
+        try
+        {
+            return (Shape)Clone();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.StackTrace);
             return null;
         }
     }
 }
 
-class ShapeRegistry {
-    private static final Map<String, Shape> shapes = new HashMap<>();
+class ShapeRegistry
+{
+    private static readonly Dictionary<string, Shape> Shapes = new Dictionary<string, Shape>();
 
-    static {
-        load();
+    static ShapeRegistry()
+    {
+        Load();
     }
 
-    static void addShape(String key, Shape value) {
-        shapes.put(key, value);
+    public static void AddShape(string key, Shape value)
+    {
+        Shapes[key] = value;
     }
 
-    static Shape getShape(String key) {
-        if (shapes.containsKey(key)) {
-            return shapes.get(key).cloneShape();
+    public static Shape GetShape(string key)
+    {
+        if (Shapes.ContainsKey(key))
+        {
+            return Shapes[key].CloneShape();
         }
         return null;
     }
 
-    static void load() {
-        addShape("circle", new Circle());
-        addShape("rectangle", new Rectangle());
+    public static void Load()
+    {
+        AddShape("circle", new Circle());
+        AddShape("rectangle", new Rectangle());
     }
 }
 
-public class PrototypePatternShape {
-    public static void main(String[] args) {
-        ShapeRegistry.load();
-        Shape c = ShapeRegistry.getShape("circle");
-        Shape r = ShapeRegistry.getShape("rectangle");
-        System.out.println(c + " " + r);
+public class PrototypePatternShape
+{
+    public static void Main(string[] args)
+    {
+        ShapeRegistry.Load();
+        Shape c = ShapeRegistry.GetShape("circle");
+        Shape r = ShapeRegistry.GetShape("rectangle");
+        Console.WriteLine(c);
+        Console.WriteLine(r);
     }
 }
 
 /*
- Circle. Rectangle.
+Circle of colour Black
+Rectangle of colour Black
  */

@@ -1,52 +1,66 @@
-abstract class AddDataTemplate {
-    final void addData() {
-        open();
-        add();
-        close();
+using System;
+
+abstract class AddDataTemplate
+{
+    // The template method
+    public void AddData()
+    {
+        Open();
+        Add();
+        Close();
     }
 
-    abstract void open();
-    abstract void add();
-    abstract void close();
+    // Primitive operation: Open
+    protected abstract void Open();
+
+    // Primitive operation: Add
+    protected abstract void Add();
+
+    // Primitive operation: Close
+    protected abstract void Close();
 }
 
-class AddDataToFile extends AddDataTemplate {
-    @Override
-    void open() {
-        System.out.println("Open file.");
+class AddDataToFile : AddDataTemplate
+{
+    protected override void Open()
+    {
+        Console.WriteLine("Open file.");
     }
 
-    @Override
-    void add() {
-        System.out.println("Add data to file.");
+    protected override void Add()
+    {
+        Console.WriteLine("Add data to file.");
     }
 
-    @Override
-    void close() {
-        System.out.println("Close file");
-    }
-}
-
-class AddDataToDB extends AddDataTemplate {
-    @Override
-    void open() {
-        System.out.println("Open Database.");
-    }
-
-    @Override
-    void add() {
-        System.out.println("Add data to Database.");
-    }
-
-    @Override
-    void close() {
-        System.out.println("Close Database.");
+    protected override void Close()
+    {
+        Console.WriteLine("Close file.");
     }
 }
 
-public class TemplatePatternData {
-    public static void main(String[] args) {
+class AddDataToDB : AddDataTemplate
+{
+    protected override void Open()
+    {
+        Console.WriteLine("Open Database.");
+    }
+
+    protected override void Add()
+    {
+        Console.WriteLine("Add data to Database.");
+    }
+
+    protected override void Close()
+    {
+        Console.WriteLine("Close Database.");
+    }
+}
+
+class TemplatePatternData
+{
+    public static void Main(string[] args)
+    {
         AddDataTemplate addDataToDB = new AddDataToDB();
-        addDataToDB.addData();
+        addDataToDB.AddData();
     }
 }

@@ -1,49 +1,70 @@
-class Database {
-    public Database() {
-        System.out.println("Database created");
+using System;
+
+public class Database
+{
+    public Database()
+    {
+        Console.WriteLine("Database created");
     }
 
-    public void addData(String data) {
-        System.out.println(data);
+    public void AddData(string data)
+    {
+        Console.WriteLine(data);
     }
 }
 
-//public 
-class Singleton {
-    private static volatile Singleton instance;  // Volatile keyword for double-checked locking
+public sealed class Singleton
+{
+    private static volatile Singleton instance;
     private static Database db;
-    private static final Object lock = new Object();  // Add a lock for thread synchronization
+    private static readonly object lockObject = new object();
 
-    private Singleton() {
+    private Singleton()
+    {
         db = new Database();
     }
 
-    public static Singleton getInstance() {
-        if (instance == null) {
-            synchronized (lock) {  // Acquire the lock
-                if (instance == null) {
-                    instance = new Singleton();
+    public static Singleton Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                lock (lockObject)
+                {
+                    if (instance == null)
+                    {
+                        instance = new Singleton();
+                    }
                 }
             }
+            return instance;
         }
-        return instance;
     }
 
-    public void addData(String data) {
-        db.addData(data);
+    public void AddData(string data)
+    {
+        db.AddData(data);
+    }
+}
+
+public class DoubleChecking
+{
+    public static void Main()
+    {
+        Singleton s1 = Singleton.Instance;
+        Singleton s2 = Singleton.Instance;
+
+        Console.WriteLine(s1);
+        Console.WriteLine(s2);
+
+        s2.AddData("Hello, world!");
     }
 }
 
-
-public class DoubleChecking {
-
-    public static void main(String[] args) {
-        Singleton s1 = Singleton.getInstance();
-        Singleton s2 = Singleton.getInstance();
-
-        System.out.println(s1);
-        System.out.println(s2);
-
-        s2.addData("Hello, world!");
-    }
-}
+/*
+Database created
+Singleton
+Singleton
+Hello, world!
+*/

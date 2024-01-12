@@ -1,83 +1,93 @@
-import java.util.HashSet;
-import java.util.Set;
+using System;
+using System.Collections.Generic;
 
 // IShape
-interface IShape {
-    void move(int x, int y);
-    String draw();
+interface IShape
+{
+    void Move(int x, int y);
+    string Draw();
 }
 
 // Rectangle
-class Rectangle implements IShape {
+class Rectangle : IShape
+{
     private int x, y, length, breadth;
 
-    public Rectangle(int x, int y, int length, int breadth) {
+    public Rectangle(int x, int y, int length, int breadth)
+    {
         this.x = x;
         this.y = y;
         this.length = length;
         this.breadth = breadth;
     }
 
-    @Override
-    public void move(int x, int y) {
+    public void Move(int x, int y)
+    {
         this.x += x;
         this.y += y;
     }
 
-    @Override
-    public String draw() {
-        System.out.println("Draw a Rectangle at (" + x + ", " + y + ").");
+    public string Draw()
+    {
+        Console.WriteLine($"Draw a Rectangle at ({x}, {y}) of Length: {length} and Breadth: {breadth}");
         return "<Rectangle>";
     }
 }
 
 // Circle
-class Circle implements IShape {
+class Circle : IShape
+{
     private int x, y, radius;
 
-    public Circle(int x, int y, int radius) {
+    public Circle(int x, int y, int radius)
+    {
         this.x = x;
         this.y = y;
         this.radius = radius;
     }
 
-    @Override
-    public void move(int x, int y) {
+    public void Move(int x, int y)
+    {
         this.x += x;
         this.y += y;
     }
 
-    @Override
-    public String draw() {
-        System.out.println("Draw a Circle of radius " + radius + " at (" + x + ", " + y + ").");
+    public string Draw()
+    {
+        Console.WriteLine($"Draw a Circle of radius {radius} at ({x}, {y}).");
         return "<Circle>";
     }
 }
 
 // CompoundShape
-class CompoundShape implements IShape {
-    private Set<IShape> children = new HashSet<>();
+class CompoundShape : IShape
+{
+    private List<IShape> children = new List<IShape>();
 
-    public void add(IShape child) {
-        children.add(child);
+    public void Add(IShape child)
+    {
+        children.Add(child);
     }
 
-    public void remove(IShape child) {
-        children.remove(child);
+    public void Remove(IShape child)
+    {
+        children.Remove(child);
     }
 
-    @Override
-    public void move(int x, int y) {
-        for (IShape child : children) {
-            child.move(x, y);
+    public void Move(int x, int y)
+    {
+        foreach (IShape child in children)
+        {
+            child.Move(x, y);
         }
     }
 
-    @Override
-    public String draw() {
-        String st = "Shapes(";
-        for (IShape child : children) {
-            st += child.draw();
+    public string Draw()
+    {
+        string st = "Shapes(";
+        foreach (IShape child in children)
+        {
+            st += child.Draw();
         }
         st += ")";
         return st;
@@ -85,26 +95,27 @@ class CompoundShape implements IShape {
 }
 
 // Client code
-public class CompositePatternDraw {
-    public static void main(String[] args) {
+class CompositePatternDraw
+{
+    static void Main(string[] args)
+    {
         CompoundShape all = new CompoundShape();
-        all.add(new Rectangle(1, 2, 1, 2));
-        all.add(new Circle(5, 3, 10));
+        all.Add(new Rectangle(1, 2, 1, 2));
+        all.Add(new Circle(5, 3, 10));
 
         CompoundShape group = new CompoundShape();
-        group.add(new Rectangle(5, 7, 1, 2));
-        group.add(new Circle(2, 1, 2));
+        group.Add(new Rectangle(5, 7, 1, 2));
+        group.Add(new Circle(2, 1, 2));
 
-        all.add(group);
-        System.out.println(all.draw());
+        all.Add(group);
+        Console.WriteLine(all.Draw());
     }
 }
 
 /*
+Draw a Rectangle at (1, 2) of Length: 1 and Breadth: 2
 Draw a Circle of radius 10 at (5, 3).
-Draw a Rectangle at (5, 7).
+Draw a Rectangle at (5, 7) of Length: 1 and Breadth: 2
 Draw a Circle of radius 2 at (2, 1).
-Draw a Rectangle at (1, 2).
-Shapes(<Circle>Shapes(<Rectangle><Circle>)<Rectangle>)
-
- */
+Shapes(<Rectangle><Circle>Shapes(<Rectangle><Circle>))
+*/

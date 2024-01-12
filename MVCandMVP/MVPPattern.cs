@@ -1,56 +1,74 @@
-class Model {
-    private String data;
+using System;
 
-    public Model() {
+// Model class
+class Model
+{
+    private string data;
+
+    public Model()
+    {
         this.data = "Hello, World!";
     }
 
-    public void setData(String data) {
-        System.out.println("Model: Set data : " + data);
+    public void SetData(string data)
+    {
+        Console.WriteLine($"Model: Set data : {data}");
         this.data = data;
     }
 
-    public String getData() {
-        System.out.println("Model: Get data: " + data);
+    public string GetData()
+    {
+        Console.WriteLine($"Model: Get data: {data}");
         return data;
     }
 }
 
-class View {
-    public void update(String data) {
-        System.out.println("View: Updating the view with data: " + data);
+// View class
+class View
+{
+    public void Update(string data)
+    {
+        Console.WriteLine($"View: Updating the view with data: {data}");
     }
 }
 
-class Presenter {
+// Presenter class
+class Presenter
+{
     private Model model;
     private View view;
 
-    public Presenter() {
+    public Presenter()
+    {
         this.model = new Model();
         this.view = new View();
     }
 
-    public void setData(String data) {
-        System.out.println("Presenter: Receive data from client.");
-        model.setData(data);
+    public void SetData(string data)
+    {
+        Console.WriteLine("Presenter: Receive data from client.");
+        model.SetData(data);
     }
 
-    public void updateView() {
-        System.out.println("Presenter: Receive update view from client.");
-        String data = model.getData();
-        view.update(data);
+    public void UpdateView()
+    {
+        Console.WriteLine("Presenter: Receive update view from client.");
+        string data = model.GetData();
+        view.Update(data);
     }
 }
 
-public class MVPPattern {
-    public static void main(String[] args) {
-        System.out.println("Client: Pass trigger to Presenter.");
+// Main class (Client code)
+class MVPPattern
+{
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Client: Pass trigger to Presenter.");
         Presenter presenter = new Presenter();
-        presenter.updateView();
+        presenter.UpdateView();
 
-        presenter.setData("Hello, Students!");
-        presenter.updateView();
+        presenter.SetData("Hello, Students!");
+        presenter.UpdateView();
     }
 }
 

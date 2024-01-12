@@ -1,86 +1,97 @@
-import java.util.HashMap;
-import java.util.Map;
+using System;
+using System.Collections.Generic;
 
-interface Mediator {
-    void addColleague(Colleague colleague);
-    void sendMessage(String message, String colleagueId);
+interface IMediator
+{
+    void AddColleague(Colleague colleague);
+    void SendMessage(string message, string colleagueId);
 }
 
-class ConcreteMediator implements Mediator {
-    private Map<String, Colleague> colleagues = new HashMap<>();
+class ConcreteMediator : IMediator
+{
+    private Dictionary<string, Colleague> colleagues = new Dictionary<string, Colleague>();
 
-    @Override
-    public void addColleague(Colleague colleague) {
-        colleagues.put(colleague.getId(), colleague);
+    public void AddColleague(Colleague colleague)
+    {
+        colleagues[colleague.GetId()] = colleague;
     }
 
-    @Override
-    public void sendMessage(String message, String colleagueId) {
-        System.out.println("Mediator pass Message : " + message);
-        colleagues.get(colleagueId).receive(message);
+    public void SendMessage(string message, string colleagueId)
+    {
+        Console.WriteLine($"Mediator pass Message : {message}");
+        colleagues[colleagueId].Receive(message);
     }
 }
 
-abstract class Colleague {
-    protected Mediator mediator;
-    protected String id;
+abstract class Colleague
+{
+    protected IMediator mediator;
+    protected string id;
 
-    public Colleague(Mediator mediator, String id) {
+    public Colleague(IMediator mediator, string id)
+    {
         this.mediator = mediator;
         this.id = id;
     }
 
-    abstract void send(String message, String to);
+    public abstract void Send(string message, string to);
 
-    abstract void receive(String message);
+    public abstract void Receive(string message);
 
-    public String getId() {
+    public string GetId()
+    {
         return id;
     }
 }
 
-class ConcreteColleague1 extends Colleague {
-    public ConcreteColleague1(Mediator mediator) {
-        super(mediator, "First");
+class ConcreteColleague1 : Colleague
+{
+    public ConcreteColleague1(IMediator mediator) : base(mediator, "First") { }
+
+    public override void Send(string message, string to)
+    {
+        Console.WriteLine($"{id} Sent Message : {message}");
+        mediator.SendMessage(message, to);
     }
 
-    @Override
-    void send(String message, String to) {
-        System.out.println(id + " Sent Message : " + message);
-        mediator.sendMessage(message, to);
-    }
-
-    @Override
-    void receive(String message) {
-        System.out.println(id + " Received Message " + message);
-    }
-}
-
-class ConcreteColleague2 extends Colleague {
-    public ConcreteColleague2(Mediator mediator) {
-        super(mediator, "Second");
-    }
-
-    @Override
-    void send(String message, String to) {
-        System.out.println(id + " Sent Message : " + message);
-        mediator.sendMessage(message, to);
-    }
-
-    @Override
-    void receive(String message) {
-        System.out.println(id + " Received Message " + message);
+    public override void Receive(string message)
+    {
+        Console.WriteLine($"{id} Received Message {message}");
     }
 }
 
-public class MediatorPattern1 {
-    public static void main(String[] args) {
+class ConcreteColleague2 : Colleague
+{
+    public ConcreteColleague2(IMediator mediator) : base(mediator, "Second") { }
+
+    public override void Send(string message, string to)
+    {
+        Console.WriteLine($"{id} Sent Message : {message}");
+        mediator.SendMessage(message, to);
+    }
+
+    public override void Receive(string message)
+    {
+        Console.WriteLine($"{id} Received Message {message}");
+    }
+}
+
+public class MediatorPattern1
+{
+    public static void Main(string[] args)
+    {
         ConcreteMediator mediator = new ConcreteMediator();
         ConcreteColleague1 first = new ConcreteColleague1(mediator);
-        mediator.addColleague(first);
+        mediator.AddColleague(first);
         ConcreteColleague2 second = new ConcreteColleague2(mediator);
-        mediator.addColleague(second);
+        mediator.AddColleague(second);
 
-        first.send("Hello, World!", "Second");
+        first.Send("Hello, World!", "Second");
     }
 }
+
+/*
+First Sent Message : Hello, World!
+Mediator pass Message : Hello, World!
+Second Received Message Hello, World!
+*/

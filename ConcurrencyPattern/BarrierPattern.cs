@@ -1,78 +1,112 @@
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+using System;
+using System.Threading;
 
-class Barrier {
+class Barrier
+{
     private int count;
-    private final Lock barrierLock = new ReentrantLock();
-    private final Condition barrierCondition = barrierLock.newCondition();
+    private readonly object barrierLock = new object();
 
-    public Barrier(int count) {
+    public Barrier(int count)
+    {
         this.count = count;
     }
 
-    public void waitBarrier() throws InterruptedException {
-        barrierLock.lock();
-        try {
+    public void WaitBarrier()
+    {
+        lock (barrierLock)
+        {
             count--;
-            if (count > 0) {
-                barrierCondition.await();
-            } else {
-                barrierCondition.signalAll();
+            if (count > 0)
+            {
+                Monitor.Wait(barrierLock);
             }
-        } finally {
-            barrierLock.unlock();
+            else
+            {
+                Monitor.PulseAll(barrierLock);
+            }
         }
     }
 }
 
-class Worker implements Runnable {
-    private final Barrier barrier;
-    private final int id;
+class Worker
+{
+    private readonly Barrier barrier;
+    private readonly int id;
 
-    public Worker(Barrier barrier, int id) {
+    public Worker(Barrier barrier, int id)
+    {
         this.barrier = barrier;
         this.id = id;
     }
 
-    @Override
-    public void run() {
-        System.out.println("Worker " + id + " started");
+    public void Run()
+    {
+        Console.WriteLine("Worker " + id + " started");
         // Simulating some work
-        for (int i = 0; i < 3; i++) {
-            System.out.println("Worker " + id + " working...");
+        for (int i = 0; i < 3; i++)
+        {
+            Console.WriteLine("Worker " + id + " working...");
             // Simulating some computation
         }
-        System.out.println("Worker " + id + " finished");
+        Console.WriteLine("Worker " + id + " finished");
 
-        try {
-            barrier.waitBarrier();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        try
+        {
+            barrier.WaitBarrier();
+        }
+        catch (ThreadInterruptedException e)
+        {
+            Console.WriteLine(e.StackTrace);
         }
     }
 }
 
-class BarrierPattern {
-    public static void main(String[] args) {
+class BarrierPattern
+{
+    public static void Main(string[] args)
+    {
         int numWorkers = 3;
         Barrier barrier = new Barrier(numWorkers);
 
         Thread[] threads = new Thread[numWorkers];
-        for (int i = 0; i < numWorkers; i++) {
+        for (int i = 0; i < numWorkers; i++)
+        {
             Worker worker = new Worker(barrier, i);
-            threads[i] = new Thread(worker);
-            threads[i].start();
+            threads[i] = new Thread(worker.Run);
+            threads[i].Start();
         }
 
-        try {
-            for (Thread t : threads) {
-                t.join();
+        try
+        {
+            foreach (Thread t in threads)
+            {
+                t.Join();
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        }
+        catch (ThreadInterruptedException e)
+        {
+            Console.WriteLine(e.StackTrace);
         }
 
-        System.out.println("All workers finished. Proceeding to the next step.");
+        Console.WriteLine("All workers finished. Proceeding to the next step.");
     }
 }
+
+/*
+Worker 1 started
+Worker 2 started
+Worker 2 working...
+Worker 2 working...
+Worker 1 working...
+Worker 1 working...
+Worker 1 working...
+Worker 2 working...
+Worker 1 finished
+Worker 0 started
+Worker 0 working...
+Worker 0 working...
+Worker 0 working...
+Worker 0 finished
+Worker 2 finished
+All workers finished. Proceeding to the next step.
+*/

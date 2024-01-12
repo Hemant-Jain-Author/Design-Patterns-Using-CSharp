@@ -1,75 +1,82 @@
-import java.util.List;
-import java.util.ArrayList;
+using System;
 
 // ICoffee (Component)
-interface ICoffee {
-    int getCost();
-    String getIngredients();
+interface ICoffee
+{
+    int GetCost();
+    string GetIngredients();
 }
 
 // SimpleCoffee (ConcreteComponent)
-class SimpleCoffee implements ICoffee {
-    @Override
-    public int getCost() {
+class SimpleCoffee : ICoffee
+{
+    public int GetCost()
+    {
         return 10;
     }
 
-    @Override
-    public String getIngredients() {
+    public string GetIngredients()
+    {
         return "Coffee";
     }
 }
 
 // CoffeeDecorator (Decorator)
-abstract class CoffeeDecorator implements ICoffee {
-    protected ICoffee component;
-    protected String name;
-    protected int cost;
+abstract class CoffeeDecorator : ICoffee
+{
+    protected ICoffee Component;
+    protected string Name;
+    protected int Cost;
 
-    public CoffeeDecorator(ICoffee component, String name, int cost) {
-        this.component = component;
-        this.name = name;
-        this.cost = cost;
+    public CoffeeDecorator(ICoffee component, string name, int cost)
+    {
+        Component = component ?? throw new ArgumentNullException(nameof(component));
+        Name = name ?? throw new ArgumentNullException(nameof(name));
+        Cost = cost;
     }
 
-    @Override
-    public int getCost() {
-        return component.getCost() + cost;
+    public int GetCost()
+    {
+        return Component.GetCost() + Cost;
     }
 
-    @Override
-    public String getIngredients() {
-        return component.getIngredients() + ", " + name;
+    public string GetIngredients()
+    {
+        return Component.GetIngredients() + ", " + Name;
     }
 }
 
 // MilkDecorator (ConcreteDecorator)
-class MilkDecorator extends CoffeeDecorator {
-    public MilkDecorator(ICoffee component) {
-        super(component, "Milk", 4);
+class MilkDecorator : CoffeeDecorator
+{
+    public MilkDecorator(ICoffee component) : base(component, "Milk", 4)
+    {
     }
 }
 
 // EspressoDecorator (ConcreteDecorator)
-class EspressoDecorator extends CoffeeDecorator {
-    public EspressoDecorator(ICoffee component) {
-        super(component, "Espresso", 5);
+class EspressoDecorator : CoffeeDecorator
+{
+    public EspressoDecorator(ICoffee component) : base(component, "Espresso", 5)
+    {
     }
 }
 
 // Client code
-public class DecoratorPatternCoffee2 {
-    public static void main(String[] args) {
+public class DecoratorPatternCoffee2
+{
+    public static void Main(string[] args)
+    {
         ICoffee component = new SimpleCoffee();
         ICoffee decorator1 = new MilkDecorator(component);
         ICoffee decorator2 = new EspressoDecorator(decorator1);
 
-        System.out.println("Coffee cost is :: " + decorator2.getCost());
-        System.out.println("Coffee ingredients are :: " + decorator2.getIngredients());
+        Console.WriteLine("Coffee cost is :: " + decorator2.GetCost());
+        Console.WriteLine("Coffee ingredients are :: " + decorator2.GetIngredients());
 
         ICoffee latte = new MilkDecorator(new MilkDecorator(new SimpleCoffee()));
-        System.out.println("Coffee cost is :: " + latte.getCost());
-        System.out.println("Coffee ingredients are :: " + latte.getIngredients());
+        Console.WriteLine("Coffee cost is :: " + latte.GetCost());
+        Console.WriteLine("Coffee ingredients are :: " + latte.GetIngredients());
     }
 }
 

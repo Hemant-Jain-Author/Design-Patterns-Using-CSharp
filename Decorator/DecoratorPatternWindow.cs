@@ -1,70 +1,78 @@
-import java.util.ArrayList;
-import java.util.List;
+using System;
 
 // Window (Component)
-interface Window {
-    void draw();
+interface IWindow
+{
+    void Draw();
 }
 
 // SimpleWindow (ConcreteComponent)
-class SimpleWindow implements Window {
-    @Override
-    public void draw() {
-        System.out.println("SimpleWindow draw.");
+class SimpleWindow : IWindow
+{
+    public void Draw()
+    {
+        Console.WriteLine("SimpleWindow draw.");
     }
 }
 
 // Decorator (Decorator)
-abstract class Decorator implements Window {
-    protected Window component;
+abstract class Decorator : IWindow
+{
+    protected IWindow Component;
 
-    public Decorator(Window component) {
-        this.component = component;
+    public Decorator(IWindow component)
+    {
+        Component = component;
     }
 
-    @Override
-    public void draw() {
-        component.draw();
+    public virtual void Draw()
+    {
+        Component.Draw();
     }
 }
 
 // VerticalScrollBarDecorator (ConcreteDecorator)
-class VerticalScrollBarDecorator extends Decorator {
-    public VerticalScrollBarDecorator(Window component) {
-        super(component);
+class VerticalScrollBarDecorator : Decorator
+{
+    public VerticalScrollBarDecorator(IWindow component) : base(component)
+    {
     }
 
-    @Override
-    public void draw() {
-        super.draw();
-        System.out.println("VerticalScrollBarDecorator draw");
+    public override void Draw()
+    {
+        base.Draw();
+        Console.WriteLine("VerticalScrollBarDecorator draw");
     }
 }
 
 // HorizontalScrollBarDecorator (ConcreteDecorator)
-class HorizontalScrollBarDecorator extends Decorator {
-    public HorizontalScrollBarDecorator(Window component) {
-        super(component);
+class HorizontalScrollBarDecorator : Decorator
+{
+    public HorizontalScrollBarDecorator(IWindow component) : base(component)
+    {
     }
 
-    @Override
-    public void draw() {
-        super.draw();
-        System.out.println("HorizontalScrollBarDecorator draw");
+    public override void Draw()
+    {
+        base.Draw();
+        Console.WriteLine("HorizontalScrollBarDecorator draw");
     }
 }
 
 // Client code
-public class DecoratorPatternWindow {
-    public static void main(String[] args) {
-        Window component = new SimpleWindow();
-        Window decorator1 = new VerticalScrollBarDecorator(component);
-        Window decorator2 = new HorizontalScrollBarDecorator(decorator1);
-        decorator2.draw();
+class DecoratorPatternWindow
+{
+    static void Main(string[] args)
+    {
+        IWindow component = new SimpleWindow();
+        IWindow decorator1 = new VerticalScrollBarDecorator(component);
+        IWindow decorator2 = new HorizontalScrollBarDecorator(decorator1);
+        decorator2.Draw();
     }
 }
+
 /*
 SimpleWindow draw.
 VerticalScrollBarDecorator draw
 HorizontalScrollBarDecorator draw
- */
+*/

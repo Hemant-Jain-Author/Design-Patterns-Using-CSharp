@@ -1,31 +1,39 @@
-class Adder {
+using System;
+
+class Adder
+{
     private int sum;
 
-    public Adder() {
+    public Adder()
+    {
         this.sum = 0;
     }
 
     // Overloaded method for incrementing by a specific value
-    public void increment(int a) {
+    public void Increment(int a)
+    {
         this.sum += a;
     }
 
     // Overloaded method for incrementing by 1
-    public void increment() {
+    public void Increment()
+    {
         this.sum += 1;
     }
 
-    public int getValue() {
+    public int GetValue()
+    {
         return this.sum;
     }
 }
 
-public class Polymorphism {
-
-    public static void main(String[] args) {
+public class Polymorphism
+{
+    public static void Main(string[] args)
+    {
         Adder a = new Adder();
-        a.increment(10);
-        a.increment();
-        System.out.println(a.getValue());
+        a.Increment(10);
+        a.Increment();
+        Console.WriteLine(a.GetValue());
     }
 }

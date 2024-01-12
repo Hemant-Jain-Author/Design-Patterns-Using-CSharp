@@ -1,37 +1,35 @@
-final class ImmutablePerson {
-    private final String name;
-    private final int age;
-    private final String gender;
+using System;
 
-    public ImmutablePerson(String name, int age, String gender) {
-        this.name = name;
-        this.age = age;
-        this.gender = gender;
-    }
+public sealed class ImmutablePerson
+{
+    public string Name { get; }
+    public int Age { get; }
+    public string Gender { get; }
 
-    public String getName() {
-        return name;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public String getGender() {
-        return gender;
+    public ImmutablePerson(string name, int age, string gender)
+    {
+        Name = name;
+        Age = age;
+        Gender = gender;
     }
 }
 
-public final class Immutable {
-    public static void main(String[] args) {
+public sealed class Immutable
+{
+    public static void Main()
+    {
         ImmutablePerson person = new ImmutablePerson("John Doe", 30, "Male");
         ImmutablePerson newPerson = new ImmutablePerson("John Doe", 31, "Male");
 
-        System.out.println(person);
-        System.out.println(newPerson);
-        /* 
-        person.age = 32;
-        Immutable.java:32: error: age has private access in ImmutablePerson
-    */
+        Console.WriteLine(person);
+        Console.WriteLine(newPerson);
+
+        //person.Age = 32;
+        // error CS0200: Property or indexer `ImmutablePerson.Age' cannot be assigned to (it is read-only)
     }
 }
+
+/*
+ImmutablePerson
+ImmutablePerson
+*/

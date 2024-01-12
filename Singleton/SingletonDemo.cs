@@ -1,49 +1,61 @@
-class Database {
-    public Database() {
-        System.out.println("Database created");
+using System;
+
+class Database
+{
+    public Database()
+    {
+        Console.WriteLine("Database created");
     }
 
-    public void addData(String data) {
-        System.out.println(data);
+    public void AddData(string data)
+    {
+        Console.WriteLine(data);
     }
 }
 
-class Singleton {
+class Singleton
+{
     private static Singleton instance = null;
     private Database db;
 
-    private Singleton() {
+    private Singleton()
+    {
         instance = this;
         db = new Database();
     }
 
-    public static Singleton getInstance() {
-        if (instance == null) {
-            new Singleton();
+    public static Singleton GetInstance()
+    {
+        if (instance == null)
+        {
+            instance = new Singleton();  // Corrected line
         }
         return instance;
     }
 
-    public void addData(String data) {
-        db.addData(data);
+    public void AddData(string data)
+    {
+        db.AddData(data);
     }
 }
 
-public class SingletonDemo {
-    public static void main(String[] args) {
-        Singleton s1 = Singleton.getInstance();
-        Singleton s2 = Singleton.getInstance();
+class SingletonDemo
+{
+    static void Main()
+    {
+        Singleton s1 = Singleton.GetInstance();
+        Singleton s2 = Singleton.GetInstance();
 
-        System.out.println(s1);
-        System.out.println(s2);
+        Console.WriteLine(s1);
+        Console.WriteLine(s2);
 
-        s2.addData("Hello, world!");
+        s2.AddData("Hello, world!");
     }
 }
 
 /*
 Database created
-Singleton@7344699f
-Singleton@7344699f
+Singleton
+Singleton
 Hello, world!
- */
+*/

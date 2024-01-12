@@ -1,37 +1,47 @@
-import java.util.ArrayList;
-import java.util.List;
+using System;
+using System.Collections.Generic;
 
-public class LimitedInstances {
-    private static List<LimitedInstances> instances = new ArrayList<>();
-    private static final int limit = 4;
+public class LimitedInstances
+{
+    private static List<LimitedInstances> instances = new List<LimitedInstances>();
+    private static readonly int limit = 4;
 
-    private LimitedInstances() {
+    private LimitedInstances()
+    {
     }
 
-    public static LimitedInstances getInstance() {
-        if (instances.size() < limit) {
+    public static LimitedInstances GetInstance()
+    {
+        if (instances.Count < limit)
+        {
             LimitedInstances instance = new LimitedInstances();
-            instances.add(instance);
+            instances.Add(instance);
             return instance;
-        } else {
-            throw new RuntimeException("Instance Limit reached");
+        }
+        else
+        {
+            throw new InvalidOperationException("Instance Limit reached");
         }
     }
 
-    public static void main(String[] args) {
-        try {
-            LimitedInstances.getInstance();
-            LimitedInstances.getInstance();
-            LimitedInstances.getInstance();
-            LimitedInstances.getInstance();
-            LimitedInstances.getInstance();
-            LimitedInstances.getInstance();
-            LimitedInstances.getInstance();
-            LimitedInstances.getInstance();
-            LimitedInstances.getInstance();
-            LimitedInstances.getInstance();
-        } catch (RuntimeException e) {
-            System.out.println(e.getMessage());
+    public static void Main(string[] args)
+    {
+        try
+        {
+            LimitedInstances.GetInstance();
+            LimitedInstances.GetInstance();
+            LimitedInstances.GetInstance();
+            LimitedInstances.GetInstance();
+            LimitedInstances.GetInstance();
+            LimitedInstances.GetInstance();
+            LimitedInstances.GetInstance();
+            LimitedInstances.GetInstance();
+            LimitedInstances.GetInstance();
+            LimitedInstances.GetInstance();
+        }
+        catch (InvalidOperationException e)
+        {
+            Console.WriteLine(e.Message);
         }
     }
 }

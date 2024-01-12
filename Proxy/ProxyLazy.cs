@@ -1,29 +1,45 @@
-interface Subject {
-    void request();
+using System;
+
+// Subject Interface
+interface ISubject
+{
+    void Request();
 }
 
-class RealSubject implements Subject {
-    @Override
-    public void request() {
-        System.out.println("Concrete Subject Request Method");
+// RealSubject Class
+class RealSubject : ISubject
+{
+    public void Request()
+    {
+        Console.WriteLine("Concrete Subject Request Method");
     }
 }
 
-class Proxy implements Subject {
+// Proxy Class
+class Proxy : ISubject
+{
     private RealSubject realSubject;
 
-    @Override
-    public void request() {
-        if (realSubject == null) {
+    public void Request()
+    {
+        if (realSubject == null)
+        {
             realSubject = new RealSubject(); // Lazy Initialization
         }
-        realSubject.request();
+        realSubject.Request();
     }
 }
 
-public class ProxyLazy {
-    public static void main(String[] args) {
+// ProxyLazy Class (Main)
+class ProxyLazy
+{
+    static void Main(string[] args)
+    {
         Proxy proxy = new Proxy();
-        proxy.request();
+        proxy.Request();
     }
 }
+
+/*
+Concrete Subject Request Method
+*/

@@ -1,119 +1,144 @@
-import java.time.Duration;
-import java.time.Instant;
+using System;
+using System.Diagnostics;
 
-interface State {
-    void handle(Context context);
+interface IState
+{
+    void Handle(Context context);
 }
 
-class Context {
-    private State currentState;
+class Context
+{
+    private IState currentState;
 
-    Context(State state) {
+    public Context(IState state)
+    {
         this.currentState = state;
     }
 
-    void changeState(State state) {
+    public void ChangeState(IState state)
+    {
         this.currentState = state;
     }
 
-    void request() {
-        this.currentState.handle(this);
+    public void Request()
+    {
+        this.currentState.Handle(this);
     }
 }
 
-class ConcreteState1 implements State {
+class ConcreteState1 : IState
+{
     private static ConcreteState1 instance;
 
-    private ConcreteState1() {
+    private ConcreteState1()
+    {
     }
 
-    static ConcreteState1 getInstance() {
-        if (instance == null) {
+    public static ConcreteState1 GetInstance()
+    {
+        if (instance == null)
+        {
             instance = new ConcreteState1();
         }
         return instance;
     }
 
-    @Override
-    public void handle(Context context) {
-        context.changeState(ConcreteState2.getInstance());
+    public void Handle(Context context)
+    {
+        context.ChangeState(ConcreteState2.GetInstance());
     }
 }
 
-class ConcreteState2 implements State {
+class ConcreteState2 : IState
+{
     private static ConcreteState2 instance;
 
-    private ConcreteState2() {
+    private ConcreteState2()
+    {
     }
 
-    static ConcreteState2 getInstance() {
-        if (instance == null) {
+    public static ConcreteState2 GetInstance()
+    {
+        if (instance == null)
+        {
             instance = new ConcreteState2();
         }
         return instance;
     }
 
-    @Override
-    public void handle(Context context) {
-        context.changeState(ConcreteState3.getInstance());
+    public void Handle(Context context)
+    {
+        context.ChangeState(ConcreteState3.GetInstance());
     }
 }
 
-class ConcreteState3 implements State {
+class ConcreteState3 : IState
+{
     private static ConcreteState3 instance;
 
-    private ConcreteState3() {
+    private ConcreteState3()
+    {
     }
 
-    static ConcreteState3 getInstance() {
-        if (instance == null) {
+    public static ConcreteState3 GetInstance()
+    {
+        if (instance == null)
+        {
             instance = new ConcreteState3();
         }
         return instance;
     }
 
-    @Override
-    public void handle(Context context) {
-        context.changeState(ConcreteState4.getInstance());
+    public void Handle(Context context)
+    {
+        context.ChangeState(ConcreteState4.GetInstance());
     }
 }
 
-class ConcreteState4 implements State {
+class ConcreteState4 : IState
+{
     private static ConcreteState4 instance;
 
-    private ConcreteState4() {
+    private ConcreteState4()
+    {
     }
 
-    static ConcreteState4 getInstance() {
-        if (instance == null) {
+    public static ConcreteState4 GetInstance()
+    {
+        if (instance == null)
+        {
             instance = new ConcreteState4();
         }
         return instance;
     }
 
-    @Override
-    public void handle(Context context) {
-        context.changeState(ConcreteState1.getInstance());
+    public void Handle(Context context)
+    {
+        context.ChangeState(ConcreteState1.GetInstance());
     }
 }
 
-public class StatePatternSingletonComparision {
-    public static void main(String[] args) {
-        ConcreteState1 state1 = ConcreteState1.getInstance();
-        test(state1, 10);
+class StatePatternSingletonComparison
+{
+    public static void Main(string[] args)
+    {
+        ConcreteState1 state1 = ConcreteState1.GetInstance();
+        Test(state1, 10);
 
-        ConcreteState1 state2 = ConcreteState1.getInstance();
-        test(state2, 10);
+        ConcreteState1 state2 = ConcreteState1.GetInstance();
+        Test(state2, 10);
     }
 
-    static void test(State state, int count) {
+    static void Test(IState state, int count)
+    {
         Context context = new Context(state);
-        Instant start = Instant.now();
-        for (int i = 0; i < count; i++) {
-            context.request();
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
+        for (int i = 0; i < count; i++)
+        {
+            context.Request();
         }
-        Instant end = Instant.now();
-        Duration duration = Duration.between(start, end);
-        System.out.println(duration.toMillis() / 1000.0);
+        stopwatch.Stop();
+        Console.WriteLine(stopwatch.Elapsed.TotalSeconds);
     }
 }

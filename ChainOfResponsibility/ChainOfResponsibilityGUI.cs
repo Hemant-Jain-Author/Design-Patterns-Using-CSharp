@@ -1,87 +1,105 @@
-abstract class Handler {
-    protected Handler parent;
-    protected String helpText;
+using System;
 
-    public Handler(Handler parent) {
+// Abstract class representing a handler
+abstract class Handler
+{
+    protected Handler parent;
+    protected string helpText;
+
+    public Handler(Handler parent)
+    {
         this.parent = parent;
         this.helpText = null;
     }
 
-    public abstract void showHelperText();
+    public abstract void ShowHelperText();
 
-    public void setHelperText(String text) {
+    public void SetHelperText(string text)
+    {
         this.helpText = text;
     }
 }
 
-class Container extends Handler {
-    public Container(Handler parent) {
-        super(parent);
+// Concrete class representing a container handler
+class Container : Handler
+{
+    public Container(Handler parent) : base(parent)
+    {
     }
 
-    @Override
-    public void showHelperText() {
-        if (helpText != null) {
-            System.out.println("Help :: " + helpText);
-        } else if (parent != null) {
-            System.out.println("Message passed to next in chain by Container");
-            parent.showHelperText();
+    public override void ShowHelperText()
+    {
+        if (helpText != null)
+        {
+            Console.WriteLine("Help :: " + helpText);
+        }
+        else if (parent != null)
+        {
+            Console.WriteLine("Message passed to next in chain by Container");
+            parent.ShowHelperText();
         }
     }
 }
 
-class Button extends Handler {
-    private String label;
+// Concrete class representing a button handler
+class Button : Handler
+{
+    private string label;
 
-    public Button(String label, Handler parent) {
-        super(parent);
+    public Button(string label, Handler parent) : base(parent)
+    {
         this.label = label;
     }
 
-    @Override
-    public void showHelperText() {
-        if (helpText != null) {
-            System.out.println("Help :: " + helpText);
-        } else if (parent != null) {
-            System.out.println("Message passed to next in chain by Button");
-            parent.showHelperText();
+    public override void ShowHelperText()
+    {
+        if (helpText != null)
+        {
+            Console.WriteLine("Help :: " + helpText);
+        }
+        else if (parent != null)
+        {
+            Console.WriteLine("Message passed to next in chain by Button");
+            parent.ShowHelperText();
         }
     }
 }
 
-class Panel extends Handler {
-    public Panel() {
-        super(null);
+// Concrete class representing a panel handler
+class Panel : Handler
+{
+    public Panel() : base(null)
+    {
     }
 
-    @Override
-    public void showHelperText() {
-        if (helpText != null) {
-            System.out.println("Help :: " + helpText);
-        } else if (parent != null) {
-            System.out.println("Message passed to next in chain by Panel");
-            parent.showHelperText();
+    public override void ShowHelperText()
+    {
+        if (helpText != null)
+        {
+            Console.WriteLine("Help :: " + helpText);
+        }
+        else if (parent != null)
+        {
+            Console.WriteLine("Message passed to next in chain by Panel");
+            parent.ShowHelperText();
         }
     }
 }
 
-public class ChainOfResponsibilityGUI {
-    public static void main(String[] args) {
+// Client code
+public class ChainOfResponsibilityGUI
+{
+    public static void Main(string[] args)
+    {
         Panel p = new Panel();
-        p.setHelperText("Panel help text.");
+        p.SetHelperText("Panel help text.");
 
         Button b1 = new Button("Ok", p);
-        b1.setHelperText("Ok button help text.");
+        b1.SetHelperText("Ok button help text.");
 
         Button b2 = new Button("Cancel", p);
 
-        b1.showHelperText();
-        b2.showHelperText();
+        b1.ShowHelperText();
+        b2.ShowHelperText();
     }
 }
-
-/*
-Help :: Ok button help text.
-Message passed to next in chain by Button
-Help :: Panel help text.
-*/

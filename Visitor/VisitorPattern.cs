@@ -1,57 +1,74 @@
-interface Element {
-    void accept(Visitor visitor);
+using System;
+
+// Element interface
+interface Element
+{
+    void Accept(Visitor visitor);
 }
 
-class ConcreteElementA implements Element {
-    @Override
-    public void accept(Visitor visitor) {
-        visitor.visitElementA(this);
+// ConcreteElementA class
+class ConcreteElementA : Element
+{
+    public void Accept(Visitor visitor)
+    {
+        visitor.VisitElementA(this);
     }
 }
 
-class ConcreteElementB implements Element {
-    @Override
-    public void accept(Visitor visitor) {
-        visitor.visitElementB(this);
+// ConcreteElementB class
+class ConcreteElementB : Element
+{
+    public void Accept(Visitor visitor)
+    {
+        visitor.VisitElementB(this);
     }
 }
 
-interface Visitor {
-    void visitElementA(ConcreteElementA elementA);
-    void visitElementB(ConcreteElementB elementB);
+// Visitor interface
+interface Visitor
+{
+    void VisitElementA(ConcreteElementA elementA);
+    void VisitElementB(ConcreteElementB elementB);
 }
 
-class ConcreteVisitor1 implements Visitor {
-    @Override
-    public void visitElementA(ConcreteElementA elementA) {
-        System.out.println("ConcreteVisitor1 visitElementA() method called.");
+// ConcreteVisitor1 class
+class ConcreteVisitor1 : Visitor
+{
+    public void VisitElementA(ConcreteElementA elementA)
+    {
+        Console.WriteLine("ConcreteVisitor1 VisitElementA() method called.");
     }
 
-    @Override
-    public void visitElementB(ConcreteElementB elementB) {
-        System.out.println("ConcreteVisitor1 visitElementB() method called.");
-    }
-}
-
-class ConcreteVisitor2 implements Visitor {
-    @Override
-    public void visitElementA(ConcreteElementA elementA) {
-        System.out.println("ConcreteVisitor2 visitElementA() method called.");
-    }
-
-    @Override
-    public void visitElementB(ConcreteElementB elementB) {
-        System.out.println("ConcreteVisitor2 visitElementB() method called.");
+    public void VisitElementB(ConcreteElementB elementB)
+    {
+        Console.WriteLine("ConcreteVisitor1 VisitElementB() method called.");
     }
 }
 
-public class VisitorPattern {
-    public static void main(String[] args) {
+// ConcreteVisitor2 class
+class ConcreteVisitor2 : Visitor
+{
+    public void VisitElementA(ConcreteElementA elementA)
+    {
+        Console.WriteLine("ConcreteVisitor2 VisitElementA() method called.");
+    }
+
+    public void VisitElementB(ConcreteElementB elementB)
+    {
+        Console.WriteLine("ConcreteVisitor2 VisitElementB() method called.");
+    }
+}
+
+// Client code
+class VisitorPattern
+{
+    static void Main(string[] args)
+    {
         Visitor visitor1 = new ConcreteVisitor1();
         Element elementA = new ConcreteElementA();
-        elementA.accept(visitor1);
+        elementA.Accept(visitor1);
 
         Element elementB = new ConcreteElementB();
-        elementB.accept(visitor1);
+        elementB.Accept(visitor1);
     }
 }

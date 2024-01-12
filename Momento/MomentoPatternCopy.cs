@@ -1,129 +1,168 @@
-import java.util.ArrayList;
-import java.util.List;
+using System;
+using System.Collections.Generic;
 
 // Memento
-class Memento {
-    private String state;
+class Memento
+{
+    private string state;
 
-    public Memento(String state) {
+    public Memento(string state)
+    {
         this.state = state;
     }
 
-    public String getState() {
+    public string GetState()
+    {
         return state;
     }
 }
 
 // CareTaker
-class CareTaker {
+class CareTaker
+{
     private List<Memento> history;
     private int top;
     private int max;
 
-    public CareTaker() {
-        this.history = new ArrayList<>();
+    public CareTaker()
+    {
+        this.history = new List<Memento>();
         this.top = -1;
         this.max = -1;
     }
 
-    public void addMemento(Memento m) {
+    public void AddMemento(Memento m)
+    {
         top += 1;
         max = top;
-        if (top <= history.size() - 1) {
-            history.set(top, m);
-        } else {
-            history.add(m);
+        if (top <= history.Count - 1)
+        {
+            history[top] = m;
+        }
+        else
+        {
+            history.Add(m);
         }
     }
 
-    public Memento getMemento(int index) {
-        return history.get(index);
+    public Memento GetMemento(int index)
+    {
+        return history[index];
     }
 
-    public Memento undo() {
-        System.out.println("Undoing state.");
-        if (top <= 0) {
+    public Memento Undo()
+    {
+        Console.WriteLine("Undoing state.");
+        if (top <= 0)
+        {
             top = 0;
-            return getMemento(0);
+            return GetMemento(0);
         }
 
         top -= 1;
-        return getMemento(top);
+        return GetMemento(top);
     }
 
-    public Memento redo() {
-        System.out.println("Redoing state.");
-        if (top >= (history.size() - 1) || top >= max) {
-            return getMemento(top);
+    public Memento Redo()
+    {
+        Console.WriteLine("Redoing state.");
+        if (top >= (history.Count - 1) || top >= max)
+        {
+            return GetMemento(top);
         }
 
         top += 1;
-        return getMemento(top);
+        return GetMemento(top);
     }
 
-    public int getStatesCount() {
-        return history.size();
+    public int GetStatesCount()
+    {
+        return history.Count;
     }
 }
 
 // Originator
-class Originator {
-    private String state;
+class Originator
+{
+    private string state;
     private CareTaker careTaker;
 
-    public Originator() {
+    public Originator()
+    {
         this.careTaker = new CareTaker();
     }
 
-    public void setState(String state) {
+    public void SetState(string state)
+    {
         this.state = state;
-        careTaker.addMemento(createMemento());
+        careTaker.AddMemento(CreateMemento());
     }
 
-    public String getState() {
+    public string GetState()
+    {
         return state;
     }
 
-    public Memento createMemento() {
+    public Memento CreateMemento()
+    {
         return new Memento(state);
     }
 
-    public void setMemento(Memento m) {
-        state = m.getState();
+    public void SetMemento(Memento m)
+    {
+        state = m.GetState();
     }
 
-    public void undo() {
-        setMemento(careTaker.undo());
+    public void Undo()
+    {
+        SetMemento(careTaker.Undo());
     }
 
-    public void redo() {
-        setMemento(careTaker.redo());
+    public void Redo()
+    {
+        SetMemento(careTaker.Redo());
     }
 }
 
 // Client code
-public class MomentoPatternCopy {
-    public static void main(String[] args) {
+class MomentoPatternCopy
+{
+    static void Main(string[] args)
+    {
         Originator originator = new Originator();
-        originator.setState("State 1");
-        System.out.println(originator.getState());
+        originator.SetState("State 1");
+        Console.WriteLine(originator.GetState());
 
-        originator.setState("State 2");
-        System.out.println(originator.getState());
+        originator.SetState("State 2");
+        Console.WriteLine(originator.GetState());
 
-        originator.setState("State 3");
-        System.out.println(originator.getState());
+        originator.SetState("State 3");
+        Console.WriteLine(originator.GetState());
 
-        originator.undo();
-        System.out.println(originator.getState());
+        originator.Undo();
+        Console.WriteLine(originator.GetState());
 
-        originator.undo();
-        System.out.println(originator.getState());
+        originator.Undo();
+        Console.WriteLine(originator.GetState());
 
-        originator.redo();
-        System.out.println(originator.getState());
+        originator.Redo();
+        Console.WriteLine(originator.GetState());
 
-        originator.redo();
-        System.out.println(originator.getState());
+        originator.Redo();
+        Console.WriteLine(originator.GetState());
     }
 }
+
+/*
+State 1
+State 2
+State 3
+Undoing state.
+State 2
+Undoing state.
+State 1
+Redoing state.
+State 2
+Redoing state.
+State 3
+*/

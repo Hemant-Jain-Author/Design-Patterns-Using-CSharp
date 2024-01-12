@@ -1,94 +1,103 @@
-import java.util.Scanner;
+using System;
 
 // Model
-class Model {
-    private String data;
+class Model
+{
+    private string data;
 
-    public void setData(String data) {
-        System.out.println("Model: Set data.");
+    public void SetData(string data)
+    {
+        Console.WriteLine("Model: Set data.");
         this.data = data;
     }
 
-    public String getData() {
-        System.out.println("Model: Get data.");
+    public string GetData()
+    {
+        Console.WriteLine("Model: Get data.");
         return data;
     }
 }
 
 // ViewModel
-class ViewModel {
+class ViewModel
+{
     private Model model;
-    private String data;
+    private string data;
 
-    public ViewModel(Model model) {
+    public ViewModel(Model model)
+    {
         this.model = model;
-        updateData();
+        UpdateData();
     }
 
-    public void updateModel(String data) {
-        System.out.println("ViewModel: Update data.");
-        model.setData(data);
-        updateData();
+    public void UpdateModel(string data)
+    {
+        Console.WriteLine("ViewModel: Update data.");
+        model.SetData(data);
+        UpdateData();
     }
 
-    public void updateData() {
-        System.out.println("ViewModel: Fetch data.");
-        data = model.getData();
+    public void UpdateData()
+    {
+        Console.WriteLine("ViewModel: Fetch data.");
+        data = model.GetData();
     }
 
-    public String getData() {
+    public string GetData()
+    {
         return data;
     }
 }
 
 // View
-class View {
+class View
+{
     private ViewModel viewModel;
 
-    public View(ViewModel viewModel) {
+    public View(ViewModel viewModel)
+    {
         this.viewModel = viewModel;
     }
 
-    public void displayData() {
-        System.out.println("Display Data: " + viewModel.getData());
+    public void DisplayData()
+    {
+        Console.WriteLine("Display Data: " + viewModel.GetData());
     }
 
-    public void getUserInput() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("View: Enter user input: ");
-        /* 
-        String userInput = "hello, world!";
-        System.out.println(userInput);
-        */
-        String userInput = scanner.nextLine();
-        viewModel.updateModel(userInput);
+    public void GetUserInput()
+    {
+        Console.Write("View: Enter user input: ");
+        string userInput = "hello, world!";
+        Console.WriteLine(userInput);
+        //string userInput = Console.ReadLine();
+        viewModel.UpdateModel(userInput);
     }
 }
 
 // Client code
-public class MVVM {
-    public static void main(String[] args) {
+class MVVM
+{
+    static void Main(string[] args)
+    {
         Model model = new Model();
         ViewModel viewModel = new ViewModel(model);
         View view = new View(viewModel);
 
         // Display initial data
-        view.displayData();
+        view.DisplayData();
 
         // Get user input and update data
-        view.getUserInput();
+        view.GetUserInput();
 
         // Display updated data
-        view.displayData();
+        view.DisplayData();
     }
 }
-
-
 
 /*
 ViewModel: Fetch data.
 Model: Get data.
-Display Data: null
+Display Data: 
 View: Enter user input: hello, world!
 ViewModel: Update data.
 Model: Set data.

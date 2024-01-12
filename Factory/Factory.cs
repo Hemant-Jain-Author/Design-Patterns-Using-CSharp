@@ -1,57 +1,67 @@
+using System;
+
 // Product interface
-interface Animal {
-    void speak();
+interface IAnimal
+{
+    void Speak();
 }
 
 // Concrete Product classes
-class Dog implements Animal {
-    @Override
-    public void speak() {
-        System.out.println("Woof!");
+class Dog : IAnimal
+{
+    public void Speak()
+    {
+        Console.WriteLine("Woof!");
     }
 }
 
-class Cat implements Animal {
-    @Override
-    public void speak() {
-        System.out.println("Meow!");
+class Cat : IAnimal
+{
+    public void Speak()
+    {
+        Console.WriteLine("Meow!");
     }
 }
 
 // Creator abstract class
-abstract class AnimalFactory {
-    public abstract Animal createAnimal();
+abstract class AnimalFactory
+{
+    public abstract IAnimal CreateAnimal();
 }
 
 // Concrete Creator classes
-class DogFactory extends AnimalFactory {
-    @Override
-    public Animal createAnimal() {
+class DogFactory : AnimalFactory
+{
+    public override IAnimal CreateAnimal()
+    {
         return new Dog();
     }
 }
 
-class CatFactory extends AnimalFactory {
-    @Override
-    public Animal createAnimal() {
+class CatFactory : AnimalFactory
+{
+    public override IAnimal CreateAnimal()
+    {
         return new Cat();
     }
 }
 
 // Client code
-public class Factory {
-    public static void main(String[] args) {
+class Factory
+{
+    static void Main(string[] args)
+    {
         AnimalFactory dogFactory = new DogFactory();
-        Animal dog = dogFactory.createAnimal();
-        dog.speak();
+        IAnimal dog = dogFactory.CreateAnimal();
+        dog.Speak();
 
         AnimalFactory catFactory = new CatFactory();
-        Animal cat = catFactory.createAnimal();
-        cat.speak();
+        IAnimal cat = catFactory.CreateAnimal();
+        cat.Speak();
     }
 }
 
 /*
 Woof!
 Meow!
- */
+*/

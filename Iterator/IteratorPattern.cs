@@ -1,16 +1,16 @@
-import java.util.ArrayList;
-import java.util.List;
+using System;
+using System.Collections.Generic;
 
 interface Iterator {
-    int next();
-    boolean hasNext();
+    int Next();
+    bool HasNext();
 }
 
 interface Aggregate {
-    Iterator getIterator();
+    Iterator GetIterator();
 }
 
-class ConcreteIterator implements Iterator {
+class ConcreteIterator : Iterator {
     private ConcreteAggregate aggregate;
     private int index;
 
@@ -19,53 +19,54 @@ class ConcreteIterator implements Iterator {
         this.index = 0;
     }
 
-    @Override
-    public int next() {
-        if (index >= aggregate.getData().size()) {
-            throw new IndexOutOfBoundsException();
+    public int Next() {
+        if (index >= aggregate.GetData().Count) {
+            throw new IndexOutOfRangeException();
         }
-        int value = aggregate.getData().get(index);
+        int value = aggregate.GetData()[index];
         index++;
         return value;
     }
 
-    @Override
-    public boolean hasNext() {
-        return index < aggregate.getData().size();
+    public bool HasNext() {
+        return index < aggregate.GetData().Count;
     }
 }
 
-class ConcreteAggregate implements Aggregate {
-    private List<Integer> data;
+class ConcreteAggregate : Aggregate {
+    private List<int> data;
 
     public ConcreteAggregate() {
-        this.data = new ArrayList<>();
+        this.data = new List<int>();
     }
 
-    public void addData(int val) {
-        data.add(val);
+    public void AddData(int val) {
+        data.Add(val);
     }
 
-    @Override
-    public Iterator getIterator() {
+    public Iterator GetIterator() {
         return new ConcreteIterator(this);
     }
 
-    public List<Integer> getData() {
+    public List<int> GetData() {
         return data;
     }
 }
 
-public class IteratorPattern {
-    public static void main(String[] args) {
+class IteratorPattern {
+    static void Main(string[] args) {
         ConcreteAggregate aggregate = new ConcreteAggregate();
         for (int i = 0; i < 5; i++) {
-            aggregate.addData(i);
+            aggregate.AddData(i);
         }
 
-        Iterator iterator = aggregate.getIterator();
-        while (iterator.hasNext()) {
-            System.out.print(iterator.next() + " ");
+        Iterator iterator = aggregate.GetIterator();
+        while (iterator.HasNext()) {
+            Console.Write(iterator.Next() + " ");
         }
     }
 }
+
+/*
+0 1 2 3 4 
+*/

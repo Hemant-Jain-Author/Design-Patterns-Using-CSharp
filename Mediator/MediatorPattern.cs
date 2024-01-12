@@ -1,82 +1,102 @@
-import java.util.HashMap;
-import java.util.Map;
+using System;
+using System.Collections.Generic;
 
-interface IChatRoom {
-    void addParticipant(IParticipant participant);
-    void broadcast(String message, String origin);
-    void sendMessage(String message, String to);
+interface IChatRoom
+{
+    void AddParticipant(IParticipant participant);
+    void Broadcast(string message, string origin);
+    void SendMessage(string message, string to);
 }
 
-class ChatRoom implements IChatRoom {
-    private Map<String, IParticipant> participants = new HashMap<>();
+class ChatRoom : IChatRoom
+{
+    private Dictionary<string, IParticipant> participants = new Dictionary<string, IParticipant>();
 
-    @Override
-    public void addParticipant(IParticipant participant) {
-        participants.put(participant.getName(), participant);
+    public void AddParticipant(IParticipant participant)
+    {
+        participants[participant.GetName()] = participant;
     }
 
-    @Override
-    public void broadcast(String message, String origin) {
-        System.out.println("ChatRoom broadcast Message : " + message);
-        participants.values().stream()
-                .filter(p -> !p.getName().equals(origin))
-                .forEach(p -> p.receive(message));
+    public void Broadcast(string message, string origin)
+    {
+        Console.WriteLine($"ChatRoom broadcast Message : {message}");
+        foreach (var participant in participants.Values)
+        {
+            if (participant.GetName() != origin)
+            {
+                participant.Receive(message);
+            }
+        }
     }
 
-    @Override
-    public void sendMessage(String message, String to) {
-        participants.get(to).receive(message);
+    public void SendMessage(string message, string to)
+    {
+        participants[to].Receive(message);
     }
 }
 
-interface IParticipant {
-    String getName();
-    void broadcast(String message);
-    void send(String message, String to);
-    void receive(String message);
+interface IParticipant
+{
+    string GetName();
+    void Broadcast(string message);
+    void Send(string message, string to);
+    void Receive(string message);
 }
 
-class Participant implements IParticipant {
-    private String name;
+class Participant : IParticipant
+{
+    private string name;
     private IChatRoom chatRoom;
 
-    public Participant(String name, IChatRoom chatRoom) {
+    public Participant(string name, IChatRoom chatRoom)
+    {
         this.name = name;
         this.chatRoom = chatRoom;
-        chatRoom.addParticipant(this);
+        chatRoom.AddParticipant(this);
     }
 
-    @Override
-    public String getName() {
+    public string GetName()
+    {
         return name;
     }
 
-    @Override
-    public void broadcast(String message) {
-        System.out.println(name + " broadcast Message : " + message);
-        chatRoom.broadcast(message, name);
+    public void Broadcast(string message)
+    {
+        Console.WriteLine($"{name} broadcast Message : {message}");
+        chatRoom.Broadcast(message, name);
     }
 
-    @Override
-    public void send(String message, String to) {
-        System.out.println(name + " sent Message : " + message);
-        chatRoom.sendMessage(message, to);
+    public void Send(string message, string to)
+    {
+        Console.WriteLine($"{name} sent Message : {message}");
+        chatRoom.SendMessage(message, to);
     }
 
-    @Override
-    public void receive(String message) {
-        System.out.println(name + " received Message : " + message);
+    public void Receive(string message)
+    {
+        Console.WriteLine($"{name} received Message : {message}");
     }
 }
 
-public class MediatorPattern {
-    public static void main(String[] args) {
+class MediatorPattern
+{
+    static void Main(string[] args)
+    {
         ChatRoom chatRoom = new ChatRoom();
         Participant james = new Participant("James", chatRoom);
         Participant michael = new Participant("Michael", chatRoom);
         Participant robert = new Participant("Robert", chatRoom);
 
-        michael.send("Good Morning.", "James");
-        james.broadcast("Hello, World!");
+        michael.Send("Good Morning.", "James");
+        james.Broadcast("Hello, World!");
     }
 }
+
+/*
+Michael sent Message : Good Morning.
+James received Message : Good Morning.
+James broadcast Message : Hello, World!
+ChatRoom broadcast Message : Hello, World!
+Michael received Message : Hello, World!
+Robert received Message : Hello, World!
+*/

@@ -1,73 +1,89 @@
-abstract class AbstractWorker {
-    final void dailyRoutine() {
-        wakeUp();
-        eatBreakfast();
-        goToWork();
-        work();
-        comeBackHome();
-        eatDinner();
-        sleep();
+using System;
+
+abstract class AbstractWorker
+{
+    // The template method
+    public void DailyRoutine()
+    {
+        WakeUp();
+        EatBreakfast();
+        GoToWork();
+        Work();
+        ComeBackHome();
+        EatDinner();
+        Sleep();
     }
 
-    void wakeUp() {
-        System.out.println("Wake Up");
+    protected void WakeUp()
+    {
+        Console.WriteLine("Wake Up");
     }
 
-    void eatBreakfast() {
-        System.out.println("Eat Breakfast");
+    protected void EatBreakfast()
+    {
+        Console.WriteLine("Eat Breakfast");
     }
 
-    void goToWork() {
-        System.out.println("Go to work");
+    protected void GoToWork()
+    {
+        Console.WriteLine("Go to work");
     }
 
-    abstract void work();
+    protected abstract void Work();
 
-    void comeBackHome() {
-        System.out.println("Come back Home");
+    protected void ComeBackHome()
+    {
+        Console.WriteLine("Come back Home");
     }
 
-    void eatDinner() {
-        System.out.println("Eat dinner");
+    protected void EatDinner()
+    {
+        Console.WriteLine("Eat dinner");
     }
 
-    void sleep() {
-        System.out.println("Sleep");
-    }
-}
-
-class Doctor extends AbstractWorker {
-    @Override
-    void work() {
-        System.out.println("...Treat Patients...");
-    }
-}
-
-class FireFighter extends AbstractWorker {
-    @Override
-    void work() {
-        System.out.println("...Fight Fire...");
+    protected void Sleep()
+    {
+        Console.WriteLine("Sleep");
     }
 }
 
-class SuperHero extends AbstractWorker {
-    @Override
-    void work() {
-        System.out.println("...Save the world!...");
+class Doctor : AbstractWorker
+{
+    protected override void Work()
+    {
+        Console.WriteLine("...Treat Patients...");
     }
 }
 
-public class TemplatePatternPerson {
-    public static void main(String[] args) {
+class FireFighter : AbstractWorker
+{
+    protected override void Work()
+    {
+        Console.WriteLine("...Fight Fire...");
+    }
+}
+
+class SuperHero : AbstractWorker
+{
+    protected override void Work()
+    {
+        Console.WriteLine("...Save the world!...");
+    }
+}
+
+class TemplatePatternPerson
+{
+    public static void Main(string[] args)
+    {
         Doctor doctor = new Doctor();
-        doctor.dailyRoutine();
-        System.out.println();
+        doctor.DailyRoutine();
+        Console.WriteLine();
 
         FireFighter fireFighter = new FireFighter();
-        fireFighter.dailyRoutine();
-        System.out.println();
+        fireFighter.DailyRoutine();
+        Console.WriteLine();
 
         SuperHero superHero = new SuperHero();
-        superHero.dailyRoutine();
+        superHero.DailyRoutine();
     }
 }

@@ -1,45 +1,56 @@
-interface State {
-    void handle(Context context);
+using System;
+
+interface IState
+{
+    void Handle(Context context);
 }
 
-class Context {
-    private State currentState;
+class Context
+{
+    private IState currentState;
 
-    Context(State state) {
+    public Context(IState state)
+    {
         this.currentState = state;
     }
 
-    void changeState(State state) {
+    public void ChangeState(IState state)
+    {
         this.currentState = state;
     }
 
-    void request() {
-        this.currentState.handle(this);
+    public void Request()
+    {
+        this.currentState.Handle(this);
     }
 }
 
-class ConcreteState1 implements State {
-    @Override
-    public void handle(Context context) {
-        System.out.println("ConcreteState1 handle");
-        context.changeState(new ConcreteState2());
+class ConcreteState1 : IState
+{
+    public void Handle(Context context)
+    {
+        Console.WriteLine("ConcreteState1 handle");
+        context.ChangeState(new ConcreteState2());
     }
 }
 
-class ConcreteState2 implements State {
-    @Override
-    public void handle(Context context) {
-        System.out.println("ConcreteState2 handle");
-        context.changeState(new ConcreteState1());
+class ConcreteState2 : IState
+{
+    public void Handle(Context context)
+    {
+        Console.WriteLine("ConcreteState2 handle");
+        context.ChangeState(new ConcreteState1());
     }
 }
 
 // Client code.
-public class StatePattern2 {
-    public static void main(String[] args) {
-        State state1 = new ConcreteState1();
+class StatePattern2
+{
+    static void Main(string[] args)
+    {
+        IState state1 = new ConcreteState1();
         Context context = new Context(state1);
-        context.request();
-        context.request();
+        context.Request();
+        context.Request();
     }
 }

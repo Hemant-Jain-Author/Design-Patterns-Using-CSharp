@@ -1,69 +1,89 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+using System;
+using System.Collections.Generic;
 
-class Publisher {
-    private Map<String, List<Subscriber>> topicSubscribers = new HashMap<>();
+class Publisher
+{
+    private Dictionary<string, List<Subscriber>> topicSubscribers = new Dictionary<string, List<Subscriber>>();
 
-    public void subscribe(Subscriber subscriber, String topic) {
-        topicSubscribers.computeIfAbsent(topic, k -> new ArrayList<>()).add(subscriber);
-        System.out.println("Subscribing: " + subscriber.getId() + " to topic: " + topic);
+    public void Subscribe(Subscriber subscriber, string topic)
+    {
+        topicSubscribers.TryGetValue(topic, out var subscribers);
+        if (subscribers == null)
+        {
+            subscribers = new List<Subscriber>();
+            topicSubscribers[topic] = subscribers;
+        }
+
+        subscribers.Add(subscriber);
+        Console.WriteLine($"Subscribing: {subscriber.GetId()} to topic: {topic}");
     }
 
-    public void unsubscribe(Subscriber subscriber, String topic) {
-        topicSubscribers.getOrDefault(topic, new ArrayList<>()).remove(subscriber);
-        System.out.println("Unsubscribing: " + subscriber.getId() + " to topic: " + topic);
+    public void Unsubscribe(Subscriber subscriber, string topic)
+    {
+        if (topicSubscribers.TryGetValue(topic, out var subscribers))
+        {
+            subscribers.Remove(subscriber);
+            Console.WriteLine($"Unsubscribing: {subscriber.GetId()} to topic: {topic}");
+        }
     }
 
-    public void notifySubscribers(String data, String topic) {
-        if (topicSubscribers.containsKey(topic)) {
-            System.out.println("Publishing: " + data + " in topic: " + topic);
-            for (Subscriber subscriber : topicSubscribers.get(topic)) {
-                subscriber.update(data);
+    public void NotifySubscribers(string data, string topic)
+    {
+        if (topicSubscribers.TryGetValue(topic, out var subscribers))
+        {
+            Console.WriteLine($"Publishing: {data} in topic: {topic}");
+            foreach (var subscriber in subscribers)
+            {
+                subscriber.Update(data);
             }
         }
     }
 }
 
-class Subscriber {
-    private String id;
+class Subscriber
+{
+    private string id;
 
-    public Subscriber(String id) {
+    public Subscriber(string id)
+    {
         this.id = id;
     }
 
-    public String getId() {
+    public string GetId()
+    {
         return id;
     }
 
-    public void update(String data) {
-        System.out.println("Subscriber " + id + " got :: " + data);
+    public void Update(string data)
+    {
+        Console.WriteLine($"Subscriber {id} got :: {data}");
     }
 }
 
-public class PubSub {
-    public static void main(String[] args) {
+class PubSub
+{
+    static void Main(string[] args)
+    {
         Publisher pub = new Publisher();
 
         Subscriber sub1 = new Subscriber("Subscriber1");
         Subscriber sub2 = new Subscriber("Subscriber2");
         Subscriber sub3 = new Subscriber("Subscriber3");
 
-        System.out.println();
-        pub.subscribe(sub1, "topic1");
-        pub.subscribe(sub2, "topic2");
-        pub.subscribe(sub3, "topic2");
+        Console.WriteLine();
+        pub.Subscribe(sub1, "topic1");
+        pub.Subscribe(sub2, "topic2");
+        pub.Subscribe(sub3, "topic2");
 
-        System.out.println();
-        pub.notifySubscribers("Topic 1 data", "topic1");
+        Console.WriteLine();
+        pub.NotifySubscribers("Topic 1 data", "topic1");
 
-        System.out.println();
-        pub.notifySubscribers("Topic 2 data", "topic2");
+        Console.WriteLine();
+        pub.NotifySubscribers("Topic 2 data", "topic2");
 
-        System.out.println();
-        pub.unsubscribe(sub3, "topic2");
-        pub.notifySubscribers("Topic 2 data", "topic2");
+        Console.WriteLine();
+        pub.Unsubscribe(sub3, "topic2");
+        pub.NotifySubscribers("Topic 2 data", "topic2");
     }
 }
 

@@ -1,44 +1,55 @@
-interface Strategy {
-    void execute(int data);
+using System;
+
+interface IStrategy
+{
+    void Execute(int data);
 }
 
-class ConcreteStrategy1 implements Strategy {
-    @Override
-    public void execute(int data) {
-        System.out.println("ConcreteStrategy1 execute");
+class ConcreteStrategy1 : IStrategy
+{
+    public void Execute(int data)
+    {
+        Console.WriteLine("ConcreteStrategy1 execute");
     }
 }
 
-class ConcreteStrategy2 implements Strategy {
-    @Override
-    public void execute(int data) {
-        System.out.println("ConcreteStrategy2 execute");
+class ConcreteStrategy2 : IStrategy
+{
+    public void Execute(int data)
+    {
+        Console.WriteLine("ConcreteStrategy2 execute");
     }
 }
 
-class Context {
-    private Strategy strategy;
+class Context
+{
+    private IStrategy strategy;
 
-    Context(Strategy strategy) {
+    public Context(IStrategy strategy)
+    {
         this.strategy = strategy;
     }
 
-    void setStrategy(Strategy strategy) {
+    public void SetStrategy(IStrategy strategy)
+    {
         this.strategy = strategy;
     }
 
-    void execute() {
+    public void Execute()
+    {
         int data = 1;
-        this.strategy.execute(data);
+        this.strategy.Execute(data);
     }
 }
 
-public class StrategyPattern {
-    public static void main(String[] args) {
+public class StrategyPattern
+{
+    public static void Main(string[] args)
+    {
         Context context = new Context(new ConcreteStrategy1());
-        context.execute();
+        context.Execute();
 
-        context.setStrategy(new ConcreteStrategy2());
-        context.execute();
+        context.SetStrategy(new ConcreteStrategy2());
+        context.Execute();
     }
 }

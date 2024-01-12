@@ -1,35 +1,40 @@
+using System;
+
 // Abstract Expression
 interface AbstractExpression {
-    void interpret();
+    void Interpret();
 }
 
 // Nonterminal Expression
-class NonterminalExpression implements AbstractExpression {
+class NonterminalExpression : AbstractExpression {
     private AbstractExpression expression;
 
     public NonterminalExpression(AbstractExpression expression) {
         this.expression = expression;
     }
 
-    @Override
-    public void interpret() {
-        System.out.println("NonTerminalExpression:interpret");
-        expression.interpret();
+    public void Interpret() {
+        Console.WriteLine("NonTerminalExpression:Interpret");
+        expression.Interpret();
     }
 }
 
 // Terminal Expression
-class TerminalExpression implements AbstractExpression {
-    @Override
-    public void interpret() {
-        System.out.println("TerminalExpression:interpret");
+class TerminalExpression : AbstractExpression {
+    public void Interpret() {
+        Console.WriteLine("TerminalExpression:Interpret");
     }
 }
 
 // Client Code
-public class InterpreterPattern {
-    public static void main(String[] args) {
+class InterpreterPattern {
+    static void Main(string[] args) {
         AbstractExpression tree = new NonterminalExpression(new TerminalExpression());
-        tree.interpret();
+        tree.Interpret();
     }
 }
+
+/*
+NonTerminalExpression:Interpret
+TerminalExpression:Interpret
+*/

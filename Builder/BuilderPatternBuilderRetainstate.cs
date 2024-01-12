@@ -1,74 +1,86 @@
-class Product {
-    private String partA;
-    private String partB;
+using System;
 
-    public Product(String A, String B) {
+class Product
+{
+    private string partA;
+    private string partB;
+
+    public Product(string A, string B)
+    {
         this.partA = A;
         this.partB = B;
     }
 
-    @Override
-    public String toString() {
-        return "Product : (" + partA + ", " + partB + ")";
+    public override string ToString()
+    {
+        return $"Product: ({partA}, {partB})";
     }
 }
 
-abstract class Builder {
-    public abstract Builder setPartA(String A);
-    public abstract Builder setPartB(String B);
-    public abstract Product getProduct();
+abstract class Builder
+{
+    public abstract Builder SetPartA(string A);
+    public abstract Builder SetPartB(string B);
+    public abstract Product GetProduct();
 }
 
-class ConcreteBuilder extends Builder {
-    private String partA;
-    private String partB;
+class ConcreteBuilder : Builder
+{
+    private string partA;
+    private string partB;
 
-    @Override
-    public ConcreteBuilder setPartA(String A) {
+    public override Builder SetPartA(string A)
+    {
         this.partA = A;
-        return this; // Returning self helps in chaining calls.
+        return this; // Returning this helps in chaining calls.
     }
 
-    @Override
-    public ConcreteBuilder setPartB(String B) {
+    public override Builder SetPartB(string B)
+    {
         this.partB = B;
         return this;
     }
 
-    @Override
-    public Product getProduct() {
+    public override Product GetProduct()
+    {
         return new Product(partA, partB);
     }
 }
 
-class Director {
+class Director
+{
     private Builder builder;
 
-    public Director(Builder builder) {
+    public Director(Builder builder)
+    {
         this.builder = builder;
     }
 
-    public Product construct() {
-        return builder.setPartA("A1").setPartB("B1").getProduct(); // Chaining calls
+    public Product Construct()
+    {
+        return builder.SetPartA("A1").SetPartB("B1").GetProduct(); // Chaining calls
     }
 
-    public Product construct2() {
-        builder.setPartA("A2");
-        builder.setPartB("B2");
-        return builder.getProduct();
+    public Product Construct2()
+    {
+        builder.SetPartA("A2");
+        builder.SetPartB("B2");
+        return builder.GetProduct();
     }
 }
 
 // Client code
-public class BuilderPatternBuilderRetainstate {
-    public static void main(String[] args) {
+public class BuilderPatternBuilderRetainState
+{
+    public static void Main(string[] args)
+    {
         ConcreteBuilder builder = new ConcreteBuilder();
         Director director = new Director(builder);
 
-        Product product = director.construct();
-        System.out.println(product);
+        Product product = director.Construct();
+        Console.WriteLine(product);
 
-        Product product2 = director.construct2();
-        System.out.println(product2);
+        Product product2 = director.Construct2();
+        Console.WriteLine(product2);
     }
 }

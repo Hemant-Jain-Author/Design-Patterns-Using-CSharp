@@ -1,55 +1,66 @@
-class Rectangle {
+using System;
+
+class Rectangle
+{
     private double length;
     private double breadth;
 
-    public Rectangle(double length, double breadth) {
+    public Rectangle(double length, double breadth)
+    {
         this.length = length;
         this.breadth = breadth;
     }
 
-    public double area() {
+    public double Area()
+    {
         return length * breadth;
     }
 
-    public double perimeter() {
+    public double Perimeter()
+    {
         return 2 * (length + breadth);
     }
 
     // Overloading + operator
-    public Rectangle add(Rectangle rec) {
+    public Rectangle Add(Rectangle rec)
+    {
         return new Rectangle(this.length + rec.length, this.breadth + rec.breadth);
     }
 
     // Overloading - operator
-    public Rectangle subtract(Rectangle rec) {
-        return new Rectangle(Math.abs(this.length - rec.length), Math.abs(this.breadth - rec.breadth));
+    public Rectangle Subtract(Rectangle rec)
+    {
+        return new Rectangle(Math.Abs(this.length - rec.length), Math.Abs(this.breadth - rec.breadth));
     }
 
     // Overloading == operator
-    public boolean equals(Rectangle rec) {
+    public bool Equals(Rectangle rec)
+    {
         return this.length == rec.length && this.breadth == rec.breadth;
     }
 
-    // Overriding toString method
-    @Override
-    public String toString() {
-        return "Rectangle length and width: " + length + " " + breadth;
+    // Overriding ToString method
+    public override string ToString()
+    {
+        return $"Rectangle length and width: {length} {breadth}";
     }
 }
 
-public class OperatorOverloading {
-    public static void main(String[] args) {
+public class OperatorOverloading
+{
+    public static void Main(string[] args)
+    {
         Rectangle r1 = new Rectangle(4, 6);
         Rectangle r2 = new Rectangle(10, 6);
 
-        System.out.println("Is r1 == r2 ? " + r1.equals(r2));
+        Console.WriteLine($"Is r1 == r2 ? {r1.Equals(r2)}");
 
-        Rectangle r3 = r1.add(r2);
-        Rectangle r4 = r1.subtract(r2);
+        Rectangle r3 = r1.Add(r2);
+        Rectangle r4 = r1.Subtract(r2);
 
-        System.out.println(r1);
-        System.out.println(r2);
-        System.out.println(r3);
-        System.out.println(r4);
+        Console.WriteLine(r1);
+        Console.WriteLine(r2);
+        Console.WriteLine(r3);
+        Console.WriteLine(r4);
     }
 }

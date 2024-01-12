@@ -1,39 +1,58 @@
-interface BookParser {
-    int numPages();
+using System;
+
+// BookParser Interface
+interface IBookParser
+{
+    int NumPages();
 }
 
-class ConcreteBookParser implements BookParser {
+// ConcreteBookParser Class
+class ConcreteBookParser : IBookParser
+{
     private int numPages;
 
-    public ConcreteBookParser() {
-        System.out.println("Concrete Book Parser Created");
+    public ConcreteBookParser()
+    {
+        Console.WriteLine("Concrete Book Parser Created");
         // Number of pages calculation heavy operation.
         // Suppose this calculation results in 1000 pages.
         this.numPages = 1000;
     }
 
-    @Override
-    public int numPages() {
-        System.out.println("Concrete Book Parser Request Method");
+    public int NumPages()
+    {
+        Console.WriteLine("Concrete Book Parser Request Method");
         return this.numPages;
     }
 }
 
-class LazyBookParserProxy implements BookParser {
+// LazyBookParserProxy Class
+class LazyBookParserProxy : IBookParser
+{
     private ConcreteBookParser subject;
 
-    @Override
-    public int numPages() {
-        if (subject == null) {
+    public int NumPages()
+    {
+        if (subject == null)
+        {
             subject = new ConcreteBookParser();
         }
-        return subject.numPages();
+        return subject.NumPages();
     }
 }
 
-public class ProxyPatternLazy {
-    public static void main(String[] args) {
+// ProxyPatternLazy Class (Main)
+class ProxyPatternLazy
+{
+    static void Main(string[] args)
+    {
         LazyBookParserProxy proxy = new LazyBookParserProxy();
-        System.out.println(proxy.numPages());
+        Console.WriteLine(proxy.NumPages());
     }
 }
+
+/*
+Concrete Book Parser Created
+Concrete Book Parser Request Method
+1000
+*/

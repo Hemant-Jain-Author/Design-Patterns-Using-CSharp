@@ -1,83 +1,105 @@
-import java.util.ArrayList;
-import java.util.List;
+using System;
+using System.Collections.Generic;
 
-abstract class Subject {
-    private List<Observer> observers = new ArrayList<>();
+// Subject abstract class
+abstract class Subject
+{
+    private List<Observer> observers = new List<Observer>();
 
-    public void attach(Observer observer) {
-        observer.setSubject(this);
-        observers.add(observer);
+    public void Attach(Observer observer)
+    {
+        observer.SetSubject(this);
+        observers.Add(observer);
     }
 
-    public void detach(Observer observer) {
-        observer.setSubject(null);
-        observers.remove(observer);
+    public void Detach(Observer observer)
+    {
+        observer.SetSubject(null);
+        observers.Remove(observer);
     }
 
-    public void notifyObservers() {
-        for (Observer observer : observers) {
-            observer.update();
+    public void NotifyObservers()
+    {
+        foreach (Observer observer in observers)
+        {
+            observer.Update();
         }
     }
 }
 
-class ConcreteSubject extends Subject {
-    private String state;
+// ConcreteSubject class
+class ConcreteSubject : Subject
+{
+    private string state;
 
-    public String getState() {
+    public string GetState()
+    {
         return state;
     }
 
-    public void setState(String state) {
+    public void SetState(string state)
+    {
         this.state = state;
-        notifyObservers();
+        NotifyObservers();
     }
 }
 
-abstract class Observer {
+// Observer abstract class
+abstract class Observer
+{
     protected Subject subject;
 
-    public void setSubject(Subject subject) {
+    public void SetSubject(Subject subject)
+    {
         this.subject = subject;
     }
 
-    public abstract void update();
+    public abstract void Update();
 }
 
-class ConcreteObserver1 extends Observer {
-    public ConcreteObserver1(Subject subject) {
-        setSubject(subject);
-        subject.attach(this);
+// ConcreteObserver1 class
+class ConcreteObserver1 : Observer
+{
+    public ConcreteObserver1(Subject subject)
+    {
+        SetSubject(subject);
+        subject.Attach(this);
     }
 
-    @Override
-    public void update() {
-        System.out.println(subject instanceof ConcreteSubject ?
-                ((ConcreteSubject) subject).getState() + " notified to Observer1" : "");
-    }
-}
-
-class ConcreteObserver2 extends Observer {
-    public ConcreteObserver2(Subject subject) {
-        setSubject(subject);
-        subject.attach(this);
-    }
-
-    @Override
-    public void update() {
-        System.out.println(subject instanceof ConcreteSubject ?
-                ((ConcreteSubject) subject).getState() + " notified to Observer2" : "");
+    public override void Update()
+    {
+        Console.WriteLine(subject is ConcreteSubject ?
+                ((ConcreteSubject)subject).GetState() + " notified to Observer1" : "");
     }
 }
 
-public class ObserverPattern {
-    public static void main(String[] args) {
+// ConcreteObserver2 class
+class ConcreteObserver2 : Observer
+{
+    public ConcreteObserver2(Subject subject)
+    {
+        SetSubject(subject);
+        subject.Attach(this);
+    }
+
+    public override void Update()
+    {
+        Console.WriteLine(subject is ConcreteSubject ?
+                ((ConcreteSubject)subject).GetState() + " notified to Observer2" : "");
+    }
+}
+
+// Main class (Client code)
+class ObserverPattern
+{
+    static void Main(string[] args)
+    {
         ConcreteSubject subject = new ConcreteSubject();
         ConcreteObserver1 observer1 = new ConcreteObserver1(subject);
         ConcreteObserver2 observer2 = new ConcreteObserver2(subject);
 
-        subject.setState("First state");
-        subject.setState("Second state");
+        subject.SetState("First state");
+        subject.SetState("Second state");
     }
 }
 

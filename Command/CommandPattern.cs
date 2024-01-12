@@ -1,73 +1,86 @@
-import java.util.ArrayList;
-import java.util.List;
+using System;
+using System.Collections.Generic;
 
 // Invoker
-class Invoker {
-    private List<Command> commands = new ArrayList<>();
+class Invoker
+{
+    private List<Command> commands = new List<Command>();
 
-    public void setCommand(Command command) {
-        commands.add(command);
+    public void SetCommand(Command command)
+    {
+        commands.Add(command);
     }
 
-    public void executeCommands() {
-        for (Command command : commands) {
-            command.execute();
+    public void ExecuteCommands()
+    {
+        foreach (Command command in commands)
+        {
+            command.Execute();
         }
     }
 
-    public void unexecuteCommands() {
-        for (Command command : commands) {
-            command.unexecute();
+    public void UnexecuteCommands()
+    {
+        foreach (Command command in commands)
+        {
+            command.Unexecute();
         }
     }
 }
 
 // Command
-abstract class Command {
-    public abstract void execute();
-    public abstract void unexecute();
+abstract class Command
+{
+    public abstract void Execute();
+    public abstract void Unexecute();
 }
 
 // ConcreteCommand
-class ConcreteCommand extends Command {
+class ConcreteCommand : Command
+{
     private Receiver receiver;
 
-    public ConcreteCommand(Receiver receiver) {
+    public ConcreteCommand(Receiver receiver)
+    {
         this.receiver = receiver;
     }
 
-    @Override
-    public void execute() {
-        receiver.action("Action 1");
+    public override void Execute()
+    {
+        receiver.Action("Action 1");
     }
 
-    @Override
-    public void unexecute() {
-        receiver.action("Action 2");
+    public override void Unexecute()
+    {
+        receiver.Action("Action 2");
     }
 }
 
 // Receiver
-class Receiver {
-    public void action(String action) {
-        System.out.println(action);
+class Receiver
+{
+    public void Action(string action)
+    {
+        Console.WriteLine(action);
     }
 }
 
 // Client Code
-public class CommandPattern {
-    public static void main(String[] args) {
+class CommandPattern
+{
+    static void Main(string[] args)
+    {
         Receiver receiver = new Receiver();
         ConcreteCommand concreteCommand = new ConcreteCommand(receiver);
         Invoker invoker = new Invoker();
 
-        invoker.setCommand(concreteCommand);
-        invoker.executeCommands();
-        invoker.unexecuteCommands();
+        invoker.SetCommand(concreteCommand);
+        invoker.ExecuteCommands();
+        invoker.UnexecuteCommands();
     }
 }
 
 /*
 Action 1
 Action 2
- */
+*/

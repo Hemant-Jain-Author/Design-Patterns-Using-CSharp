@@ -1,48 +1,51 @@
-import java.util.ArrayList;
-import java.util.List;
+using System;
+using System.Collections.Generic;
 
-public class HealthCheckSingleton {
+public class HealthCheckSingleton
+{
     private static HealthCheckSingleton instance;
-    private List<String> servers;
+    private List<string> servers;
 
-    private HealthCheckSingleton() {
-        this.servers = new ArrayList<>();
+    private HealthCheckSingleton()
+    {
+        this.servers = new List<string>();
     }
 
-    public static HealthCheckSingleton getInstance() {
-        if (instance == null) {
+    public static HealthCheckSingleton GetInstance()
+    {
+        if (instance == null)
+        {
             instance = new HealthCheckSingleton();
         }
         return instance;
     }
 
-    public void addServer() {
-        this.servers.add("Server 1");
-        this.servers.add("Server 2");
+    public void AddServer()
+    {
+        this.servers.Add("Server 1");
+        this.servers.Add("Server 2");
     }
 
-    public void changeServer() {
-        this.servers.remove(this.servers.size() - 1);
-        this.servers.add("Server 5");
+    public void ChangeServer()
+    {
+        this.servers.RemoveAt(this.servers.Count - 1);
+        this.servers.Add("Server 5");
     }
 
-    public List<String> getServers() {
+    public List<string> GetServers()
+    {
         return this.servers;
     }
 
-    public static void main(String[] args) {
-        HealthCheckSingleton hc1 = HealthCheckSingleton.getInstance();
-        hc1.addServer();
+    public static void Main(string[] args)
+    {
+        HealthCheckSingleton hc1 = HealthCheckSingleton.GetInstance();
+        hc1.AddServer();
 
-        HealthCheckSingleton hc2 = HealthCheckSingleton.getInstance();
-        hc2.addServer();
+        HealthCheckSingleton hc2 = HealthCheckSingleton.GetInstance();
+        hc2.AddServer();
 
-        System.out.println(hc1.getServers());
-        System.out.println(hc2.getServers());
+        Console.WriteLine(string.Join(", ", hc1.GetServers()));
+        Console.WriteLine(string.Join(", ", hc2.GetServers()));
     }
 }
-
-/*
-[Server 1, Server 2, Server 1, Server 2]
-[Server 1, Server 2, Server 1, Server 2]
- */

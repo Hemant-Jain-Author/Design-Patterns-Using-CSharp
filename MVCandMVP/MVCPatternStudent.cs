@@ -1,72 +1,94 @@
-class Student {
-    String name;
-    int id;
+using System;
 
-    public Student(String name, int id) {
-        this.name = name;
-        this.id = id;
+// Student class
+class Student
+{
+    public string Name { get; set; }
+    public int Id { get; set; }
+
+    public Student(string name, int id)
+    {
+        Name = name;
+        Id = id;
     }
 }
 
-class Model {
+// Model class
+class Model
+{
     private Student student;
 
-    public Model() {
+    public Model()
+    {
         this.student = new Student("Harry", 1);
     }
 
-    public void setData(String name, int id) {
-        System.out.println("Model: Set data : " + name + " " + id);
-        student.name = name;
-        student.id = id;
+    public void SetData(string name, int id)
+    {
+        Console.WriteLine($"Model: Set data : {name} {id}");
+        student.Name = name;
+        student.Id = id;
     }
 
-    public Student getData() {
-        System.out.println("Model: Get data.");
+    public Student GetData()
+    {
+        Console.WriteLine("Model: Get data.");
         return student;
     }
 }
 
-class View {
+// View class
+class View
+{
     private Model model;
 
-    public View(Model model) {
+    public View(Model model)
+    {
         this.model = model;
     }
 
-    public void update() {
-        Student student = model.getData();
-        System.out.println("View: Student Info, Name: " + student.name + " Id: " + student.id);
+    public void Update()
+    {
+        Student student = model.GetData();
+        Console.WriteLine($"View: Student Info, Name: {student.Name} Id: {student.Id}");
     }
 }
 
-class Controller {
+// Controller class
+class Controller
+{
     private Model model;
     private View view;
 
-    public Controller() {
+    public Controller()
+    {
         this.model = new Model();
         this.view = new View(model);
     }
 
-    public void setData(String name, int id) {
-        System.out.println("Controller: Receive data from client.");
-        model.setData(name, id);
+    public void SetData(string name, int id)
+    {
+        Console.WriteLine("Controller: Receive data from client.");
+        model.SetData(name, id);
     }
 
-    public void updateView() {
-        System.out.println("Controller: Receive update view from client.");
-        view.update();
+    public void UpdateView()
+    {
+        Console.WriteLine("Controller: Receive update view from client.");
+        view.Update();
     }
 }
 
-public class MVCPatternStudent {
-    public static void main(String[] args) {
+// Main class (Client code)
+class MVCPatternStudent
+{
+    static void Main(string[] args)
+    {
         Controller controller = new Controller();
-        controller.updateView();
+        controller.UpdateView();
 
-        controller.setData("Jack", 2);
-        controller.updateView();
+        controller.SetData("Jack", 2);
+        controller.UpdateView();
     }
 }
 

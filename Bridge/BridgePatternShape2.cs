@@ -1,78 +1,89 @@
-// Abstraction
-abstract class Shape {
-    protected DrawingAPI implementation;
+using System;
 
-    public Shape(DrawingAPI implementation) {
-        this.implementation = implementation;
+// Abstraction
+abstract class Shape
+{
+    protected DrawingAPI Implementation;
+
+    public Shape(DrawingAPI implementation)
+    {
+        Implementation = implementation;
     }
 
-    public abstract void draw();
+    public abstract void Draw();
 }
 
 // Concrete Abstraction
-class Square extends Shape {
-    public Square(DrawingAPI implementation) {
-        super(implementation);
+class Square : Shape
+{
+    public Square(DrawingAPI implementation) : base(implementation)
+    {
     }
 
-    @Override
-    public void draw() {
-        implementation.drawSquare();
+    public override void Draw()
+    {
+        Implementation.DrawSquare();
     }
 }
 
-class Circle extends Shape {
-    public Circle(DrawingAPI implementation) {
-        super(implementation);
+class Circle : Shape
+{
+    public Circle(DrawingAPI implementation) : base(implementation)
+    {
     }
 
-    @Override
-    public void draw() {
-        implementation.drawCircle();
+    public override void Draw()
+    {
+        Implementation.DrawCircle();
     }
 }
 
 // Implementation
-interface DrawingAPI {
-    void drawSquare();
-    void drawCircle();
+interface DrawingAPI
+{
+    void DrawSquare();
+    void DrawCircle();
 }
 
 // Concrete Implementation
-class WindowsAPI implements DrawingAPI {
-    @Override
-    public void drawSquare() {
-        System.out.println("Drawing a square on Windows.");
+class WindowsAPI : DrawingAPI
+{
+    public void DrawSquare()
+    {
+        Console.WriteLine("Drawing a square on Windows.");
     }
 
-    @Override
-    public void drawCircle() {
-        System.out.println("Drawing a circle on Windows.");
+    public void DrawCircle()
+    {
+        Console.WriteLine("Drawing a circle on Windows.");
     }
 }
 
-class MacAPI implements DrawingAPI {
-    @Override
-    public void drawSquare() {
-        System.out.println("Drawing a square on Mac.");
+class MacAPI : DrawingAPI
+{
+    public void DrawSquare()
+    {
+        Console.WriteLine("Drawing a square on Mac.");
     }
 
-    @Override
-    public void drawCircle() {
-        System.out.println("Drawing a circle on Mac.");
+    public void DrawCircle()
+    {
+        Console.WriteLine("Drawing a circle on Mac.");
     }
 }
 
 // Usage
-public class BridgePatternShape2 {
-    public static void main(String[] args) {
+public class BridgePatternShape2
+{
+    public static void Main(string[] args)
+    {
         DrawingAPI windowsAPI = new WindowsAPI();
         DrawingAPI macAPI = new MacAPI();
 
         Shape square = new Square(windowsAPI);
-        square.draw();  // Output: Drawing a square on Windows.
+        square.Draw();  // Output: Drawing a square on Windows.
 
         Shape circle = new Circle(macAPI);
-        circle.draw();  // Output: Drawing a circle on Mac.
+        circle.Draw();  // Output: Drawing a circle on Mac.
     }
 }

@@ -1,46 +1,57 @@
-import java.io.*;
+using System;
 
-abstract class OrderPackingTemplate {
-    
-    final void packProduct() {
-        getProduct();
-        addProductToBox();
-        delivery();
+abstract class OrderPackingTemplate
+{
+    // The template method
+    public void PackProduct()
+    {
+        GetProduct();
+        AddProductToBox();
+        Delivery();
     }
 
-    void getProduct() {
-        System.out.println("Get the product from the shelf.");
+    // Primitive operation: GetProduct
+    protected void GetProduct()
+    {
+        Console.WriteLine("Get the product from the shelf.");
     }
 
-    void addProductToBox() {
-        System.out.println("Put the product inside the box.");
+    // Primitive operation: AddProductToBox
+    protected void AddProductToBox()
+    {
+        Console.WriteLine("Put the product inside the box.");
     }
 
-    abstract void delivery();
+    // Primitive operation: Delivery
+    protected abstract void Delivery();
 }
 
-class OnlineOrderPacking extends OrderPackingTemplate {
-    @Override
-    void delivery() {
-        System.out.println("Add delivery address slip and ship.");
+class OnlineOrderPacking : OrderPackingTemplate
+{
+    protected override void Delivery()
+    {
+        Console.WriteLine("Add delivery address slip and ship.");
     }
 }
 
-class StoreOrderPacking extends OrderPackingTemplate {
-    @Override
-    void delivery() {
-        System.out.println("Add thanks message to the box and deliver to the customer.");
+class StoreOrderPacking : OrderPackingTemplate
+{
+    protected override void Delivery()
+    {
+        Console.WriteLine("Add thanks message to the box and deliver to the customer.");
     }
 }
 
-public class TemplatePatternOrder {
-    public static void main(String[] args) {
+class TemplatePatternOrder
+{
+    public static void Main(string[] args)
+    {
         OnlineOrderPacking onlineOrder = new OnlineOrderPacking();
-        onlineOrder.packProduct();
+        onlineOrder.PackProduct();
 
-        System.out.println();
+        Console.WriteLine();
 
         StoreOrderPacking storeOrder = new StoreOrderPacking();
-        storeOrder.packProduct();
+        storeOrder.PackProduct();
     }
 }

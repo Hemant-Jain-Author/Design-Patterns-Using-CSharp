@@ -1,39 +1,57 @@
+using System;
+using System.Threading;
 
-public class ThreadLocalValue {
+public class ThreadLocalValue
+{
     // ThreadLocal variable
-    private static final ThreadLocal<String> tlsVar = new ThreadLocal<>();
+    private static readonly ThreadLocal<string> tlsVar = new ThreadLocal<string>();
 
     // Function to set thread-local value
-    private static void setTLSValue(String value) {
-        tlsVar.set(value);
+    private static void SetTLSValue(string value)
+    {
+        tlsVar.Value = value;
     }
 
     // Function to get thread-local value
-    private static String getTLSValue() {
-        return tlsVar.get();
+    private static string GetTLSValue()
+    {
+        return tlsVar.Value;
     }
 
     // Worker thread function
-    private static void workerThread() {
-        setTLSValue("Thread-specific any value");
-        System.out.println(getTLSValue());
+    private static void WorkerThread()
+    {
+        SetTLSValue("Thread-specific any value");
+        Console.WriteLine(GetTLSValue());
     }
 
-    public static void main(String[] args) {
+    public static void Main()
+    {
         // Create and start multiple worker threads
         Thread[] threads = new Thread[3];
-        for (int i = 0; i < 3; i++) {
-            threads[i] = new Thread(ThreadLocalValue::workerThread);
-            threads[i].start();
+        for (int i = 0; i < 3; i++)
+        {
+            threads[i] = new Thread(WorkerThread);
+            threads[i].Start();
         }
 
         // Wait for all threads to complete
-        try {
-            for (Thread t : threads) {
-                t.join();
+        try
+        {
+            foreach (Thread t in threads)
+            {
+                t.Join();
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        }
+        catch (ThreadInterruptedException e)
+        {
+            Console.WriteLine(e.StackTrace);
         }
     }
 }
+
+/*
+Thread-specific any value
+Thread-specific any value
+Thread-specific any value
+*/

@@ -1,73 +1,94 @@
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+using System;
+using System.Collections.Generic;
 
-interface Observer {
-    void notify(String subject, String message);
+// Observer interface
+interface IObserver
+{
+    void Notify(string subject, string message);
 }
 
-class Courses {
-    private Map<String, Set<Observer>> courseStudents = new HashMap<>();
+// Subject class
+class Courses
+{
+    private Dictionary<string, HashSet<IObserver>> courseStudents = new Dictionary<string, HashSet<IObserver>>();
 
-    public void subscribe(String subject, Observer student) {
-        courseStudents.computeIfAbsent(subject, k -> new HashSet<>()).add(student);
+    public void Subscribe(string subject, IObserver student)
+    {
+        if (!courseStudents.ContainsKey(subject))
+        {
+            courseStudents[subject] = new HashSet<IObserver>();
+        }
+
+        courseStudents[subject].Add(student);
     }
 
-    public void unsubscribe(String subject, Observer student) {
-        courseStudents.getOrDefault(subject, new HashSet<>()).remove(student);
+    public void Unsubscribe(string subject, IObserver student)
+    {
+        if (courseStudents.ContainsKey(subject))
+        {
+            courseStudents[subject].Remove(student);
+        }
     }
 
-    public void publish(String subject, String message) {
-        if (!courseStudents.containsKey(subject)) {
-            System.out.println("No subscribers for subject '" + subject + "'.");
+    public void Publish(string subject, string message)
+    {
+        if (!courseStudents.ContainsKey(subject))
+        {
+            Console.WriteLine("No subscribers for subject '" + subject + "'.");
             return;
         }
 
-        for (Observer student : courseStudents.get(subject)) {
-            student.notify(subject, message);
+        foreach (IObserver student in courseStudents[subject])
+        {
+            student.Notify(subject, message);
         }
     }
 }
 
-class Student implements Observer {
-    private String name;
+// Concrete Observer class
+class Student : IObserver
+{
+    private string name;
 
-    public Student(String name) {
+    public Student(string name)
+    {
         this.name = name;
     }
 
-    @Override
-    public void notify(String subject, String message) {
-        System.out.println(name + " received message on subject '" + subject + "': " + message);
+    public void Notify(string subject, string message)
+    {
+        Console.WriteLine(name + " received message on subject '" + subject + "': " + message);
     }
 }
 
-public class CourseStudentPubSub {
-    public static void main(String[] args) {
+// Main class (Client code)
+class CourseStudentPubSub
+{
+    static void Main(string[] args)
+    {
         Courses courses = new Courses();
         Student john = new Student("John");
         Student eric = new Student("Eric");
         Student jack = new Student("Jack");
 
-        courses.subscribe("English", john);
-        courses.subscribe("English", eric);
-        courses.subscribe("Maths", eric);
-        courses.subscribe("Science", jack);
+        courses.Subscribe("English", john);
+        courses.Subscribe("English", eric);
+        courses.Subscribe("Maths", eric);
+        courses.Subscribe("Science", jack);
 
-        courses.publish("English", "Tomorrow class at 11");
-        courses.publish("Maths", "Tomorrow class at 1");
+        courses.Publish("English", "Tomorrow class at 11");
+        courses.Publish("Maths", "Tomorrow class at 1");
 
         // Unsubscribe Eric from English
-        courses.unsubscribe("English", eric);
+        courses.Unsubscribe("English", eric);
 
-        courses.publish("English", "Updated schedule for English");
+        courses.Publish("English", "Updated schedule for English");
     }
 }
 
 /*
-Eric received message on subject 'English': Tomorrow class at 11
 John received message on subject 'English': Tomorrow class at 11
+Eric received message on subject 'English': Tomorrow class at 11
 Eric received message on subject 'Maths': Tomorrow class at 1
 John received message on subject 'English': Updated schedule for English
 */

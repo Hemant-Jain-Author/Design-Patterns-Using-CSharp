@@ -1,136 +1,150 @@
-import java.util.ArrayList;
-import java.util.List;
+using System;
+using System.Collections.Generic;
 
-class Memento implements Cloneable {
-    private Object state;
+class Memento : ICloneable
+{
+    private object state;
 
-    public Memento(Object state) {
+    public Memento(object state)
+    {
         this.state = state;
     }
 
-    public Object getState() {
+    public object GetState()
+    {
         return state;
     }
 
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
+    public object Clone()
+    {
+        return MemberwiseClone();
     }
 }
 
-class Originator {
-    private Object state;
+class Originator
+{
+    private object state;
 
-    public void setState(Object state) {
+    public void SetState(object state)
+    {
         this.state = state;
     }
 
-    public Object getState() {
+    public object GetState()
+    {
         return state;
     }
 
-    public Memento createMemento() {
+    public Memento CreateMemento()
+    {
         return new Memento(state);
     }
 
-    public void setMemento(Memento m) {
-        this.state = m.getState();
+    public void SetMemento(Memento m)
+    {
+        this.state = m.GetState();
     }
 }
 
-class CareTaker {
+class CareTaker
+{
     private List<Memento> history;
     private int top;
     private int max;
 
-    public CareTaker() {
-        this.history = new ArrayList<>();
+    public CareTaker()
+    {
+        this.history = new List<Memento>();
         this.top = -1;
         this.max = -1;
     }
 
-    public void addMemento(Memento m) {
+    public void AddMemento(Memento m)
+    {
         top += 1;
         max = top;
-        if (top <= history.size() - 1) {
-            try {
-                history.set(top, (Memento) m.clone());
-            } catch (CloneNotSupportedException e) {
-                e.printStackTrace();
-            }
-        } else {
-            try {
-                history.add((Memento) m.clone());
-            } catch (CloneNotSupportedException e) {
-                e.printStackTrace();
-            }
+        if (top <= history.Count - 1)
+        {
+            history[top] = (Memento)m.Clone();
+        }
+        else
+        {
+            history.Add((Memento)m.Clone());
         }
     }
 
-    public Memento getMemento(int index) {
-        return history.get(index);
+    public Memento GetMemento(int index)
+    {
+        return history[index];
     }
 
-    public Memento undo() {
-        System.out.println("Undoing state.");
-        if (top <= 0) {
+    public Memento Undo()
+    {
+        Console.WriteLine("Undoing state.");
+        if (top <= 0)
+        {
             top = 0;
-            return history.get(0);
+            return history[0];
         }
 
         top -= 1;
-        return history.get(top);
+        return history[top];
     }
 
-    public Memento redo() {
-        System.out.println("Redoing state.");
-        if (top >= (history.size() - 1) || top >= max) {
-            return history.get(top);
+    public Memento Redo()
+    {
+        Console.WriteLine("Redoing state.");
+        if (top >= (history.Count - 1) || top >= max)
+        {
+            return history[top];
         }
 
         top += 1;
-        return history.get(top);
+        return history[top];
     }
 
-    public int getStatesCount() {
-        return history.size();
+    public int GetStatesCount()
+    {
+        return history.Count;
     }
 }
 
-public class MomentoPatternJson {
-    public static void main(String[] args) {
+class MomentoPatternJson
+{
+    static void Main(string[] args)
+    {
         Originator originator = new Originator();
         CareTaker careTaker = new CareTaker();
 
-        originator.setState("State 1");
-        careTaker.addMemento(originator.createMemento());
-        System.out.println(originator.getState());
+        originator.SetState("State 1");
+        careTaker.AddMemento(originator.CreateMemento());
+        Console.WriteLine(originator.GetState());
 
-         originator.setState("State 2");
-        careTaker.addMemento(originator.createMemento());
-        System.out.println(originator.getState());
+        originator.SetState("State 2");
+        careTaker.AddMemento(originator.CreateMemento());
+        Console.WriteLine(originator.GetState());
 
-        originator.setState("State 3");
-        careTaker.addMemento(originator.createMemento());
-        System.out.println(originator.getState());
+        originator.SetState("State 3");
+        careTaker.AddMemento(originator.CreateMemento());
+        Console.WriteLine(originator.GetState());
 
-        originator.setMemento(careTaker.undo());
-        System.out.println(originator.getState());
+        originator.SetMemento(careTaker.Undo());
+        Console.WriteLine(originator.GetState());
 
-        originator.setMemento(careTaker.undo());
-        System.out.println(originator.getState());
+        originator.SetMemento(careTaker.Undo());
+        Console.WriteLine(originator.GetState());
 
-        originator.setState("State 4");
-        careTaker.addMemento(originator.createMemento());
-        System.out.println(originator.getState());
+        originator.SetState("State 4");
+        careTaker.AddMemento(originator.CreateMemento());
+        Console.WriteLine(originator.GetState());
 
-        originator.setMemento(careTaker.redo());
-        System.out.println(originator.getState());
+        originator.SetMemento(careTaker.Redo());
+        Console.WriteLine(originator.GetState());
 
-        originator.setMemento(careTaker.redo());
-        System.out.println(originator.getState());
+        originator.SetMemento(careTaker.Redo());
+        Console.WriteLine(originator.GetState());
 
-        originator.setMemento(careTaker.redo());
-        System.out.println(originator.getState());
+        originator.SetMemento(careTaker.Redo());
+        Console.WriteLine(originator.GetState());
     }
 }

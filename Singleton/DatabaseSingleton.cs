@@ -1,73 +1,96 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+using System;
+using System.Data;
+using System.Data.SQLite;
 
-public class DatabaseSingleton {
+public class DatabaseSingleton
+{
     private static DatabaseSingleton instance;
-    private Connection connection;
-    private PreparedStatement preparedStatement;
+    private IDbConnection connection;
+    private IDbCommand command;
 
-    private DatabaseSingleton() {
-        try {
-            System.out.println("Database created");
-            this.connection = DriverManager.getConnection("jdbc:sqlite:db.sqlite3");
-        } catch (SQLException e) {
-            e.printStackTrace();
+    private DatabaseSingleton()
+    {
+        try
+        {
+            Console.WriteLine("Database created");
+            connection = new SQLiteConnection("Data Source=db.sqlite3;");
+            connection.Open();
+            command = connection.CreateCommand();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.ToString());
         }
     }
 
-    public static DatabaseSingleton getInstance() {
-        if (instance == null) {
+    public static DatabaseSingleton GetInstance()
+    {
+        if (instance == null)
+        {
             instance = new DatabaseSingleton();
         }
         return instance;
     }
 
-    public void createTable() {
-        try {
-            this.preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS students (id INTEGER, name TEXT);");
-            this.preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
+    public void CreateTable()
+    {
+        try
+        {
+            command.CommandText = "CREATE TABLE IF NOT EXISTS students (id INTEGER, name TEXT);";
+            command.ExecuteNonQuery();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.ToString());
         }
     }
 
-    public void addData(int id, String name) {
-        try {
-            String query = "INSERT INTO students (id, name) VALUES (?, ?);";
-            this.preparedStatement = connection.prepareStatement(query);
-            this.preparedStatement.setInt(1, id);
-            this.preparedStatement.setString(2, name);
-            this.preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
+    public void AddData(int id, string name)
+    {
+        try
+        {
+            command.CommandText = $"INSERT INTO students (id, name) VALUES ({id}, '{name}');";
+            command.ExecuteNonQuery();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.ToString());
         }
     }
 
-    public void display() {
-        try {
-            this.preparedStatement = connection.prepareStatement("SELECT * FROM students;");
-            ResultSet resultSet = this.preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                System.out.println(resultSet.getInt("id") + " " + resultSet.getString("name"));
+    public void Display()
+    {
+        try
+        {
+            command.CommandText = "SELECT * FROM students;";
+            using (IDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    int studentId = Convert.ToInt32(reader["id"]);
+                    string studentName = Convert.ToString(reader["name"]);
+                    Console.WriteLine($"ID: {studentId}, Name: {studentName}");
+                }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.ToString());
         }
     }
 
-    public static void main(String[] args) {
-        DatabaseSingleton db1 = DatabaseSingleton.getInstance();
-        DatabaseSingleton db2 = DatabaseSingleton.getInstance();
-        System.out.println("Database Objects DB1: " + db1);
-        System.out.println("Database Objects DB2: " + db2);
+    public static void Main(string[] args)
+    {
+        DatabaseSingleton db1 = DatabaseSingleton.GetInstance();
+        DatabaseSingleton db2 = DatabaseSingleton.GetInstance();
 
-        db1.createTable();
-        db1.addData(1, "john");
-        db2.addData(2, "smith");
+        Console.WriteLine($"Database Objects DB1: {db1}");
+        Console.WriteLine($"Database Objects DB2: {db2}");
 
-        db1.display();
+        db1.CreateTable();
+        db1.AddData(1, "john");
+        db2.AddData(2, "smith");
+
+        db1.Display();
     }
 }

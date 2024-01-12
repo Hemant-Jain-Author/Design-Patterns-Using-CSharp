@@ -1,84 +1,92 @@
+using System;
+
 // Coffee (Component)
-interface Coffee {
-    int getCost();
-    String getIngredients();
+interface ICoffee
+{
+    int GetCost();
+    string GetIngredients();
 }
 
 // SimpleCoffee (ConcreteComponent)
-class SimpleCoffee implements Coffee {
-    @Override
-    public int getCost() {
+class SimpleCoffee : ICoffee
+{
+    public int GetCost()
+    {
         return 10;
     }
 
-    @Override
-    public String getIngredients() {
+    public string GetIngredients()
+    {
         return "Coffee";
     }
 }
 
 // CoffeeDecorator (Decorator)
-abstract class CoffeeDecorator implements Coffee {
-    protected Coffee component;
+abstract class CoffeeDecorator : ICoffee
+{
+    protected ICoffee Component;
 
-    public CoffeeDecorator(Coffee component) {
-        this.component = component;
+    public CoffeeDecorator(ICoffee component)
+    {
+        Component = component ?? throw new ArgumentNullException(nameof(component));
     }
 
-    @Override
-    public abstract int getCost();
+    public abstract int GetCost();
 
-    @Override
-    public abstract String getIngredients();
+    public abstract string GetIngredients();
 }
 
 // MilkDecorator (ConcreteDecorator)
-class MilkDecorator extends CoffeeDecorator {
-    public MilkDecorator(Coffee component) {
-        super(component);
+class MilkDecorator : CoffeeDecorator
+{
+    public MilkDecorator(ICoffee component) : base(component)
+    {
     }
 
-    @Override
-    public int getCost() {
-        return component.getCost() + 4;
+    public override int GetCost()
+    {
+        return Component.GetCost() + 4;
     }
 
-    @Override
-    public String getIngredients() {
-        return component.getIngredients() + ", Milk";
+    public override string GetIngredients()
+    {
+        return Component.GetIngredients() + ", Milk";
     }
 }
 
 // EspressoDecorator (ConcreteDecorator)
-class EspressoDecorator extends CoffeeDecorator {
-    public EspressoDecorator(Coffee component) {
-        super(component);
+class EspressoDecorator : CoffeeDecorator
+{
+    public EspressoDecorator(ICoffee component) : base(component)
+    {
     }
 
-    @Override
-    public int getCost() {
-        return component.getCost() + 5;
+    public override int GetCost()
+    {
+        return Component.GetCost() + 5;
     }
 
-    @Override
-    public String getIngredients() {
-        return component.getIngredients() + ", Espresso";
+    public override string GetIngredients()
+    {
+        return Component.GetIngredients() + ", Espresso";
     }
 }
 
 // Client code
-public class DecoratorPatternCoffee {
-    public static void main(String[] args) {
-        Coffee component = new SimpleCoffee();
-        Coffee decorator1 = new MilkDecorator(component);
-        Coffee decorator2 = new EspressoDecorator(decorator1);
+class DecoratorPatternCoffee
+{
+    static void Main(string[] args)
+    {
+        ICoffee component = new SimpleCoffee();
+        ICoffee decorator1 = new MilkDecorator(component);
+        ICoffee decorator2 = new EspressoDecorator(decorator1);
 
-        System.out.println("Coffee cost is :: " + decorator2.getCost());
-        System.out.println("Coffee ingredients are :: " + decorator2.getIngredients());
+        Console.WriteLine("Coffee cost is :: " + decorator2.GetCost());
+        Console.WriteLine("Coffee ingredients are :: " + decorator2.GetIngredients());
 
-        Coffee latte = new MilkDecorator(new MilkDecorator(new SimpleCoffee()));
-        System.out.println("Coffee cost is :: " + latte.getCost());
-        System.out.println("Coffee ingredients are :: " + latte.getIngredients());
+        ICoffee latte = new MilkDecorator(new MilkDecorator(new SimpleCoffee()));
+        Console.WriteLine("Coffee cost is :: " + latte.GetCost());
+        Console.WriteLine("Coffee ingredients are :: " + latte.GetIngredients());
     }
 }
 

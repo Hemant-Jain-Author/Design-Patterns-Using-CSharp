@@ -1,59 +1,71 @@
-interface BulbState {
-    void flip(BulbControl bc);
-    String toString();
+using System;
+
+interface IBulbState
+{
+    void Flip(BulbControl bc);
+    string ToString();
 }
 
-class BulbControl {
-    private BulbState current;
+class BulbControl
+{
+    private IBulbState current;
 
-    BulbControl() {
+    public BulbControl()
+    {
         this.current = new Off();
     }
 
-    void setState(BulbState state) {
+    public void SetState(IBulbState state)
+    {
         this.current = state;
     }
 
-    void flip() {
-        this.current.flip(this);
+    public void Flip()
+    {
+        this.current.Flip(this);
     }
 
-    String toStringState() {
-        return this.current.toString();
+    public string ToStringState()
+    {
+        return this.current.ToString();
     }
 }
 
-class On implements BulbState {
-    @Override
-    public void flip(BulbControl bc) {
-        bc.setState(new Off());
+class On : IBulbState
+{
+    public void Flip(BulbControl bc)
+    {
+        bc.SetState(new Off());
     }
 
-    @Override
-    public String toString() {
+    public override string ToString()
+    {
         return "On";
     }
 }
 
-class Off implements BulbState {
-    @Override
-    public void flip(BulbControl bc) {
-        bc.setState(new On());
+class Off : IBulbState
+{
+    public void Flip(BulbControl bc)
+    {
+        bc.SetState(new On());
     }
 
-    @Override
-    public String toString() {
+    public override string ToString()
+    {
         return "Off";
     }
 }
 
 // Client code.
-public class StatePattern {
-    public static void main(String[] args) {
+public class StatePattern
+{
+    public static void Main(string[] args)
+    {
         BulbControl c = new BulbControl();
-        c.flip();
-        System.out.println(c.toStringState());
-        c.flip();
-        System.out.println(c.toStringState());
+        c.Flip();
+        Console.WriteLine(c.ToStringState());
+        c.Flip();
+        Console.WriteLine(c.ToStringState());
     }
 }

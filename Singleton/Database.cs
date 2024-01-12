@@ -1,78 +1,113 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+using System;
+using System.Data;
+using System.Data.SQLite;
 
-public class Database {
-    private static Database _instance = null; // Keep instance reference
-    private Connection connection;
-    
-    private Database() {
-        try {
-            System.out.println("Database created");
-            connection = DriverManager.getConnection("jdbc:sqlite:db.sqlite3");
-        } catch (SQLException e) {
-            e.printStackTrace();
+public class Database
+{
+    private static Database _instance = null;
+    private IDbConnection connection;
+
+    private Database()
+    {
+        try
+        {
+            Console.WriteLine("Database created");
+            connection = new SQLiteConnection("Data Source=db.sqlite3;");
+            connection.Open();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.ToString());
         }
     }
 
-    public static Database getInstance() {
-        if (_instance == null) {
+    public static Database GetInstance()
+    {
+        if (_instance == null)
+        {
             _instance = new Database();
         }
         return _instance;
     }
 
-    public void createTable() {
-        try {
-            PreparedStatement statement = connection.prepareStatement(
-                "CREATE TABLE IF NOT EXISTS students (id INTEGER, name TEXT);"
-            );
-            statement.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void addData(int id, String name) {
-        try {
-            PreparedStatement statement = connection.prepareStatement(
-                "INSERT INTO students (id, name) VALUES (?, ?);"
-            );
-            statement.setInt(1, id);
-            statement.setString(2, name);
-            statement.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void display() {
-        try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM students;");
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String name = resultSet.getString("name");
-                System.out.println("ID: " + id + ", Name: " + name);
+    public void CreateTable()
+    {
+        try
+        {
+            using (IDbCommand command = connection.CreateCommand())
+            {
+                command.CommandText = "CREATE TABLE IF NOT EXISTS students (id INTEGER, name TEXT);";
+                command.ExecuteNonQuery();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.ToString());
         }
     }
 
-    public static void main(String[] args) {
-        Database db1 = Database.getInstance();
-        Database db2 = Database.getInstance();
+    public void AddData(int id, string name)
+    {
+        try
+        {
+            using (IDbCommand command = connection.CreateCommand())
+            {
+                command.CommandText = "INSERT INTO students (id, name) VALUES (@id, @name);";
+                IDataParameter paramId = command.CreateParameter();
+                paramId.ParameterName = "@id";
+                paramId.Value = id;
+                command.Parameters.Add(paramId);
 
-        System.out.println("Database Objects DB1: " + db1);
-        System.out.println("Database Objects DB2: " + db2);
+                IDataParameter paramName = command.CreateParameter();
+                paramName.ParameterName = "@name";
+                paramName.Value = name;
+                command.Parameters.Add(paramName);
 
-        db1.createTable();
-        db1.addData(1, "john");
-        db2.addData(2, "smith");
+                command.ExecuteNonQuery();
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.ToString());
+        }
+    }
 
-        db1.display();
+    public void Display()
+    {
+        try
+        {
+            using (IDbCommand command = connection.CreateCommand())
+            {
+                command.CommandText = "SELECT * FROM students;";
+                using (IDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int id = Convert.ToInt32(reader["id"]);
+                        string name = Convert.ToString(reader["name"]);
+                        Console.WriteLine("ID: " + id + ", Name: " + name);
+                    }
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.ToString());
+        }
+    }
+
+    public static void Main(string[] args)
+    {
+        Database db1 = Database.GetInstance();
+        Database db2 = Database.GetInstance();
+
+        Console.WriteLine("Database Objects DB1: " + db1);
+        Console.WriteLine("Database Objects DB2: " + db2);
+
+        db1.CreateTable();
+        db1.AddData(1, "john");
+        db2.AddData(2, "smith");
+
+        db1.Display();
     }
 }

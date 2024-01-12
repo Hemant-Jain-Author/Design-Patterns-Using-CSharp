@@ -1,28 +1,38 @@
-class A {
-    public A() {
-        System.out.println("A created");
+using System;
+
+class A
+{
+    public A()
+    {
+        Console.WriteLine("A created");
     }
 
-    public void fun1() {
-        System.out.println("fun1");
-    }
-}
-
-class B {
-    public B() {
-        System.out.println("B created");
-    }
-
-    public void fun2() {
-        System.out.println("fun2 start");
-        new A().fun1();
-        System.out.println("fun2 end");
+    public void Fun1()
+    {
+        Console.WriteLine("fun1");
     }
 }
 
-public class UsingRelationship {
-    public static void main(String[] args) {
+class B
+{
+    public B()
+    {
+        Console.WriteLine("B created");
+    }
+
+    public void Fun2()
+    {
+        Console.WriteLine("fun2 start");
+        new A().Fun1();
+        Console.WriteLine("fun2 end");
+    }
+}
+
+public class UsingRelationship
+{
+    public static void Main(string[] args)
+    {
         B b = new B();
-        b.fun2();
+        b.Fun2();
     }
 }

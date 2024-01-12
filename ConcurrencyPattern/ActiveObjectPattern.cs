@@ -1,80 +1,111 @@
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+using System;
+using System.Collections.Generic;
+using System.Threading;
 
 // MethodRequest encapsulates a method call along with its arguments
-class MethodRequest {
-    private Runnable method;
+class MethodRequest
+{
+    private Action method;
 
-    public MethodRequest(Runnable method) {
+    public MethodRequest(Action method)
+    {
         this.method = method;
     }
 
-    public void execute() {
-        method.run();
+    public void Execute()
+    {
+        method.Invoke();
     }
 }
 
 // ActiveObject encapsulates its own thread of control and executes methods asynchronously
-class ActiveObject extends Thread {
-    private BlockingQueue<MethodRequest> queue;
-    private volatile boolean isRunning;
+class ActiveObject
+{
+    private Queue<MethodRequest> queue;
+    private Thread thread;
+    private volatile bool isRunning;
 
-    public ActiveObject() {
-        this.queue = new LinkedBlockingQueue<>();
+    public ActiveObject()
+    {
+        this.queue = new Queue<MethodRequest>();
         this.isRunning = true;
+        this.thread = new Thread(Run);
     }
 
-    @Override
-    public void run() {
-        while (isRunning || !queue.isEmpty()) {
-            try {
-                MethodRequest methodRequest = queue.take();
-                methodRequest.execute();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+    public void Start()
+    {
+        thread.Start();
+    }
+
+    public void Run()
+    {
+        while (isRunning || queue.Count > 0)
+        {
+            try
+            {
+                MethodRequest methodRequest;
+                lock (queue)
+                {
+                    methodRequest = queue.Dequeue();
+                }
+                methodRequest.Execute();
+            }
+            catch (ThreadInterruptedException e)
+            {
+                Console.WriteLine(e.StackTrace);
             }
         }
     }
 
-    public void scheduleMethod(Runnable method) {
+    public void ScheduleMethod(Action method)
+    {
         MethodRequest methodRequest = new MethodRequest(method);
-        queue.add(methodRequest);
+        lock (queue)
+        {
+            queue.Enqueue(methodRequest);
+        }
     }
 
-    public void stopThread() {
+    public void StopThread()
+    {
         isRunning = false;
-        interrupt();
+        thread.Interrupt();
     }
 }
 
 // Proxy acts as a wrapper around the ActiveObject and forwards method calls to it
-class Proxy {
+class Proxy
+{
     private ActiveObject activeObject;
 
-    public Proxy(ActiveObject activeObject) {
+    public Proxy(ActiveObject activeObject)
+    {
         this.activeObject = activeObject;
     }
 
-    public void invokeMethod(Runnable method) {
-        activeObject.scheduleMethod(method);
+    public void InvokeMethod(Action method)
+    {
+        activeObject.ScheduleMethod(method);
     }
 }
 
 // Example usage
-public class ActiveObjectPattern {
-    public static void main(String[] args) {
+class ActiveObjectPattern
+{
+    static void Main(string[] args)
+    {
         // Create an instance of ActiveObject and Proxy
         ActiveObject activeObject = new ActiveObject();
         Proxy proxy = new Proxy(activeObject);
 
         // Start the ActiveObject thread
-        activeObject.start();
+        activeObject.Start();
 
         // Invoke methods on the Proxy
-        proxy.invokeMethod(() -> System.out.println("Hello"));
-        proxy.invokeMethod(() -> System.out.println("World"));
+        proxy.InvokeMethod(() => Console.WriteLine("Hello"));
+        proxy.InvokeMethod(() => Console.WriteLine("World"));
 
         // Stop the ActiveObject thread
-        activeObject.stopThread();
+        activeObject.StopThread();
     }
 }

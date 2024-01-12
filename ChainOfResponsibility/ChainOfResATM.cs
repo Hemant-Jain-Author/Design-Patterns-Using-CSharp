@@ -1,52 +1,57 @@
-abstract class ATMHandlerAbstract {
+using System;
+
+// Abstract class representing an ATM handler
+abstract class ATMHandlerAbstract
+{
     protected ATMHandlerAbstract successor;
     protected int denomination;
 
-    public ATMHandlerAbstract(ATMHandlerAbstract successor, int denomination) {
+    public ATMHandlerAbstract(ATMHandlerAbstract successor, int denomination)
+    {
         this.successor = successor;
         this.denomination = denomination;
     }
 
-    public abstract void handleRequest(int amount);
+    public abstract void HandleRequest(int amount);
 }
 
-class ATMHandler extends ATMHandlerAbstract {
-    public ATMHandler(ATMHandlerAbstract successor, int denomination) {
-        super(successor, denomination);
+// Concrete class representing an ATM handler
+class ATMHandler : ATMHandlerAbstract
+{
+    public ATMHandler(ATMHandlerAbstract successor, int denomination) : base(successor, denomination)
+    {
     }
 
-    @Override
-    public void handleRequest(int amount) {
+    public override void HandleRequest(int amount)
+    {
         int q = amount / denomination;
         int r = amount % denomination;
 
-        if (q != 0) {
-            System.out.println(q + " notes of " + denomination);
+        if (q != 0)
+        {
+            Console.WriteLine($"{q} notes of {denomination}");
         }
 
-        if (r != 0 && successor != null) {
-            successor.handleRequest(r);
+        if (r != 0 && successor != null)
+        {
+            successor.HandleRequest(r);
         }
     }
 }
 
-public class ChainOfResATM {
-    public static void main(String[] args) {
+// Client code
+public class ChainOfResATM
+{
+    public static void Main(string[] args)
+    {
         ATMHandlerAbstract handler = new ATMHandler(
+            new ATMHandler(
                 new ATMHandler(
-                        new ATMHandler(
-                                new ATMHandler(null, 10), 50
-                        ), 100
-                ), 1000
+                    new ATMHandler(null, 10), 50
+                ), 100
+            ), 1000
         );
 
-        handler.handleRequest(5560);
+        handler.HandleRequest(5560);
     }
 }
-
-/*
-5 notes of 1000
-5 notes of 100
-1 notes of 50
-1 notes of 10
- */

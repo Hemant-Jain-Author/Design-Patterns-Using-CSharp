@@ -1,81 +1,94 @@
-import java.util.Scanner;
+using System;
 
 // Model
-class Model {
-    private String data;
+class Model
+{
+    private string data;
     private Presenter presenter;
 
-    public void setData(String data) {
-        System.out.println("Model: Set data.");
+    public void SetData(string data)
+    {
+        Console.WriteLine("Model: Set data.");
         this.data = data;
-        presenter.modelUpdateEvent();
+        presenter.ModelUpdateEvent();
     }
 
-    public String getData() {
-        System.out.println("Model: Get data.");
+    public string GetData()
+    {
+        Console.WriteLine("Model: Get data.");
         return data;
     }
 
-    public void setPresenter(Presenter presenter) {
+    public void SetPresenter(Presenter presenter)
+    {
         this.presenter = presenter;
     }
 }
 
 // Presenter
-class Presenter {
+class Presenter
+{
     private Model model;
     private View view;
 
-    public Presenter(Model model, View view) {
+    public Presenter(Model model, View view)
+    {
         this.model = model;
         this.view = view;
     }
 
-    public void handleUserInput(String userInput) {
-        System.out.println("Presenter: Handle user input.");
-        model.setData(userInput);
+    public void HandleUserInput(string userInput)
+    {
+        Console.WriteLine("Presenter: Handle user input.");
+        model.SetData(userInput);
     }
 
-    public void modelUpdateEvent() {
-        System.out.println("Presenter: Model update event.");
-        view.update(model.getData());
+    public void ModelUpdateEvent()
+    {
+        Console.WriteLine("Presenter: Model update event.");
+        view.Update(model.GetData());
     }
 }
 
 // View
-class View {
+class View
+{
     private Presenter presenter;
 
-    public void update(String data) {
-        System.out.println("View: Update UI.");
-        System.out.println("Data: " + data);
+    public void Update(string data)
+    {
+        Console.WriteLine("View: Update UI.");
+        Console.WriteLine("Data: " + data);
     }
 
-    public void setPresenter(Presenter presenter) {
+    public void SetPresenter(Presenter presenter)
+    {
         this.presenter = presenter;
     }
 
-    public void getUserInput() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("View: Enter user input: ");
-        String userInput = "hello, world!";
-        System.out.println(userInput);
-        //String userInput = scanner.nextLine();
-        presenter.handleUserInput(userInput);
+    public void GetUserInput()
+    {
+        Console.Write("View: Enter user input: ");
+        string userInput = "hello, world!";
+        Console.WriteLine(userInput);
+        //string userInput = Console.ReadLine();
+        presenter.HandleUserInput(userInput);
     }
 }
 
 // Client code
-public class MVP {
-    public static void main(String[] args) {
+class MVP
+{
+    static void Main(string[] args)
+    {
         Model model = new Model();
         View view = new View();
         Presenter presenter = new Presenter(model, view);
 
-        model.setPresenter(presenter);
-        view.setPresenter(presenter);
+        model.SetPresenter(presenter);
+        view.SetPresenter(presenter);
 
-        view.getUserInput();
+        view.GetUserInput();
     }
 }
 
@@ -86,5 +99,5 @@ Model: Set data.
 Presenter: Model update event.
 Model: Get data.
 View: Update UI.
-Data: hello, world! 
- */
+Data: hello, world!
+*/

@@ -1,48 +1,58 @@
+using System;
+
 // Abstraction interface
-interface Abstraction {
-    void operation();
+interface Abstraction
+{
+    void Operation();
 }
 
 // Implementor interface
-interface Implementor {
-    void operation();
+interface Implementor
+{
+    void Operation();
 }
 
 // ConcreteImplementor1 class
-class ConcreteImplementor1 implements Implementor {
-    @Override
-    public void operation() {
-        System.out.println("ConcreteImplementor1 operation");
+class ConcreteImplementor1 : Implementor
+{
+    public void Operation()
+    {
+        Console.WriteLine("ConcreteImplementor1 operation");
     }
 }
 
 // ConcreteImplementor2 class
-class ConcreteImplementor2 implements Implementor {
-    @Override
-    public void operation() {
-        System.out.println("ConcreteImplementor2 operation");
+class ConcreteImplementor2 : Implementor
+{
+    public void Operation()
+    {
+        Console.WriteLine("ConcreteImplementor2 operation");
     }
 }
 
 // ConcreteAbstraction class
-class ConcreteAbstraction implements Abstraction {
+class ConcreteAbstraction : Abstraction
+{
     private Implementor imp;
 
-    public ConcreteAbstraction(Implementor imp) {
+    public ConcreteAbstraction(Implementor imp)
+    {
         this.imp = imp;
     }
 
-    @Override
-    public void operation() {
-        imp.operation();
+    public void Operation()
+    {
+        imp.Operation();
     }
 }
 
 // Client code
-public class BridgePattern {
-    public static void main(String[] args) {
+public class BridgePattern
+{
+    public static void Main(string[] args)
+    {
         Implementor c1 = new ConcreteImplementor1();
         Abstraction abstraction = new ConcreteAbstraction(c1);
-        abstraction.operation();
+        abstraction.Operation();
     }
 }

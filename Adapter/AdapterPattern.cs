@@ -1,33 +1,42 @@
+using System;
+
 // Desired Interface
-interface DesiredInterface {
-    void operation();
+interface DesiredInterface
+{
+    void Operation();
 }
 
 // Adapter class
-class Adapter implements DesiredInterface {
+class Adapter : DesiredInterface
+{
     private Adaptee adaptee;
 
-    public Adapter() {
+    public Adapter()
+    {
         this.adaptee = new Adaptee();
     }
 
-    @Override
-    public void operation() {
-        adaptee.someOperation();
+    public void Operation()
+    {
+        adaptee.SomeOperation();
     }
 }
 
 // Adaptee class
-class Adaptee {
-    public void someOperation() {
-        System.out.println("Adaptee someOperation() function called.");
+class Adaptee
+{
+    public void SomeOperation()
+    {
+        Console.WriteLine("Adaptee SomeOperation() function called.");
     }
 }
 
 // Client Code
-public class AdapterPattern {
-    public static void main(String[] args) {
+public class AdapterPattern
+{
+    public static void Main(string[] args)
+    {
         DesiredInterface adapter = new Adapter();
-        adapter.operation();
+        adapter.Operation();
     }
 }

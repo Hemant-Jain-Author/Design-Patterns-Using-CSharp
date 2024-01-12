@@ -1,92 +1,113 @@
-import java.util.HashMap;
-import java.util.Map;
+using System;
+using System.Collections.Generic;
 
 // Expression interface
-interface Expression {
-    int interpret();
+interface Expression
+{
+    int Interpret();
 }
 
 // Number class implementing Expression
-class Number implements Expression {
+class Number : Expression
+{
     private int value;
 
-    public Number(int value) {
+    public Number(int value)
+    {
         this.value = value;
     }
 
-    @Override
-    public int interpret() {
+    public int Interpret()
+    {
         return value;
     }
 }
 
 // Plus class implementing Expression
-class Plus implements Expression {
+class Plus : Expression
+{
     private Expression left;
     private Expression right;
 
-    public Plus(Expression left, Expression right) {
+    public Plus(Expression left, Expression right)
+    {
         this.left = left;
         this.right = right;
     }
 
-    @Override
-    public int interpret() {
-        return left.interpret() + right.interpret();
+    public int Interpret()
+    {
+        return left.Interpret() + right.Interpret();
     }
 }
 
 // Minus class implementing Expression
-class Minus implements Expression {
+class Minus : Expression
+{
     private Expression left;
     private Expression right;
 
-    public Minus(Expression left, Expression right) {
+    public Minus(Expression left, Expression right)
+    {
         this.left = left;
         this.right = right;
     }
 
-    @Override
-    public int interpret() {
-        return left.interpret() - right.interpret();
+    public int Interpret()
+    {
+        return left.Interpret() - right.Interpret();
     }
 }
 
 // Context class
-class Context {
-    private Map<String, Integer> variables = new HashMap<>();
+class Context
+{
+    private Dictionary<string, int> variables = new Dictionary<string, int>();
 
-    public int getValue(String name) {
-        return variables.getOrDefault(name, 0);
+    public int GetValue(string name)
+    {
+        return variables.TryGetValue(name, out int value) ? value : 0;
     }
 
-    public void setValue(String name, int value) {
-        variables.put(name, value);
+    public void SetValue(string name, int value)
+    {
+        variables[name] = value;
     }
 }
 
-public class Interpreter {
-    public static Expression parseExpression(String expression, Context context) {
-        if (expression.matches("\\d+")) {
-            return new Number(Integer.parseInt(expression));
-        } else if (expression.contains("+")) {
-            String[] parts = expression.split(" \\+ ", 2);
-            return new Plus(parseExpression(parts[0], context), parseExpression(parts[1], context));
-        } else if (expression.contains("-")) {
-            String[] parts = expression.split(" - ", 2);
-            return new Minus(parseExpression(parts[0], context), parseExpression(parts[1], context));
-        } else {
-            return new Number(context.getValue(expression));
+class Interpreter
+{
+    public static Expression ParseExpression(string expression, Context context)
+    {
+        expression = expression.Trim();
+        if (int.TryParse(expression, out int numericValue))
+        {
+            return new Number(numericValue);
+        }
+        else if (expression.Contains("+"))
+        {
+            string[] parts = expression.Split(new string[] { "+" }, 2, StringSplitOptions.None);
+            return new Plus(ParseExpression(parts[0], context), ParseExpression(parts[1], context));
+        }
+        else if (expression.Contains("-"))
+        {
+            string[] parts = expression.Split(new string[] { "-" }, 2, StringSplitOptions.None);
+            return new Minus(ParseExpression(parts[0], context), ParseExpression(parts[1], context));
+        }
+        else
+        {
+            return new Number(context.GetValue(expression));
         }
     }
 
-    public static void main(String[] args) {
+    public static void Main()
+    {
         Context context = new Context();
-        context.setValue("x", 10);
-        context.setValue("y", 5);
+        context.SetValue("x", 10);
+        context.SetValue("y", 5);
 
-        Expression expression = parseExpression("x + y + 2", context);
-        int result = expression.interpret();
-        System.out.println(result);
+        Expression expression = ParseExpression("x + y + 2", context);
+        int result = expression.Interpret();
+        Console.WriteLine(result);
     }
 }

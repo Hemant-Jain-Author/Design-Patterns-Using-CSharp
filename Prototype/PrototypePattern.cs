@@ -1,60 +1,71 @@
-import java.util.HashMap;
-import java.util.Map;
+using System;
+using System.Collections.Generic;
 
-abstract class Prototype implements Cloneable {
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
+abstract class Prototype : ICloneable
+{
+    public abstract void Display();
 
-    abstract void display();
-}
-
-class ConcretePrototype1 extends Prototype {
-    @Override
-    void display() {
-        System.out.println("ConcretePrototype1");
+    public object Clone()
+    {
+        return MemberwiseClone();
     }
 }
 
-class ConcretePrototype2 extends Prototype {
-    @Override
-    void display() {
-        System.out.println("ConcretePrototype2");
+class ConcretePrototype1 : Prototype
+{
+    public override void Display()
+    {
+        Console.WriteLine("ConcretePrototype1");
     }
 }
 
-class PrototypeRegistry {
-    private static final Map<String, Prototype> prototypes = new HashMap<>();
+class ConcretePrototype2 : Prototype
+{
+    public override void Display()
+    {
+        Console.WriteLine("ConcretePrototype2");
+    }
+}
 
-    static {
-        load();
+class PrototypeRegistry
+{
+    private static readonly Dictionary<string, Prototype> Prototypes = new Dictionary<string, Prototype>();
+
+    static PrototypeRegistry()
+    {
+        Load();
     }
 
-    static void addPrototype(String key, Prototype value) {
-        prototypes.put(key, value);
+    public static void AddPrototype(string key, Prototype value)
+    {
+        Prototypes[key] = value;
     }
 
-    static Prototype getPrototype(String key) throws CloneNotSupportedException {
-        if (prototypes.containsKey(key)) {
-            return (Prototype) prototypes.get(key).clone();
+    public static Prototype GetPrototype(string key)
+    {
+        if (Prototypes.ContainsKey(key))
+        {
+            return (Prototype)Prototypes[key].Clone();
         }
         return null;
     }
 
-    static void load() {
-        addPrototype("CP1", new ConcretePrototype1());
-        addPrototype("CP2", new ConcretePrototype2());
+    public static void Load()
+    {
+        AddPrototype("CP1", new ConcretePrototype1());
+        AddPrototype("CP2", new ConcretePrototype2());
     }
 }
 
-public class PrototypePattern {
-    public static void main(String[] args) throws CloneNotSupportedException {
-        PrototypeRegistry.load();
-        Prototype c1 = PrototypeRegistry.getPrototype("CP1");
-        Prototype c2 = PrototypeRegistry.getPrototype("CP2");
-        c1.display();
-        c2.display();
+class PrototypePattern
+{
+    static void Main(string[] args)
+    {
+        PrototypeRegistry.Load();
+        Prototype c1 = PrototypeRegistry.GetPrototype("CP1");
+        Prototype c2 = PrototypeRegistry.GetPrototype("CP2");
+        c1.Display();
+        c2.Display();
     }
 }
 

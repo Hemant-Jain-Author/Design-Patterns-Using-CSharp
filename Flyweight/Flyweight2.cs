@@ -1,68 +1,78 @@
-import java.util.HashMap;
-import java.util.Map;
+using System;
+using System.Collections.Generic;
 
 // Flyweight interface
-interface Flyweight {
-    void operation(String extrinsicState);
+interface IFlyweight
+{
+    void Operation(string extrinsicState);
 }
 
 // Concrete Flyweight class
-class ConcreteFlyweight implements Flyweight {
-    private String intrinsicState;
+class ConcreteFlyweight : IFlyweight
+{
+    private readonly string intrinsicState;
 
-    public ConcreteFlyweight(String intrinsicState) {
+    public ConcreteFlyweight(string intrinsicState)
+    {
         this.intrinsicState = intrinsicState;
     }
 
-    @Override
-    public void operation(String extrinsicState) {
-        System.out.println("Operation inside concrete flyweight: " + this);
+    public void Operation(string extrinsicState)
+    {
+        Console.WriteLine($"Flyweight: intrinsicState: {intrinsicState} and extrinsicState: {extrinsicState}");
     }
 }
 
 // FlyweightFactory class
-class FlyweightFactory {
-    private Map<String, Flyweight> flyweights = new HashMap<>();
+class FlyweightFactory
+{
+    private readonly Dictionary<string, IFlyweight> flyweights = new Dictionary<string, IFlyweight>();
 
-    public Flyweight getFlyweight(String intrinsicState) {
-        if (!flyweights.containsKey(intrinsicState)) {
-            flyweights.put(intrinsicState, new ConcreteFlyweight(intrinsicState));
+    public IFlyweight GetFlyweight(string intrinsicState)
+    {
+        if (!flyweights.ContainsKey(intrinsicState))
+        {
+            flyweights[intrinsicState] = new ConcreteFlyweight(intrinsicState);
         }
-        return flyweights.get(intrinsicState);
+        return flyweights[intrinsicState];
     }
 }
 
 // ClientClass
-class ClientClass {
-    public Flyweight flyweight;
-    public String extrinsicState;
+class ClientClass
+{
+    public IFlyweight Flyweight { get; }
+    public string ExtrinsicState { get; }
 
-    public ClientClass(FlyweightFactory factory, String intrinsicState, String extrinsicState) {
-        this.flyweight = factory.getFlyweight(intrinsicState);
-        this.extrinsicState = extrinsicState;
+    public ClientClass(FlyweightFactory factory, string intrinsicState, string extrinsicState)
+    {
+        Flyweight = factory.GetFlyweight(intrinsicState);
+        ExtrinsicState = extrinsicState;
     }
 
-    public void operation() {
-        System.out.println("Operation inside context: " + this);
-        flyweight.operation(extrinsicState);
+    public void Operation()
+    {
+        Console.WriteLine($"Operation inside context: {this}");
+        Flyweight.Operation(ExtrinsicState);
     }
 }
 
 // Main class
-public class Flyweight2 {
-    public static void main(String[] args) {
+class Flyweight2
+{
+    static void Main(string[] args)
+    {
         FlyweightFactory factory = new FlyweightFactory();
         ClientClass c = new ClientClass(factory, "common", "separate1");
-        c.operation();
+        c.Operation();
         ClientClass c2 = new ClientClass(factory, "common", "separate2");
-        c2.operation();
+        c2.Operation();
     }
 }
 /*
-Operation inside context: ClientClass@8bcc55f
-Operation inside concrete flyweight: ConcreteFlyweight@58644d46
-Operation inside context: ClientClass@14dad5dc
-Operation inside concrete flyweight: ConcreteFlyweight@58644d46
+Operation inside context: ClientClass
+Flyweight: intrinsicState: common and extrinsicState: separate1
+Operation inside context: ClientClass
+Flyweight: intrinsicState: common and extrinsicState: separate2
 
 */
-

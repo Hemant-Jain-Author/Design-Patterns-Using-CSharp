@@ -1,72 +1,65 @@
-import java.util.*;
+using System;
 
 // Animal interface
-interface Animal {
-    void voice();
+interface IAnimal
+{
+    void Voice();
 }
 
 // Concrete Animal classes
-class Dog implements Animal {
-    @Override
-    public void voice() {
-        System.out.println("Bhow Bhow!!");
+class Dog : IAnimal
+{
+    public void Voice()
+    {
+        Console.WriteLine("Bhow Bhow!!");
     }
 }
 
-class Cat implements Animal {
-    @Override
-    public void voice() {
-        System.out.println("Meow Meow!!");
+class Cat : IAnimal
+{
+    public void Voice()
+    {
+        Console.WriteLine("Meow Meow!!");
     }
 }
 
 // AnimalFactory interface
-interface AnimalFactory {
-    Animal getAnimal();
+interface IAnimalFactory
+{
+    IAnimal GetAnimal();
 }
 
 // Concrete AnimalFactory classes
-class CatFactory implements AnimalFactory {
-    @Override
-    public Animal getAnimal() {
+class CatFactory : IAnimalFactory
+{
+    public IAnimal GetAnimal()
+    {
         return new Cat();
     }
 }
 
-class DogFactory implements AnimalFactory {
-    @Override
-    public Animal getAnimal() {
+class DogFactory : IAnimalFactory
+{
+    public IAnimal GetAnimal()
+    {
         return new Dog();
     }
 }
 
 // Client code
-public class FactoryMethodAnimal {
-    public static void main(String[] args) {
-        AnimalFactory dogFactory = new DogFactory();
-        dogFactory.getAnimal().voice();
+class FactoryMethodAnimal
+{
+    static void Main(string[] args)
+    {
+        IAnimalFactory dogFactory = new DogFactory();
+        dogFactory.GetAnimal().Voice();
 
-        AnimalFactory catFactory = new CatFactory();
-        catFactory.getAnimal().voice();
-
-        // Future changes to include cow type of objects.
-        class Cow implements Animal {
-            @Override
-            public void voice() {
-                System.out.println("Gooaa Gooaa!!");
-            }
-        }
-
-        class CowFactory implements AnimalFactory {
-            @Override
-            public Animal getAnimal() {
-                return new Cow();
-            }
-        }
+        IAnimalFactory catFactory = new CatFactory();
+        catFactory.GetAnimal().Voice();
 
         // Client code for Cow
-        AnimalFactory cowFactory = new CowFactory();
-        cowFactory.getAnimal().voice();
+        IAnimalFactory cowFactory = new CowFactory();
+        cowFactory.GetAnimal().Voice();
     }
 }
 /*
@@ -74,3 +67,22 @@ Bhow Bhow!!
 Meow Meow!!
 Gooaa Gooaa!!
 */
+
+// Future changes to include cow type of objects.
+class Cow : IAnimal
+{
+    public void Voice()
+    {
+        Console.WriteLine("Gooaa Gooaa!!");
+    }
+}
+
+class CowFactory : IAnimalFactory
+{
+    public IAnimal GetAnimal()
+    {
+        return new Cow();
+    }
+}
+
+

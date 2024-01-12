@@ -1,74 +1,87 @@
+using System;
+
 // Abstraction interface
-interface Shape {
-    void draw();
+interface Shape
+{
+    void Draw();
 }
 
 // Implementor interface
-interface Color {
-    String fill();
+interface Color
+{
+    string Fill();
 }
 
 // Rectangle class
-class Rectangle implements Shape {
+class Rectangle : Shape
+{
     private Color imp;
 
-    public Rectangle(Color imp) {
+    public Rectangle(Color imp)
+    {
         this.imp = imp;
     }
 
-    @Override
-    public void draw() {
-        System.out.println("Drawing Rectangle with color " + imp.fill());
+    public void Draw()
+    {
+        Console.WriteLine($"Drawing Rectangle with color {imp.Fill()}");
     }
 }
 
 // Circle class
-class Circle implements Shape {
+class Circle : Shape
+{
     private Color imp;
 
-    public Circle(Color imp) {
+    public Circle(Color imp)
+    {
         this.imp = imp;
     }
 
-    @Override
-    public void draw() {
-        System.out.println("Drawing Circle with color " + imp.fill());
+    public void Draw()
+    {
+        Console.WriteLine($"Drawing Circle with color {imp.Fill()}");
     }
 }
 
 // Red class
-class Red implements Color {
-    @Override
-    public String fill() {
+class Red : Color
+{
+    public string Fill()
+    {
         return "Red";
     }
 }
 
 // Green class
-class Green implements Color {
-    @Override
-    public String fill() {
+class Green : Color
+{
+    public string Fill()
+    {
         return "Green";
     }
 }
 
 // Blue class
-class Blue implements Color {
-    @Override
-    public String fill() {
+class Blue : Color
+{
+    public string Fill()
+    {
         return "Blue";
     }
 }
 
 // Client code
-public class BridgePatternShape {
-    public static void main(String[] args) {
+public class BridgePatternShape
+{
+    public static void Main(string[] args)
+    {
         Color c1 = new Red();
         Shape abstraction = new Circle(c1);
-        abstraction.draw();
+        abstraction.Draw();
 
         Color c2 = new Green();
         Shape abstraction2 = new Rectangle(c2);
-        abstraction2.draw();
+        abstraction2.Draw();
     }
 }

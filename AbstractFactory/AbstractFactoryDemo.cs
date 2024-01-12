@@ -1,86 +1,99 @@
+using System;
+
 // Menu interface
-interface Menu {
-    void desc();
+interface Menu
+{
+    void Desc();
 }
 
 // WinMenu class
-class WinMenu implements Menu {
-    @Override
-    public void desc() {
-        System.out.println("Win Menu!!");
+class WinMenu : Menu
+{
+    public void Desc()
+    {
+        Console.WriteLine("Win Menu!!");
     }
 }
 
 // MacMenu class
-class MacMenu implements Menu {
-    @Override
-    public void desc() {
-        System.out.println("Mac Menu!!");
+class MacMenu : Menu
+{
+    public void Desc()
+    {
+        Console.WriteLine("Mac Menu!!");
     }
 }
 
 // Button interface
-interface Button {
-    void desc();
+interface Button
+{
+    void Desc();
 }
 
 // WinButton class
-class WinButton implements Button {
-    @Override
-    public void desc() {
-        System.out.println("Win Button!!");
+class WinButton : Button
+{
+    public void Desc()
+    {
+        Console.WriteLine("Win Button!!");
     }
 }
 
 // MacButton class
-class MacButton implements Button {
-    @Override
-    public void desc() {
-        System.out.println("Mac Button!!");
+class MacButton : Button
+{
+    public void Desc()
+    {
+        Console.WriteLine("Mac Button!!");
     }
 }
 
 // Abstract Factory interface
-interface AbstractFactory {
-    Menu getMenu();
-    Button getButton();
+interface AbstractFactory
+{
+    Menu GetMenu();
+    Button GetButton();
 }
 
 // WinFactory class
-class WinFactory implements AbstractFactory {
-    @Override
-    public Menu getMenu() {
+class WinFactory : AbstractFactory
+{
+    public Menu GetMenu()
+    {
         return new WinMenu();
     }
 
-    @Override
-    public Button getButton() {
+    public Button GetButton()
+    {
         return new WinButton();
     }
 }
 
 // MacFactory class
-class MacFactory implements AbstractFactory {
-    @Override
-    public Menu getMenu() {
+class MacFactory : AbstractFactory
+{
+    public Menu GetMenu()
+    {
         return new MacMenu();
     }
 
-    @Override
-    public Button getButton() {
+    public Button GetButton()
+    {
         return new MacButton();
     }
 }
 
 // Client code
-public class AbstractFactoryDemo {
-    public static void main(String[] args) {
+public class AbstractFactoryDemo
+{
+    public static void Main(string[] args)
+    {
         AbstractFactory macFactory = new MacFactory();
-        macFactory.getMenu().desc();
-        macFactory.getButton().desc();
+        macFactory.GetMenu().Desc();
+        macFactory.GetButton().Desc();
 
         AbstractFactory winFactory = new WinFactory();
-        winFactory.getButton().desc();
-        winFactory.getMenu().desc();
+        winFactory.GetButton().Desc();
+        winFactory.GetMenu().Desc();
     }
 }
