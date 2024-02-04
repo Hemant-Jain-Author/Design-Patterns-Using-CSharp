@@ -5,40 +5,40 @@ using System.Collections.Generic;
 class Model
 {
     private string data;
-    private List<Observer> observers;
+    private List<View> observers;
 
     public Model()
     {
-        this.observers = new List<Observer>();
+        this.observers = new List<View>();
     }
 
     public void SetData(string data)
     {
-        Console.WriteLine("Model : Set data.");
+        Console.WriteLine("Model: Set data.");
         this.data = data;
         NotifyObservers();
     }
 
     public string GetData()
     {
-        Console.WriteLine("Model : Get data.");
+        Console.WriteLine("Model: Get data.");
         return this.data;
     }
 
-    public void AddObserver(Observer observer)
+    public void AddObserver(View observer)
     {
         this.observers.Add(observer);
     }
 
-    public void RemoveObserver(Observer observer)
+    public void RemoveObserver(View observer)
     {
         this.observers.Remove(observer);
     }
 
     public void NotifyObservers()
     {
-        Console.WriteLine("Model : Notify observers.");
-        foreach (Observer observer in observers)
+        Console.WriteLine("Model: Notify observers.");
+        foreach (View observer in observers)
         {
             observer.Update();
         }
@@ -46,7 +46,7 @@ class Model
 }
 
 // View
-class View : Observer
+class View 
 {
     private Controller controller;
     private Model model;
@@ -60,14 +60,14 @@ class View : Observer
 
     public void Update()
     {
-        Console.WriteLine("View : Update.");
+        Console.WriteLine("View: Update.");
         string data = model.GetData();
         Console.WriteLine("Data: " + data);
     }
 
     public void GetUserInput()
     {
-        Console.Write("View : Enter user input: ");
+        Console.Write("View: Enter user input: ");
         string userInput = Console.ReadLine();
         controller.HandleUserInput(userInput);
     }
@@ -86,7 +86,7 @@ class Controller
 
     public void HandleUserInput(string userInput)
     {
-        Console.WriteLine("Controller : Handle user input.");
+        Console.WriteLine("Controller: Handle user input.");
         model.SetData(userInput);
         // Can inform view about action.
     }
@@ -95,12 +95,6 @@ class Controller
     {
         this.view = v;
     }
-}
-
-// Observer interface
-interface Observer
-{
-    void Update();
 }
 
 // Main class
@@ -117,11 +111,11 @@ class MVC
 }
 
 /*
-View : Enter user input: hello, world!
-Controller : Handle user input.
-Model : Set data.
-Model : Notify observers.
-View : Update.
-Model : Get data.
+View: Enter user input: hello, world!
+Controller: Handle user input.
+Model: Set data.
+Model: Notify observers.
+View: Update.
+Model: Get data.
 Data: hello, world!
 */

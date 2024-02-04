@@ -68,3 +68,7 @@ public class AdapterPatternRectangle
         adapter.Draw();
     }
 }
+
+/* 
+Drawing Rectangle.
+*/

@@ -1,84 +1,98 @@
-class Animal {
-    String name;
+using System;
 
-    public Animal(String name) {
+class Animal
+{
+    protected string name;
+
+    public Animal(string name)
+    {
         this.name = name;
     }
 }
 
-class Bird extends Animal {
-    public Bird(String name) {
-        super(name);
+class Bird : Animal
+{
+    public Bird(string name) : base(name)
+    {
     }
 
-    void fly() {
+    public virtual void Fly()
+    {
         // Abstract method, to be overridden by subclasses
     }
 }
 
-class Dodo extends Bird {
-    public Dodo() {
-        super("Dodo");
+class Dodo : Bird
+{
+    public Dodo() : base("Dodo")
+    {
     }
 
-    @Override
-    void fly() {
-        System.out.println("The dodo is extinct and cannot fly.");
-    }
-}
-
-class Penguin extends Bird {
-    public Penguin() {
-        super("Penguin");
-    }
-
-    @Override
-    void fly() {
-        System.out.println("The penguin cannot fly.");
-    }
-
-    void slide() {
-        System.out.println("The penguin is sliding on its belly!");
-    }
-
-    void swim() {
-        System.out.println("The penguin is swimming in the water!");
+    public override void Fly()
+    {
+        Console.WriteLine("The dodo is extinct and cannot fly.");
     }
 }
 
-class Eagle extends Bird {
-    public Eagle() {
-        super("Eagle");
+class Penguin : Bird
+{
+    public Penguin() : base("Penguin")
+    {
     }
 
-    @Override
-    void fly() {
-        System.out.println("The eagle is soaring through the sky!");
+    public override void Fly()
+    {
+        Console.WriteLine("The penguin cannot fly.");
+    }
+
+    public void Slide()
+    {
+        Console.WriteLine("The penguin is sliding on its belly!");
+    }
+
+    public void Swim()
+    {
+        Console.WriteLine("The penguin is swimming in the water!");
     }
 }
 
-class Sparrow extends Bird {
-    public Sparrow() {
-        super("Sparrow");
+class Eagle : Bird
+{
+    public Eagle() : base("Eagle")
+    {
     }
 
-    @Override
-    void fly() {
-        System.out.println("The sparrow is fluttering its wings!");
+    public override void Fly()
+    {
+        Console.WriteLine("The eagle is soaring through the sky!");
+    }
+}
+
+class Sparrow : Bird
+{
+    public Sparrow() : base("Sparrow")
+    {
+    }
+
+    public override void Fly()
+    {
+        Console.WriteLine("The sparrow is fluttering its wings!");
     }
 }
 
 // Client code
-public class OpenClosedPrinciple {
-    public static void main(String[] args) {
+public class OpenClosedPrinciple
+{
+    public static void Main(string[] args)
+    {
         Bird bird1 = new Eagle();
-        bird1.fly();
+        bird1.Fly();
 
         Bird bird2 = new Dodo();
-        bird2.fly();
+        bird2.Fly();
 
         Bird bird3 = new Pigeon();
-        bird3.fly();
+        bird3.Fly();
     }
 }
 
@@ -88,17 +102,19 @@ The dodo is extinct and cannot fly.
 The pigeon is fluttering its wings!
 */
 
-class Pigeon extends Bird {
-    public Pigeon() {
-        super("Pigeon");
+class Pigeon : Bird
+{
+    public Pigeon() : base("Pigeon")
+    {
     }
 
-    void makeCooingSound() {
-        System.out.println("The pigeon is making a cooing sound.");
+    public void MakeCooingSound()
+    {
+        Console.WriteLine("The pigeon is making a cooing sound.");
     }
 
-    @Override
-    void fly() {
-        System.out.println("The pigeon is fluttering its wings!");
+    public override void Fly()
+    {
+        Console.WriteLine("The pigeon is fluttering its wings!");
     }
 }

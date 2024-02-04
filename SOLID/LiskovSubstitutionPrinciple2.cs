@@ -1,84 +1,99 @@
-abstract class Animal {
-    String name;
+using System;
 
-    Animal(String name) {
+abstract class Animal
+{
+    protected string name;
+
+    protected Animal(string name)
+    {
         this.name = name;
     }
 }
 
-class Bird extends Animal {
-    int flightHeight;
+abstract class Bird : Animal
+{
+    protected internal int flightHeight;
 
-    Bird(String name) {
-        super(name);
+    protected Bird(string name) : base(name)
+    {
         this.flightHeight = 0;
     }
 
-    void fly() {
-        // To be implemented in subclasses
-    }
+    public abstract void Fly();
 }
 
-class Sparrow extends Bird {
-    Sparrow(String name) {
-        super(name);
+class Sparrow : Bird
+{
+    public Sparrow(string name) : base(name)
+    {
     }
 
-    void fly() {
-        System.out.println("The sparrow is fluttering its wings.");
+    public override void Fly()
+    {
+        Console.WriteLine("The sparrow is fluttering its wings.");
         flightHeight = 100;
     }
 }
 
-class Penguin extends Bird {
-    Penguin(String name) {
-        super(name);
+class Penguin : Bird
+{
+    public Penguin(string name) : base(name)
+    {
     }
 
-    void fly() {
-        System.out.println("The penguin cannot fly.");
+    public override void Fly()
+    {
+        Console.WriteLine("The penguin cannot fly.");
     }
 
-    void slide() {
-        System.out.println("The penguin is sliding on its belly!");
+    public void Slide()
+    {
+        Console.WriteLine("The penguin is sliding on its belly!");
     }
 
-    void swim() {
-        System.out.println("The penguin is swimming in the water!");
-    }
-}
-
-class Dodo extends Bird {
-    Dodo(String name) {
-        super(name);
-    }
-
-    void fly() {
-        System.out.println("The dodo is extinct and cannot fly.");
+    public void Swim()
+    {
+        Console.WriteLine("The penguin is swimming in the water!");
     }
 }
 
-public class LiskovSubstitutionPrinciple2 {
-    static void test(Bird bird) {
-        bird.fly();
-        if (bird.flightHeight > 0) {
-            System.out.println("Bird is flying at a positive height.");
-        } else {
-            System.out.println("Error: fly() method called; flight height is still zero.");
+class Dodo : Bird
+{
+    public Dodo(string name) : base(name)
+    {
+    }
+
+    public override void Fly()
+    {
+        Console.WriteLine("The dodo is extinct and cannot fly.");
+    }
+}
+
+public class LiskovSubstitutionPrinciple2
+{
+    static void Test(Bird bird)
+    {
+        bird.Fly();
+        if (bird.flightHeight > 0)
+        {
+            Console.WriteLine("Bird is flying at a positive height.");
+        }
+        else
+        {
+            Console.WriteLine("Error: Fly() method called; flight height is still zero.");
         }
     }
 
-    public static void main(String[] args) {
+    public static void Main(string[] args)
+    {
         Sparrow sparrow = new Sparrow("Sparrow");
-        test(sparrow);
+        Test(sparrow);
 
         Penguin penguin = new Penguin("Penguin");
-        test(penguin);
-        penguin.slide();
-        penguin.swim();
+        Test(penguin);
 
         Dodo dodo = new Dodo("Dodo");
-        test(dodo);
+        Test(dodo);
     }
 }
 
@@ -86,9 +101,7 @@ public class LiskovSubstitutionPrinciple2 {
 The sparrow is fluttering its wings.
 Bird is flying at a positive height.
 The penguin cannot fly.
-Error: fly() method called; flight height is still zero.
-The penguin is sliding on its belly!
-The penguin is swimming in the water!
+Error: Fly() method called; flight height is still zero.
 The dodo is extinct and cannot fly.
-Error: fly() method called; flight height is still zero.
+Error: Fly() method called; flight height is still zero.
 */

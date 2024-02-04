@@ -1,71 +1,92 @@
-class Animal {
-    String name;
+using System;
 
-    public Animal(String name) {
+class Animal
+{
+    protected string name;
+
+    public Animal(string name)
+    {
         this.name = name;
     }
 
-    public void eat() {
-        System.out.println(name + " is eating.");
+    public void Eat()
+    {
+        Console.WriteLine(name + " is eating.");
     }
 
-    public void sleep() {
-        System.out.println(name + " is sleeping.");
+    public void Sleep()
+    {
+        Console.WriteLine(name + " is sleeping.");
     }
 
-    public void makeSound() {
-        System.out.println(name + " is making a sound.");
-    }
-}
-
-class Mammal extends Animal {
-    public Mammal(String name) {
-        super(name);
-    }
-
-    public void giveBirth() {
-        System.out.println(name + " is giving birth to live young.");
+    public virtual void MakeSound()
+    {
+        Console.WriteLine(name + " is making a sound.");
     }
 }
 
-class Reptile extends Animal {
-    public Reptile(String name) {
-        super(name);
+class Mammal : Animal
+{
+    public Mammal(string name) : base(name)
+    {
     }
 
-    public void layEggs() {
-        System.out.println(name + " is laying eggs.");
+    public void GiveBirth()
+    {
+        Console.WriteLine(name + " is giving birth to live young.");
     }
 }
 
-class Bird extends Animal {
-    public Bird(String name) {
-        super(name);
+class Reptile : Animal
+{
+    public Reptile(string name) : base(name)
+    {
     }
 
-    public void fly() {
-        System.out.println(name + " is flying.");
+    public void LayEggs()
+    {
+        Console.WriteLine(name + " is laying eggs.");
+    }
+}
+
+class Bird : Animal
+{
+    public Bird(string name) : base(name)
+    {
     }
 
-    public void layEggs() {
-        System.out.println(name + " is laying eggs.");
+    public void Fly()
+    {
+        Console.WriteLine(name + " is flying.");
+    }
+
+    public override void MakeSound()
+    {
+        Console.WriteLine(name + " is making a sound.");
+    }
+
+    public void LayEggs()
+    {
+        Console.WriteLine(name + " is laying eggs.");
     }
 }
 
 // Client code.
-public class SingleResponsibilityPrinciple {
-    public static void main(String[] args) {
+public class SingleResponsibilityPrinciple
+{
+    public static void Main(string[] args)
+    {
         Mammal animal1 = new Mammal("Cat");
-        animal1.giveBirth();
-        animal1.makeSound();
+        animal1.GiveBirth();
+        animal1.MakeSound();
 
         Reptile animal2 = new Reptile("Snake");
-        animal2.layEggs();
-        animal2.eat();
+        animal2.LayEggs();
+        animal2.Eat();
 
         Bird animal3 = new Bird("Eagle");
-        animal3.fly();
-        animal3.layEggs();
+        animal3.LayEggs();
+        animal3.Fly();
     }
 }
 
@@ -74,6 +95,6 @@ Cat is giving birth to live young.
 Cat is making a sound.
 Snake is laying eggs.
 Snake is eating.
-Eagle is flying.
 Eagle is laying eggs.
+Eagle is flying.
 */

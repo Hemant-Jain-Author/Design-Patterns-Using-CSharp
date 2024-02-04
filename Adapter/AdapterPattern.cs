@@ -40,3 +40,6 @@ public class AdapterPattern
         adapter.Operation();
     }
 }
+/* 
+Adaptee someOperation() function called.
+*/

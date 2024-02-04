@@ -97,3 +97,10 @@ public class AbstractFactoryDemo
         winFactory.GetMenu().Desc();
     }
 }
+
+/* 
+Mac Menu!!
+Mac Button!!
+Win Button!!
+Win Menu!!
+*/

@@ -1,72 +1,113 @@
+using System;
 
-class Rectangle {
+abstract class Animal
+{
+    protected string name;
+
+    public Animal(string name)
+    {
+        this.name = name;
+    }
+
+    public virtual void MakeSound()
+    {
+        Console.WriteLine("Animal sound");
+    }
+}
+
+class Dog : Animal
+{
+    public Dog(string name) : base(name)
+    {
+    }
+
+    public override void MakeSound()
+    {
+        Console.WriteLine("woof woof!");
+    }
+}
+
+class Cat : Animal
+{
+    public Cat(string name) : base(name)
+    {
+    }
+
+    public override void MakeSound()
+    {
+        Console.WriteLine("meow!");
+    }
+}
+
+class Rectangle
+{
     private int height;
     private int width;
 
-    public Rectangle(int l, int w) {
+    public Rectangle(int l, int w)
+    {
         this.height = l;
         this.width = w;
     }
 
-    public void setWidth(int w) {
+    public virtual void SetWidth(int w)
+    {
         this.width = w;
     }
 
-    public void setHeight(int h) {
+    public virtual void SetHeight(int h)
+    {
         this.height = h;
     }
 
-    public int getWidth() {
+    public int GetWidth()
+    {
         return this.width;
     }
 
-    public int getHeight() {
+    public int GetHeight()
+    {
         return this.height;
     }
 }
 
-class Square extends Rectangle {
-    public Square(int l) {
-        super(l, l);
+class Square : Rectangle
+{
+    public Square(int l) : base(l, l)
+    {
     }
 
-    @Override
-    public void setWidth(int w) {
-        super.setWidth(w);
-        super.setHeight(w);
+    public override void SetWidth(int w)
+    {
+        base.SetWidth(w);
+        base.SetHeight(w);
     }
 
-    @Override
-    public void setHeight(int h) {
-        super.setWidth(h);
-        super.setHeight(h);
+    public override void SetHeight(int h)
+    {
+        base.SetWidth(h);
+        base.SetHeight(h);
     }
 }
 
-public class LiskovSubstitutionPrinciple {
-    public static void testRectangle() {
-        Rectangle r = new Rectangle(10, 20);
-        testRect(r);
-    }
-
-    public static void testSquare() {
-        Square s = new Square(10);
-        s.setWidth(20);
-        testRect(s);
-    }
-
-    private static void testRect(Rectangle rect) {
-        rect.setHeight(10);
-        rect.setWidth(20);
-        if(200 == rect.getHeight() * rect.getWidth())
-            System.out.println("success");
+public class LiskovSubstitutionPrinciple
+{
+    private static void TestRect(Rectangle rect)
+    {
+        rect.SetHeight(10);
+        rect.SetWidth(20);
+        if (200 == rect.GetHeight() * rect.GetWidth())
+            Console.WriteLine("success");
         else
-            System.out.println("failure");
+            Console.WriteLine("failure");
     }
 
-    public static void main(String[] args) {
-        testRectangle();
-        testSquare();
+    public static void Main(string[] args)
+    {
+        Rectangle r = new Rectangle(10, 20);
+        TestRect(r);
+        Square s = new Square(10);
+        TestRect(s);
     }
 }
 

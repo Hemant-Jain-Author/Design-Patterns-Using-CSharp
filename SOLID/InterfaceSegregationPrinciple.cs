@@ -1,58 +1,69 @@
+using System;
 
-interface Printable {
-    void print(String document);
+public abstract class Printer
+{
+    public abstract void Print(string document);
+
+    public abstract void Scan();
+
+    public abstract void Fax(string document);
 }
 
-interface Scannable {
-    void scan();
+public interface Printable
+{
+    void Print(string document);
 }
 
-interface Faxable {
-    void fax(String document);
+public interface Scannable
+{
+    void Scan();
 }
 
-class BasicInkjetPrinter implements Printable, Scannable {
-    @Override
-    public void print(String document) {
-        System.out.printf("Printing %s using basic inkjet printer%n", document);
-    }
+public interface Faxable
+{
+    void Fax(string document);
+}
 
-    @Override
-    public void scan() {
-        System.out.println("Scanning using basic inkjet printer");
+public class BasicInkjetPrinter : Printable
+{
+    public void Print(string document)
+    {
+        Console.WriteLine($"Printing {document} using basic inkjet printer");
     }
 }
 
-class HighEndOfficePrinter implements Printable, Scannable, Faxable {
-    @Override
-    public void print(String document) {
-        System.out.printf("Printing %s using high end office printer%n", document);
+public class HighEndOfficePrinter : Printable, Scannable, Faxable
+{
+    public void Print(string document)
+    {
+        Console.WriteLine($"Printing {document} using high end office printer");
     }
 
-    @Override
-    public void scan() {
-        System.out.println("Scanning using high end office printer");
+    public void Scan()
+    {
+        Console.WriteLine("Scanning using high end office printer");
     }
 
-    @Override
-    public void fax(String document) {
-        System.out.printf("Faxing %s using high end office printer%n", document);
+    public void Fax(string document)
+    {
+        Console.WriteLine($"Faxing {document} using high end office printer");
     }
 }
 
 // Client code
-public class InterfaceSegregationPrinciple {
-    public static void main(String[] args) {
+public class InterfaceSegregationPrinciple
+{
+    public static void Main(string[] args)
+    {
         // BasicInkjetPrinter
         BasicInkjetPrinter basicPrinter = new BasicInkjetPrinter();
-        basicPrinter.print("Sample Document");
-        basicPrinter.scan();
+        basicPrinter.Print("Sample Document");
 
         // HighEndOfficePrinter
         HighEndOfficePrinter officePrinter = new HighEndOfficePrinter();
-        officePrinter.print("Important Report");
-        officePrinter.scan();
-        officePrinter.fax("Confidential Memo");
+        officePrinter.Print("Important Report");
+        officePrinter.Scan();
+        officePrinter.Fax("Confidential Memo");
     }
 }
 

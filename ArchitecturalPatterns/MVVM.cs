@@ -3,7 +3,7 @@ using System;
 // Model
 class Model
 {
-    private string data;
+    private string data = "Default.";
 
     public void SetData(string data)
     {
@@ -22,30 +22,22 @@ class Model
 class ViewModel
 {
     private Model model;
-    private string data;
 
     public ViewModel(Model model)
     {
         this.model = model;
-        UpdateData();
     }
 
-    public void UpdateModel(string data)
+    public void SetData(string data)
     {
-        Console.WriteLine("ViewModel: Update data.");
+        Console.WriteLine("ViewModel: Set data.");
         model.SetData(data);
-        UpdateData();
-    }
-
-    public void UpdateData()
-    {
-        Console.WriteLine("ViewModel: Fetch data.");
-        data = model.GetData();
     }
 
     public string GetData()
     {
-        return data;
+        Console.WriteLine("ViewModel: Get data.");
+        return model.GetData();
     }
 }
 
@@ -67,17 +59,15 @@ class View
     public void GetUserInput()
     {
         Console.Write("View: Enter user input: ");
-        string userInput = "hello, world!";
-        Console.WriteLine(userInput);
-        //string userInput = Console.ReadLine();
-        viewModel.UpdateModel(userInput);
+        string userInput = Console.ReadLine();
+        viewModel.SetData(userInput);
     }
 }
 
 // Client code
 class MVVM
 {
-    static void Main(string[] args)
+    public static void Main(string[] args)
     {
         Model model = new Model();
         ViewModel viewModel = new ViewModel(model);
@@ -95,13 +85,13 @@ class MVVM
 }
 
 /*
-ViewModel: Fetch data.
+ViewModel: Get data.
 Model: Get data.
-Display Data: 
+Display Data: Default.
 View: Enter user input: hello, world!
-ViewModel: Update data.
+ViewModel: Set data.
 Model: Set data.
-ViewModel: Fetch data.
+ViewModel: Get data.
 Model: Get data.
 Display Data: hello, world!
 */

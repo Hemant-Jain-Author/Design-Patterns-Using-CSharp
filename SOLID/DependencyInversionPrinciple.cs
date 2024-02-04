@@ -1,32 +1,39 @@
-import java.util.Objects;
+using System;
 
-abstract class IMailSender {
-    abstract void sendMail(String toAddress, String fromAddress, String subject, String body);
+public abstract class IMailSender
+{
+    public abstract void SendMail(string toAddress, string fromAddress, string subject, string body);
 }
 
-class SmtpServer extends IMailSender {
-    @Override
-    void sendMail(String toAddress, String fromAddress, String subject, String body) {
-        System.out.printf("Send mail: subject: %s from: %s to: %s body: %s%n", subject, fromAddress, toAddress, body);
+public class SmtpServer : IMailSender
+{
+    public override void SendMail(string toAddress, string fromAddress, string subject, string body)
+    {
+        Console.WriteLine($"Send mail: subject: {subject} from: {fromAddress} to: {toAddress} body: {body}");
     }
 }
 
-class EmailSender {
-    private final IMailSender mailSender;
+public class EmailSender
+{
+    private readonly IMailSender mailSender;
 
-    public EmailSender(IMailSender mailSender) {
-        this.mailSender = Objects.requireNonNull(mailSender);
+    public EmailSender(IMailSender mailSender)
+    {
+        this.mailSender = mailSender;
     }
 
-    public void sendEmail(String toAddress, String fromAddress, String subject, String body) {
+    public void SendEmail(string toAddress, string fromAddress, string subject, string body)
+    {
         // Delegate email sending to the mail sender implementation
-        mailSender.sendMail(toAddress, fromAddress, subject, body);
+        mailSender.SendMail(toAddress, fromAddress, subject, body);
     }
 }
 
 // Client code.
-public class DependencyInversionPrinciple {
-    public static void main(String[] args) {
+public class DependencyInversionPrinciple
+{
+    public static void Main(string[] args)
+    {
         // Create an instance of the SmtpServer class
         SmtpServer smtpServer = new SmtpServer();
 
@@ -34,11 +41,11 @@ public class DependencyInversionPrinciple {
         EmailSender emailSender = new EmailSender(smtpServer);
 
         // Send an email using the EmailSender instance
-        emailSender.sendEmail(
-                "recipient@example.com",
-                "sender@example.com",
-                "mail subject.",
-                "This is a test email body.");
+        emailSender.SendEmail(
+            "recipient@example.com",
+            "sender@example.com",
+            "mail subject.",
+            "This is a test email body.");
     }
 }
 
