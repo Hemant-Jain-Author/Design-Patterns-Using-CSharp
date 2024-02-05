@@ -109,6 +109,8 @@ class CareTaker
     }
 }
 
+// Client code
+
 class MomentoPatternJson
 {
     static void Main(string[] args)

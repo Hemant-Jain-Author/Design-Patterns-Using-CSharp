@@ -57,6 +57,8 @@ class PrototypeRegistry
     }
 }
 
+// Client code
+
 class PrototypePattern
 {
     static void Main(string[] args)

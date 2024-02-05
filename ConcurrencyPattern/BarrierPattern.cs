@@ -62,6 +62,8 @@ class Worker
     }
 }
 
+// Client code
+
 class BarrierPattern
 {
     public static void Main(string[] args)

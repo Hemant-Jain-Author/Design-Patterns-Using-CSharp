@@ -42,6 +42,7 @@ class StoreOrderPacking : OrderPackingTemplate
     }
 }
 
+// Client code
 class TemplatePatternOrder
 {
     public static void Main(string[] args)

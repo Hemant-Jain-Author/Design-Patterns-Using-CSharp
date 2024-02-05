@@ -96,6 +96,7 @@ public class Database
         }
     }
 
+    // Client code
     public static void Main(string[] args)
     {
         Database db1 = Database.GetInstance();

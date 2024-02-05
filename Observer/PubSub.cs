@@ -60,6 +60,8 @@ class Subscriber
     }
 }
 
+// Client code
+
 class PubSub
 {
     static void Main(string[] args)

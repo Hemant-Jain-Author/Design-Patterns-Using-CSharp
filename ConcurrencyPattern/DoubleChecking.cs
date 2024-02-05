@@ -48,6 +48,8 @@ public sealed class Singleton
     }
 }
 
+// Client code
+
 public class DoubleChecking
 {
     public static void Main()

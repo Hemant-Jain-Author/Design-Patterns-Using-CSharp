@@ -14,6 +14,8 @@ public sealed class ImmutablePerson
     }
 }
 
+// Client code
+
 public sealed class Immutable
 {
     public static void Main()

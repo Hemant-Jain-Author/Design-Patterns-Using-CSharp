@@ -84,6 +84,7 @@ public class LinkedListIterator : IEnumerator<int> {
     }
 }
 
+// Client code
 
 public class IteratorPatternLinkedList {
     public static void Main(string[] args) {

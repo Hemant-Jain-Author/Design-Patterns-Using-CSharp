@@ -76,6 +76,8 @@ class ConcreteColleague2 : Colleague
     }
 }
 
+// Client code
+
 public class MediatorPattern1
 {
     public static void Main(string[] args)

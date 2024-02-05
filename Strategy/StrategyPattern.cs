@@ -42,6 +42,7 @@ class Context
     }
 }
 
+// Client code
 public class StrategyPattern
 {
     public static void Main(string[] args)

@@ -31,7 +31,7 @@ class Proxy : ISubject
     }
 }
 
-// ProxyTest Class (Main)
+// Client code
 class ProxyTest
 {
     static void Main(string[] args)

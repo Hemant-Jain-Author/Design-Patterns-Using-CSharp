@@ -60,6 +60,8 @@ class ConcreteIterator : IEnumerator<int> {
     }
 }
 
+// Client code
+
 class IteratorPatternCollection {
     static void Main(string[] args) {
         ConcreteAggregate aggregate = new ConcreteAggregate();

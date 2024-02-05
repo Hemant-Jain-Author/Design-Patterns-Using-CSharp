@@ -72,6 +72,7 @@ class StrategyClass
     }
 }
 
+// Client code
 public class StrategyPatternSorter
 {
     public static void Main(string[] args)

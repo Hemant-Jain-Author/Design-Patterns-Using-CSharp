@@ -89,7 +89,7 @@ class Proxy
     }
 }
 
-// Example usage
+// Client code
 class ActiveObjectPattern
 {
     static void Main(string[] args)

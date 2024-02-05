@@ -61,7 +61,7 @@ class Student : IObserver
     }
 }
 
-// Main class (Client code)
+// Client code
 class CourseStudentPubSub
 {
     static void Main(string[] args)

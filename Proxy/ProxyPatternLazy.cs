@@ -41,7 +41,7 @@ class LazyBookParserProxy : IBookParser
     }
 }
 
-// ProxyPatternLazy Class (Main)
+// Client code
 class ProxyPatternLazy
 {
     static void Main(string[] args)

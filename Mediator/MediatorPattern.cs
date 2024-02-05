@@ -78,6 +78,8 @@ class Participant : IParticipant
     }
 }
 
+// Client code
+
 class MediatorPattern
 {
     static void Main(string[] args)

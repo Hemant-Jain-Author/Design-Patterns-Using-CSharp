@@ -56,6 +56,7 @@ class AddDataToDB : AddDataTemplate
     }
 }
 
+// Client code
 class TemplatePatternData
 {
     public static void Main(string[] args)

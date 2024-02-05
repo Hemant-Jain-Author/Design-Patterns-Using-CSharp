@@ -92,6 +92,8 @@ class ShapeRegistry
     }
 }
 
+// Client code
+
 public class PrototypePatternShape
 {
     public static void Main(string[] args)

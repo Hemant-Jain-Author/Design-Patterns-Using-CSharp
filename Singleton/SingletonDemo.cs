@@ -39,6 +39,7 @@ class Singleton
     }
 }
 
+// Client code
 class SingletonDemo
 {
     static void Main()

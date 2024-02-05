@@ -57,7 +57,7 @@ class ClientClass
     }
 }
 
-// Main class
+// Client code
 class Flyweight2
 {
     static void Main(string[] args)

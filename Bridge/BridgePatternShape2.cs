@@ -72,7 +72,7 @@ class MacAPI : DrawingAPI
     }
 }
 
-// Usage
+// Client code
 public class BridgePatternShape2
 {
     public static void Main(string[] args)

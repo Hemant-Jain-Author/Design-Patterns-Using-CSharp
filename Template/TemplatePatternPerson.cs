@@ -71,6 +71,7 @@ class SuperHero : AbstractWorker
     }
 }
 
+// Client code
 class TemplatePatternPerson
 {
     public static void Main(string[] args)

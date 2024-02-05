@@ -79,6 +79,7 @@ public class DatabaseSingleton
         }
     }
 
+    // Client code
     public static void Main(string[] args)
     {
         DatabaseSingleton db1 = DatabaseSingleton.GetInstance();

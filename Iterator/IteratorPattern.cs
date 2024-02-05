@@ -53,6 +53,8 @@ class ConcreteAggregate : Aggregate {
     }
 }
 
+// Client code
+
 class IteratorPattern {
     static void Main(string[] args) {
         ConcreteAggregate aggregate = new ConcreteAggregate();

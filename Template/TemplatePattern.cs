@@ -42,6 +42,7 @@ class ConcreteClass2 : AbstractClass
     }
 }
 
+// Client code
 class TemplatePattern
 {
     public static void Main(string[] args)

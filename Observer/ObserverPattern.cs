@@ -89,7 +89,7 @@ class ConcreteObserver2 : Observer
     }
 }
 
-// Main class (Client code)
+// Client code
 class ObserverPattern
 {
     static void Main(string[] args)

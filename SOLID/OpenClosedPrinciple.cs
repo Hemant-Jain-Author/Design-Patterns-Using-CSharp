@@ -68,17 +68,6 @@ class Eagle : Bird
     }
 }
 
-class Sparrow : Bird
-{
-    public Sparrow() : base("Sparrow")
-    {
-    }
-
-    public override void Fly()
-    {
-        Console.WriteLine("The sparrow is fluttering its wings!");
-    }
-}
 
 // Client code
 public class OpenClosedPrinciple

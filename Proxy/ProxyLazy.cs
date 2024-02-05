@@ -30,7 +30,7 @@ class Proxy : ISubject
     }
 }
 
-// ProxyLazy Class (Main)
+// Client code
 class ProxyLazy
 {
     static void Main(string[] args)
