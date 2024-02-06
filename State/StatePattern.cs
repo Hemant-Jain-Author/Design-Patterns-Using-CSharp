@@ -1,11 +1,5 @@
 using System;
 
-interface IBulbState
-{
-    void Flip(BulbControl bc);
-    string ToString();
-}
-
 class BulbControl
 {
     private IBulbState current;
@@ -29,6 +23,12 @@ class BulbControl
     {
         return this.current.ToString();
     }
+}
+
+interface IBulbState
+{
+    void Flip(BulbControl bc);
+    string ToString();
 }
 
 class On : IBulbState

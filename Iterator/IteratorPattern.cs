@@ -1,13 +1,34 @@
 using System;
 using System.Collections.Generic;
 
+interface Aggregate {
+    Iterator GetIterator();
+}
+
+class ConcreteAggregate : Aggregate {
+    private List<int> data;
+
+    public ConcreteAggregate() {
+        this.data = new List<int>();
+    }
+
+    public void AddData(int val) {
+        data.Add(val);
+    }
+
+    public Iterator GetIterator() {
+        return new ConcreteIterator(this);
+    }
+
+    public List<int> GetData() {
+        return data;
+    }
+}
+
+
 interface Iterator {
     int Next();
     bool HasNext();
-}
-
-interface Aggregate {
-    Iterator GetIterator();
 }
 
 class ConcreteIterator : Iterator {
@@ -33,28 +54,7 @@ class ConcreteIterator : Iterator {
     }
 }
 
-class ConcreteAggregate : Aggregate {
-    private List<int> data;
-
-    public ConcreteAggregate() {
-        this.data = new List<int>();
-    }
-
-    public void AddData(int val) {
-        data.Add(val);
-    }
-
-    public Iterator GetIterator() {
-        return new ConcreteIterator(this);
-    }
-
-    public List<int> GetData() {
-        return data;
-    }
-}
-
 // Client code
-
 class IteratorPattern {
     static void Main(string[] args) {
         ConcreteAggregate aggregate = new ConcreteAggregate();

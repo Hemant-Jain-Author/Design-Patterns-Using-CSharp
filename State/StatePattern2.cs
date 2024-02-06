@@ -1,10 +1,5 @@
 using System;
 
-interface IState
-{
-    void Handle(Context context);
-}
-
 class Context
 {
     private IState currentState;
@@ -23,6 +18,11 @@ class Context
     {
         this.currentState.Handle(this);
     }
+}
+
+interface IState
+{
+    void Handle(Context context);
 }
 
 class ConcreteState1 : IState

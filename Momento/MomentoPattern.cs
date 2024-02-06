@@ -1,6 +1,32 @@
 using System;
 using System.Collections.Generic;
 
+// Originator
+class Originator
+{
+    private string state;
+
+    public void SetState(string state)
+    {
+        this.state = state;
+    }
+
+    public string GetState()
+    {
+        return state;
+    }
+
+    public Memento CreateMemento()
+    {
+        return new Memento(state);
+    }
+
+    public void SetMemento(Memento m)
+    {
+        SetState(m.GetState());
+    }
+}
+
 // Memento
 class Memento
 {
@@ -78,32 +104,6 @@ class CareTaker
     public int GetStatesCount()
     {
         return history.Count;
-    }
-}
-
-// Originator
-class Originator
-{
-    private string state;
-
-    public void SetState(string state)
-    {
-        this.state = state;
-    }
-
-    public string GetState()
-    {
-        return state;
-    }
-
-    public Memento CreateMemento()
-    {
-        return new Memento(state);
-    }
-
-    public void SetMemento(Memento m)
-    {
-        SetState(m.GetState());
     }
 }
 

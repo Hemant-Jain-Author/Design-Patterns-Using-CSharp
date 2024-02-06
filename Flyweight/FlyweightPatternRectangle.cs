@@ -1,40 +1,44 @@
 using System;
 using System.Collections.Generic;
 
-// Shape interface
-interface IShape
+// Shape abstract class
+abstract class Shape
 {
-    void Draw(int x1, int y1, int x2, int y2);
-}
+    protected int colour; // Intrinsic State
 
-// Rectangle class implementing Shape
-class Rectangle : IShape
-{
-    private string color;
-
-    public Rectangle(string color)
+    public Shape(int colour)
     {
-        this.color = color;
+        this.colour = colour;
     }
 
-    public void Draw(int x1, int y1, int x2, int y2)
+    public abstract void Draw(int x1, int y1, int x2, int y2); // Extrinsic State
+}
+
+// Rectangle class
+class Rectangle : Shape
+{
+    public Rectangle(int colour) : base(colour)
     {
-        Console.WriteLine($"Draw rectangle color: {color} topleft: ({x1},{y1}) rightBottom: ({x2},{y2})");
+    }
+
+    public override void Draw(int x1, int y1, int x2, int y2)
+    {
+        Console.WriteLine($"Draw Rectangle colour:{colour} topleft: ({x1},{y1}) rightBottom: ({x2},{y2})");
     }
 }
 
 // RectangleFactory class
 class RectangleFactory
 {
-    private readonly Dictionary<string, IShape> shapes = new Dictionary<string, IShape>();
+    private Dictionary<int, Shape> shapes = new Dictionary<int, Shape>();
 
-    public IShape GetRectangle(string color)
+    public Shape GetRectangle(int colour)
     {
-        if (!shapes.ContainsKey(color))
+        if (!shapes.ContainsKey(colour))
         {
-            shapes[color] = new Rectangle(color);
+            shapes[colour] = new Rectangle(colour);
         }
-        return shapes[color];
+        return shapes[colour];
     }
 
     public int GetCount()
@@ -51,11 +55,12 @@ class FlyweightPatternRectangle
         RectangleFactory factory = new RectangleFactory();
         Random random = new Random();
 
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 1000; i++)
         {
-            IShape rectangle = factory.GetRectangle(random.Next(1000).ToString());
-            rectangle.Draw(random.Next(100), random.Next(100), random.Next(100), random.Next(100));
+            Shape rect = factory.GetRectangle(random.Next(1000));
+            rect.Draw(random.Next(100), random.Next(100), random.Next(100), random.Next(100));
         }
+
         Console.WriteLine(factory.GetCount());
     }
 }

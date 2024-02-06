@@ -1,87 +1,93 @@
 using System;
 
-// Abstraction interface
-interface Shape
+// Abstraction abstract class
+abstract class Shape
 {
-    void Draw();
-}
+    protected Colour imp;
 
-// Implementor interface
-interface Color
-{
-    string Fill();
+    public Shape(Colour imp)
+    {
+        this.imp = imp;
+    }
+
+    public abstract void Draw();
 }
 
 // Rectangle class
 class Rectangle : Shape
 {
-    private Color imp;
-
-    public Rectangle(Color imp)
+    public Rectangle(Colour imp) : base(imp)
     {
-        this.imp = imp;
     }
 
-    public void Draw()
+    public override void Draw()
     {
-        Console.WriteLine($"Drawing Rectangle with color {imp.Fill()}");
+        Console.WriteLine("Drawing Rectangle with colour " + imp.Fill());
     }
 }
 
 // Circle class
 class Circle : Shape
 {
-    private Color imp;
-
-    public Circle(Color imp)
+    public Circle(Colour imp) : base(imp)
     {
-        this.imp = imp;
     }
 
-    public void Draw()
+    public override void Draw()
     {
-        Console.WriteLine($"Drawing Circle with color {imp.Fill()}");
+        Console.WriteLine("Drawing Circle with colour " + imp.Fill());
     }
 }
 
-// Red class
-class Red : Color
+// Colour abstract class
+abstract class Colour
 {
-    public string Fill()
+    public abstract string Fill();
+}
+
+// Red class
+class Red : Colour
+{
+    public override string Fill()
     {
         return "Red";
     }
 }
 
 // Green class
-class Green : Color
+class Green : Colour
 {
-    public string Fill()
+    public override string Fill()
     {
         return "Green";
     }
 }
 
 // Blue class
-class Blue : Color
+class Blue : Colour
 {
-    public string Fill()
+    public override string Fill()
     {
         return "Blue";
     }
 }
 
 // Client code
-public class BridgePatternShape
+class BridgePatternShape
 {
-    public static void Main(string[] args)
+    static void Main(string[] args)
     {
-        Color c1 = new Red();
+        Colour c1 = new Red();
         Shape abstraction = new Circle(c1);
         abstraction.Draw();
 
-        Color c2 = new Green();
-        Shape abstraction2 = new Rectangle(c2);
-        abstraction2.Draw();
+        Colour c2 = new Green();
+        abstraction = new Rectangle(c2);
+        abstraction.Draw();
     }
 }
+
+/*
+Drawing Circle with colour Red
+Drawing Rectangle with colour Green
+*/

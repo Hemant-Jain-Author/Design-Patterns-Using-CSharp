@@ -1,23 +1,27 @@
 using System;
 using System.Collections.Generic;
 
-// Flyweight interface
-interface IFlyweight
+// Flyweight abstract class
+abstract class Flyweight
 {
-    void Operation(object extrinsicState);
-}
+    protected string intrinsicState;
 
-// Concrete Flyweight class
-class ConcreteFlyweight : IFlyweight
-{
-    private readonly string intrinsicState;
-
-    public ConcreteFlyweight(string intrinsicState)
+    public Flyweight(string intrinsicState)
     {
         this.intrinsicState = intrinsicState;
     }
 
-    public void Operation(object extrinsicState)
+    public abstract void Operation(object extrinsicState);
+}
+
+// Concrete Flyweight class
+class ConcreteFlyweight : Flyweight
+{
+    public ConcreteFlyweight(string intrinsicState) : base(intrinsicState)
+    {
+    }
+
+    public override void Operation(object extrinsicState)
     {
         Console.WriteLine($"Flyweight: intrinsicState: {intrinsicState} and extrinsicState: {extrinsicState}");
 
@@ -27,9 +31,9 @@ class ConcreteFlyweight : IFlyweight
 // FlyweightFactory class
 class FlyweightFactory
 {
-    private readonly Dictionary<string, IFlyweight> flyweights = new Dictionary<string, IFlyweight>();
+    private Dictionary<string, Flyweight> flyweights = new Dictionary<string, Flyweight>();
 
-    public IFlyweight GetFlyweight(string key)
+    public Flyweight GetFlyweight(string key)
     {
         if (!flyweights.ContainsKey(key))
         {
@@ -50,16 +54,16 @@ class FlyweightPattern
     static void Main(string[] args)
     {
         FlyweightFactory factory = new FlyweightFactory();
-        IFlyweight flyweight1 = factory.GetFlyweight("key");
-        IFlyweight flyweight2 = factory.GetFlyweight("key");
-        flyweight1.Operation("data");
-        Console.WriteLine($"{flyweight1} {flyweight2}");
-        Console.WriteLine($"Object count: {factory.GetCount()}");
+        Flyweight flyweight1 = factory.GetFlyweight("Intr");
+        Flyweight flyweight2 = factory.GetFlyweight("Intr");
+        flyweight1.Operation("extr");
+        Console.WriteLine(flyweight1 + " " + flyweight2);
+        Console.WriteLine("Object count: " + factory.GetCount());
     }
 }
 
-/* 
-Flyweight: intrinsicState: key and extrinsicState: data
+/*
+Flyweight: intrinsicState: Intr and extrinsicState: extr
 ConcreteFlyweight ConcreteFlyweight
 Object count: 1
 */
